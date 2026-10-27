@@ -123,7 +123,7 @@ test.describe('Cart & Checkout Flow', () => {
     await expect(page).toHaveURL(/\/en\/checkout$/);
     // With items in the bag the checkout page renders the order flow
     await expect(
-      page.getByRole('button', { name: /confirm & place order/i }),
+      page.getByRole('button', { name: /place order/i }),
     ).toBeVisible({ timeout: 20_000 });
   });
 
