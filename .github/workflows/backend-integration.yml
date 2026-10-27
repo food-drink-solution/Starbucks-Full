@@ -1,0 +1,81 @@
+name: Backend Integration Tests
+
+# Post-merge deep verification: spins up SQL Server via Testcontainers.
+# Not a pull-request gate — it runs when changes land on main/develop,
+# so PR checks stay fast and no job is ever shown as "skipped".
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'Backend/**'
+      - '.github/workflows/backend-integration.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: backend-integration-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  integration:
+    name: Backend Integration Tests (Testcontainers)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json', '**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Restore dependencies
+        run: dotnet restore StarbucksEgypt.slnx
+        working-directory: Backend
+
+      - name: Build
+        run: dotnet build StarbucksEgypt.slnx --configuration Release --no-restore
+        working-directory: Backend
+
+      - name: Run integration tests
+        run: |
+          dotnet test src/Starbucks.IntegrationTests/Starbucks.IntegrationTests.csproj \
+            --configuration Release \
+            --no-build \
+            --verbosity normal \
+            --collect:"XPlat Code Coverage" \
+            --results-directory ./coverage
+        working-directory: Backend
+        env:
+          DOTNET_ENVIRONMENT: Test
+
+      - name: Check optional Codecov token
+        id: codecov-auth
+        if: always()
+        run: |
+          if [ -n "$CODECOV_TOKEN" ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Upload backend integration coverage
+        uses: codecov/codecov-action@v4
+        # Skip optional uploads when this repository has no Codecov token.
+        if: always() && steps.codecov-auth.outputs.enabled == 'true'
+        with:
+          directory: Backend/coverage
+          flags: backend-integration
+          name: backend-integration-coverage
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: false
