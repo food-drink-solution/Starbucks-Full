@@ -2,6 +2,7 @@ namespace Starbucks.API.Controllers;
 
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Starbucks.API.Extensions;
 using Starbucks.Application.Common.Models;
 using Starbucks.Application.DTOs.Resources;
 using Starbucks.Application.Features.Resources.Queries;
