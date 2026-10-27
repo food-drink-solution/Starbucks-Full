@@ -1,4 +1,5 @@
 // Localization hooks
+export { usePrefetch } from './performance';
 export { useResources, useResourceModule, useResourcesHealth, getLocalizedText } from './useResources';
 export type { ResourcesResponse, ModuleResponse, HealthResponse } from './useResources';
 
