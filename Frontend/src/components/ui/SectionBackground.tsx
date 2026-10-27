@@ -16,7 +16,7 @@ export const SectionBackground: React.FC<SectionBackgroundProps> = ({
     <div className={cn("absolute inset-0 overflow-hidden pointer-events-none", className)}>
       {/* Animated Gradient Background */}
       <div className={cn(
-        "absolute inset-0 bg-gradient-to-br animate-gradient-shift",
+        "absolute inset-0 bg-gradient-to-br",
         variantStyles[variant]
       )}></div>
 
@@ -32,9 +32,9 @@ export const SectionBackground: React.FC<SectionBackgroundProps> = ({
       <div className="absolute bottom-40 right-[15%] w-2 h-2 bg-starbucks-green/30 dark:bg-starbucks-green/50 rounded-full blur-[0.5px] animate-float-organic [animation-delay:2s] shadow-[0_0_6px_rgba(0,98,65,0.3)]"></div>
       
       {/* Group 2: Twinkling Stars */}
-      <div className="absolute top-1/4 left-1/3 w-1.5 h-1.5 bg-starbucks-green/60 dark:bg-starbucks-green/80 rounded-full animate-star-twinkle"></div>
-      <div className="absolute top-3/4 right-1/4 w-2 h-2 bg-starbucks-green/50 dark:bg-starbucks-green/70 rounded-full animate-star-twinkle [animation-delay:1.5s]"></div>
-      <div className="absolute top-10 right-[10%] w-1 h-1 bg-starbucks-green/70 dark:bg-starbucks-green/90 rounded-full animate-star-twinkle [animation-delay:3s]"></div>
+      <div className="absolute top-1/4 left-1/3 w-1.5 h-1.5 bg-starbucks-green/60 dark:bg-starbucks-green/80 rounded-full animate-twinkle"></div>
+      <div className="absolute top-3/4 right-1/4 w-2 h-2 bg-starbucks-green/50 dark:bg-starbucks-green/70 rounded-full animate-twinkle [animation-delay:1.5s]"></div>
+      <div className="absolute top-10 right-[10%] w-1 h-1 bg-starbucks-green/70 dark:bg-starbucks-green/90 rounded-full animate-twinkle [animation-delay:3s]"></div>
       
       {/* Group 3: Pinging/Pulsing Pulse */}
       <div className="absolute bottom-20 left-[20%] w-2.5 h-2.5 bg-starbucks-green/40 dark:bg-starbucks-green/60 rounded-full animate-ping-slow shadow-[0_0_10px_rgba(0,98,65,0.5)]"></div>

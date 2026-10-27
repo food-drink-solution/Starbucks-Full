@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
-import { useLanguage } from '@/hooks'
+import { useLanguage } from '@/hooks/i18n/useLanguage'
 
 interface SEOProps {
   title?: string

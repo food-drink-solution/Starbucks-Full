@@ -82,10 +82,19 @@ Our technology stack is selected to provide a world-class, ultra-fast, and highl
 Want to run the project locally? Follow these simple steps.
 
 ### Prerequisites
-- **Node.js** 18+ (Frontend & Dashboard)
+- **Node.js** 20+ (Frontend & dashboard) — see `engines` in `Frontend/package.json`
+- **npm** 10+
 - **.NET SDK** 9.0 (Backend)
 - **Docker & Docker Compose** (Database & Redis)
 - **Google OAuth Credentials** (for authentication)
+
+### Ports
+
+| App | Port | Command |
+|-----|------|---------|
+| Frontend | `http://localhost:5173` | `npm run dev` |
+| Dashboard | `http://localhost:4200` | `ng serve` |
+| Backend API | `https://localhost:7082` (or configured) | `dotnet run --project src/Starbucks.API` |
 
 ### Frontend Setup
 ```bash
@@ -113,9 +122,11 @@ dotnet run --project src/Starbucks.API
 > The API will be available on `https://localhost:7082` (or your configured port). Check out `/swagger` for API documentation.
 > Static images are served from `/api/v1/images/` endpoints.
 
+> **Secrets**: Never commit real credentials. Use User Secrets, environment variables (`Jwt__Secret`, `ConnectionStrings__DefaultConnection`, etc.), or Key Vault.
+
 ### Dashboard Setup
 ```bash
-cd Dashboard
+cd dashboard
 npm install
 
 # Create/update environment files with OAuth config
@@ -124,6 +135,8 @@ npm install
 ng serve
 ```
 > The dashboard will start on `http://localhost:4200`
+
+> **Note**: Folder name is lowercase `dashboard/` (case-sensitive on Linux/CI).
 
 ---
 

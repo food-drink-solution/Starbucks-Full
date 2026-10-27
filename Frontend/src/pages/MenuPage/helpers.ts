@@ -18,8 +18,8 @@ export function flattenItems(categories: MenuCategory[]): FlatItem[] {
         const raw = item as unknown as Record<string, unknown>;
         
         // Extract LocalizedContent objects from the API response
-        const itemName = raw.name as any;
-        const itemDescription = raw.description as any;
+        const itemName = raw.name as FlatItem['name'] | undefined;
+        const itemDescription = raw.description as FlatItem['description'] | undefined;
         
         result.push({
           id: String(item.id),

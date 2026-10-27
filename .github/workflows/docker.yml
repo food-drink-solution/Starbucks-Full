@@ -1,0 +1,45 @@
+name: Docker Build Verification
+
+# Post-merge image verification: builds the frontend and backend Docker
+# images with GitHub Actions layer caching. Not a pull-request gate —
+# it runs when changes land on main/develop.
+
+on:
+  push:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+concurrency:
+  group: docker-verify-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  docker-verify:
+    name: Docker Build Verification
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Frontend Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: Frontend
+          file: Frontend/Dockerfile
+          push: false
+          tags: starbucks-eg-frontend:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build Backend Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: Backend
+          file: Backend/Dockerfile
+          push: false
+          tags: starbucks-eg-backend:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

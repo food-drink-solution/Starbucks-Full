@@ -1,10 +1,14 @@
 import { useTranslation } from "react-i18next";
 
-import { Banner, StatementSection, FeaturedCards, SEO, QueryErrorBoundary } from "@/components";
+import { Banner } from "@/components/ui/banner";
+import { StatementSection } from "@/components/sections/StatementSection";
+import { FeaturedCards } from "@/components/sections/FeaturedCards";
+import { SEO } from "@/components/layout/SEO";
+import { QueryErrorBoundary } from "@/components/error/QueryErrorBoundary";
 import { LoadingAnnouncement } from "@/components/accessibility";
 import { HomeSkeleton } from "@/components/skeletons";
-import { useLanguage } from "@/hooks";
-import { useHero } from "@/hooks/queries";
+import { useLanguage } from "@/hooks/i18n/useLanguage";
+import { useHero } from "@/hooks/queries/useFeaturedData";
 
 interface HeroData {
   ctaLink: string;

@@ -103,7 +103,7 @@ export function Footer() {
                         animate={{ rotate: isOpen ? 180 : 0 }}
                         transition={ANIMATION_CONFIG.TRANSITIONS.QUICK_ROTATE as unknown as import("framer-motion").Transition}
                       >
-                        <ChevronDown className="h-4 w-4 text-gray-400" />
+                        <ChevronDown className="h-4 w-4 text-gray-300" />
                       </motion.div>
                     </button>
                     <AnimatePresence initial={false}>
@@ -121,7 +121,7 @@ export function Footer() {
                               <li key={link.id}>
                                 <Link
                                   to={`/${lang}${link.href}`}
-                                  className="text-sm text-gray-400 hover:text-white transition-colors block"
+                                  className="text-sm text-gray-300 hover:text-white transition-colors block"
                                 >
                                   {t(`navigation:footer.links.${link.id}`)}
                                 </Link>
@@ -154,7 +154,7 @@ export function Footer() {
                   animate={{ rotate: activeAccordion === "location" ? 180 : 0 }}
                   transition={ANIMATION_CONFIG.TRANSITIONS.QUICK_ROTATE as unknown as import("framer-motion").Transition}
                 >
-                  <ChevronDown className="h-4 w-4 text-gray-400" />
+                  <ChevronDown className="h-4 w-4 text-gray-300" />
                 </motion.div>
               </button>
               <AnimatePresence initial={false}>
@@ -168,7 +168,7 @@ export function Footer() {
                     transition={ANIMATION_CONFIG.TRANSITIONS.SPRING}
                   >
                     <div className="px-4 pb-4">
-                      <div className="mb-3 text-xs font-bold uppercase tracking-widest text-gray-400">
+                      <div className="mb-3 text-xs font-bold uppercase tracking-widest text-gray-300">
                         {t("common:select_region")}
                       </div>
                       <div className="max-h-[200px] overflow-y-auto scrollbar-thin space-y-1">
@@ -203,7 +203,7 @@ export function Footer() {
                     <li key={link.id}>
                       <Link
                         to={`/${lang}${link.href}`}
-                        className="text-base text-gray-400 hover:text-white transition-colors"
+                        className="text-base text-gray-300 hover:text-white transition-colors"
                       >
                         {t(`navigation:footer.links.${link.id}`)}
                       </Link>
@@ -219,7 +219,7 @@ export function Footer() {
                 {t("common:egypt")}
               </h3>
               <div className="group relative inline-block">
-                <button className="flex items-center gap-3 text-base text-gray-400 hover:text-white transition-colors cursor-pointer py-2">
+                <button className="flex items-center gap-3 text-base text-gray-300 hover:text-white transition-colors cursor-pointer py-2">
                   <Globe className="h-5 w-5 text-starbucks-green" />
                   <span className="font-bold underline decoration-white/20 underline-offset-8 group-hover:decoration-starbucks-green transition-all">
                     {t("common:egypt")}
@@ -242,7 +242,7 @@ export function Footer() {
                 <div className="invisible absolute bottom-[calc(100%+12px)] inset-inline-start-0 z-50 w-80 rounded-2xl border border-white/10 bg-zinc-900 shadow-2xl transition-all opacity-0 scale-95 origin-bottom-start group-hover:visible group-hover:opacity-100 group-hover:scale-100 overflow-hidden">
                   <div className="h-[300px] overflow-y-auto scrollbar-thin rtl">
                     <div className="p-5 px-6">
-                      <div className="mb-4 text-xs font-bold uppercase tracking-widest text-gray-400">
+                      <div className="mb-4 text-xs font-bold uppercase tracking-widest text-gray-300">
                         {t("common:select_region")}
                       </div>
                       <ul className="space-y-1">
@@ -303,7 +303,7 @@ export function Footer() {
             </div>
 
             {/* Starbucks Brief Description */}
-            <div className="text-gray-400 text-sm leading-relaxed">
+            <div className="text-gray-300 text-sm leading-relaxed">
               <p>{t("navigation:footer.description")}</p>
             </div>
 
@@ -315,7 +315,7 @@ export function Footer() {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-white transition-all transform hover:scale-110"
+                  className="text-gray-300 hover:text-white transition-all transform hover:scale-110"
                 >
                   {socialIcons[social.name]}
                 </a>
@@ -330,7 +330,7 @@ export function Footer() {
                 <h4 className="mb-3 text-xl font-extrabold text-white">
                   {t("navigation:footer.app.title")}
                 </h4>
-                <p className="mb-8 text-base text-gray-400">
+                <p className="mb-8 text-base text-gray-300">
                   {t("navigation:footer.app.description")}
                 </p>
               </div>
@@ -347,7 +347,7 @@ export function Footer() {
                     <path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.46-2.23-.46-3.38 0-1.02.48-2.02.42-2.91-.42C5.98 18.04 4.28 12.57 6.82 7.85c1.23-2.17 3.41-3.41 5.61-3.41 1.1 0 2.15.25 3 .75 1.28.75 2.76.75 4.04 0 .95-.5 2-.8 3.1-.75 1.55.05 2.85.7 3.65 1.85-3.35 1.95-2.8 6.35.55 7.8-.8 2-1.95 3.95-3.55 5.55-.98.95-2.05.88-3.08.4-1.09-.46-2.23-.46-3.38 0-.98.48-2.02.42-2.91-.42zM12 4.45c-.1-2.2 1.8-4.2 4.2-4.2.1 2.2-1.8 4.2-4.2 4.2z" />
                   </svg>
                   <div className="text-start">
-                    <div className="text-[10px] uppercase leading-none text-gray-400">
+                    <div className="text-[10px] uppercase leading-none text-gray-300">
                       {t("navigation:footer.app.app_store").split(" ")[0]}
                     </div>
                     <div className="text-sm font-bold leading-tight">
@@ -367,7 +367,7 @@ export function Footer() {
                     <path d="M3.609 1.814L13.792 12 3.609 22.186A.996.996 0 013.2 21.372V2.628c0-.34.17-.65.409-.814zm10.591 10.186l2.84 2.84-11.01 6.124 8.17-8.964zm2.84-2.84l-2.84 2.84 8.17-8.964-11.01 6.124 5.68 0zm.362 1.394l4.617-2.556c.362-.2.594-.611.594-1.074 0-.463-.232-.873-.594-1.074L17.402 3.294c-.362-.2-.826-.2-1.188 0L3.609 10.186 13.792 12l3.61-1.446z" />
                   </svg>
                   <div className="text-start">
-                    <div className="text-[10px] uppercase leading-none text-gray-400">
+                    <div className="text-[10px] uppercase leading-none text-gray-300">
                       {t("navigation:footer.app.google_play")
                         .split(" ")
                         .slice(0, 2)
@@ -383,7 +383,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="pt-8 pb-4 text-center text-[13px] text-gray-500 border-t border-white/10 px-4 md:px-24">
+        <div className="pt-8 pb-4 text-center text-[13px] text-gray-300 border-t border-white/10 px-4 md:px-24">
           <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
             <p>
               © {new Date().getFullYear()} Starbucks Coffee Company.{" "}
@@ -395,7 +395,7 @@ export function Footer() {
                 href="https://m-said-portfolio.netlify.app"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-bold text-starbucks-green hover:text-starbucks-dark dark:hover:text-starbucks-green/80 transition-colors no-underline"
+                className="font-bold text-emerald-300 hover:text-white transition-colors no-underline"
               >
                 M.Said
               </a>

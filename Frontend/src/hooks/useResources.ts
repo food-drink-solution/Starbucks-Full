@@ -35,7 +35,8 @@ export function useResources(language = 'en'): UseQueryResult<ResourcesResponse>
  */
 export function useResourceModule(
   language = 'en',
-  module = 'common'
+  module = 'common',
+  enabled = true
 ): UseQueryResult<ModuleResponse> {
   return useQuery({
     queryKey: ['resources', language, module],
@@ -52,6 +53,7 @@ export function useResourceModule(
     },
     staleTime: 24 * 60 * 60 * 1000, // 24 hours
     gcTime: 30 * 24 * 60 * 60 * 1000,
+    enabled,
     retry: 3,
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
   });
@@ -85,12 +87,14 @@ export function useResourcesHealth(): UseQueryResult<HealthResponse> {
  * const title = getLocalizedText(resources?.modules.menu, 'title', isRTL);
  */
 export function getLocalizedText(
-  obj: Record<string, any> | undefined,
+  obj: Record<string, unknown> | undefined,
   key: string,
   _isRTL?: boolean
 ): string {
+  void _isRTL;
   if (!obj) return '';
-  return obj[key] ?? '';
+  const value = obj[key];
+  return typeof value === 'string' ? value : '';
 }
 
 // Type Definitions
@@ -98,13 +102,13 @@ export function getLocalizedText(
 export interface ResourcesResponse {
   language: string;
   modules: {
-    common?: Record<string, any>;
-    menu?: Record<string, any>;
-    auth?: Record<string, any>;
-    checkout?: Record<string, any>;
-    locations?: Record<string, any>;
-    cart?: Record<string, any>;
-    [key: string]: Record<string, any> | undefined;
+    common?: Record<string, unknown>;
+    menu?: Record<string, unknown>;
+    auth?: Record<string, unknown>;
+    checkout?: Record<string, unknown>;
+    locations?: Record<string, unknown>;
+    cart?: Record<string, unknown>;
+    [key: string]: Record<string, unknown> | undefined;
   };
   timestamp: string;
   cacheVersion: number;
@@ -113,7 +117,7 @@ export interface ResourcesResponse {
 export interface ModuleResponse {
   language: string;
   module: string;
-  resources: Record<string, any>;
+  resources: Record<string, unknown>;
   timestamp: string;
   cacheVersion: number;
 }

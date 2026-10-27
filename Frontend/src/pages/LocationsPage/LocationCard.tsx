@@ -14,7 +14,7 @@ interface LocationCardProps {
 }
 
 export const LocationCard = memo(
-  ({ location, isRTL, t, isSelected, distanceKm, onClick }: LocationCardProps) => {
+  ({ location, isRTL, isSelected, distanceKm, onClick }: LocationCardProps) => {
     const c = location as Location & { nameAr?: string };
     const name = isRTL && c.nameAr ? c.nameAr : (typeof c.name === 'string' ? c.name : c.name?.en);
     const address = typeof c.address === 'string' ? c.address : c.address?.en;

@@ -42,7 +42,7 @@ export function LocationsPageContent({ locations }: LocationsPageContentProps) {
 
   const [search, setSearch] = useState('');
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
-  const [userLocation, setUserLocation] = useState<google.maps.LatLngLiteral | null>(null);
+  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [geoStatus, setGeoStatus] = useState<'idle' | 'loading' | 'error'>('idle');
   const [viewMode, setViewMode] = useState<'list' | 'map'>('map');
 
@@ -108,7 +108,7 @@ export function LocationsPageContent({ locations }: LocationsPageContentProps) {
   /** Distance for the currently selected store (used in detail panel header). */
   const selectedDistanceKm = useMemo(() => {
     if (!selectedLocation || !userLocation) return undefined;
-    return processedLocations.find(({ loc }) => loc.id === selectedLocation.id)?.distanceKm;
+    return processedLocations.find(({ loc }) => loc === selectedLocation)?.distanceKm;
   }, [selectedLocation, userLocation, processedLocations]);
 
   const sortedByDistance = userLocation !== null;
@@ -241,7 +241,7 @@ export function LocationsPageContent({ locations }: LocationsPageContentProps) {
                               location={location}
                               isRTL={isRTL}
                               t={t}
-                              isSelected={selectedLocation?.id === location.id}
+                              isSelected={selectedLocation === location}
                               distanceKm={distanceKm}
                               onClick={() => {
                                 setSelectedLocation(location);

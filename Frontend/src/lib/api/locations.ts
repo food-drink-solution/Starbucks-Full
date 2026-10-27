@@ -4,6 +4,25 @@ import { mockStores } from "@/data/locations/mockStores";
 
 const API_URL = import.meta.env.VITE_API_URL || '/api';
 
+type LocalizedStoreText = string | {
+  English?: string;
+  Arabic?: string;
+  en?: string;
+  ar?: string;
+};
+
+interface StoreResource {
+  id?: string;
+  name?: LocalizedStoreText;
+  English?: string;
+  address?: LocalizedStoreText;
+  city?: string;
+  phone?: string;
+  latitude?: number;
+  longitude?: number;
+  services?: string[];
+}
+
 export const locationFetchers = {
   /**
    * Fetch all locations from Backend Resources API.
@@ -18,20 +37,25 @@ export const locationFetchers = {
       );
 
       if (response.ok) {
-        const data = await response.json();
+        const data = (await response.json()) as { resources?: { stores?: StoreResource[] } };
         const locationsResources = data.resources;
         
         // Transform Backend API response to Location[]
-        if (locationsResources.stores && Array.isArray(locationsResources.stores)) {
-          return locationsResources.stores.map((store: any) => ({
+        if (Array.isArray(locationsResources?.stores)) {
+          const getEnglish = (value?: LocalizedStoreText): string => {
+            if (typeof value === 'string') return value;
+            return value?.English ?? value?.en ?? '';
+          };
+
+          return locationsResources.stores.map((store) => ({
             id: store.id,
-            name: store.name || store.English || '',
-            address: store.address || store.address?.English || '',
+            name: getEnglish(store.name) || store.English || '',
+            address: getEnglish(store.address),
             city: store.city,
             phone: store.phone,
             latitude: store.latitude,
             longitude: store.longitude,
-            services: store.services || [],
+            features: store.services || [],
           }));
         }
       }

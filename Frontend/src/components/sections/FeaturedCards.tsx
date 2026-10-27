@@ -1,7 +1,8 @@
 import { useTranslation } from "react-i18next";
 import { SectionBackground } from "@/components/ui";
 import { LoadingAnnouncement, LiveRegion } from "@/components/accessibility";
-import { useFeaturedCards, useLanguage } from "@/hooks";
+import { useFeaturedCards } from "@/hooks/queries/useFeaturedData";
+import { useLanguage } from "@/hooks/i18n/useLanguage";
 import { FeaturedCard } from "./FeaturedCard";
 
 export function FeaturedCards() {
