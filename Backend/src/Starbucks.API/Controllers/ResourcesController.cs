@@ -23,7 +23,7 @@ public class LocalizationResourcesController : ControllerBase
     private readonly IWebHostEnvironment _env;
     private readonly ILogger<LocalizationResourcesController> _logger;
 
-    public LocalizationResourcesController(IWebHostEnvironment env, ILogger<ResourcesController> logger)
+    public LocalizationResourcesController(IWebHostEnvironment env, ILogger<LocalizationResourcesController> logger)
     {
         _env = env;
         _logger = logger;
@@ -52,8 +52,8 @@ public class LocalizationResourcesController : ControllerBase
     [HttpGet("localization/{language}")]
     [ResponseCache(Duration = 86400, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] { "language" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProduceResponseType(StatusCodes.Status404NotFound)]
-    [ProduceResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetLocalizationByLanguage(string language)
     {
         try
@@ -110,9 +110,9 @@ public class LocalizationResourcesController : ControllerBase
     /// <returns>Localization resources for the specified module</returns>
     [HttpGet("localization/{language}/{module}")]
     [ResponseCache(Duration = 86400, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] { "language", "module" })]
-    [ProduceResponseType(StatusCodes.Status200OK)]
-    [ProduceResponseType(StatusCodes.Status400BadRequest)]
-    [ProduceResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetLocalizationModule(string language, string module)
     {
         try
@@ -161,7 +161,7 @@ public class LocalizationResourcesController : ControllerBase
     /// <returns>Available modules</returns>
     [HttpGet("localization/modules")]
     [ResponseCache(Duration = 86400, Location = ResponseCacheLocation.Any)]
-    [ProduceResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public IActionResult GetAvailableModules()
     {
         try
