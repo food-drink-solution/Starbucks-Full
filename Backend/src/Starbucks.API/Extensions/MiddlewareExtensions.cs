@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Starbucks.Application.Common.Utilities;
 using System.Text.Json;
 
 namespace Starbucks.API.Extensions;
@@ -49,15 +50,19 @@ public static class MiddlewareExtensions
                     )
                 };
 
+                // Sanitize user-provided values — CR/LF in a URL must not forge log lines (CodeQL: log-forging)
+                var safeMethod = PiiGuard.SanitizeLogValue(context.Request.Method);
+                var safePath   = PiiGuard.SanitizeLogValue(context.Request.Path.Value);
+
                 if (statusCode == StatusCodes.Status500InternalServerError)
                 {
                     logger.LogError(exception, "Unhandled exception on {Method} {Path}",
-                        context.Request.Method, context.Request.Path);
+                        safeMethod, safePath);
                 }
                 else
                 {
                     logger.LogWarning("Request error on {Method} {Path}: {Title} - {Detail}",
-                        context.Request.Method, context.Request.Path, title, detail);
+                        safeMethod, safePath, PiiGuard.SanitizeLogValue(title), PiiGuard.SanitizeLogValue(detail));
                 }
 
                 context.Response.StatusCode  = statusCode;

@@ -5,6 +5,7 @@ using Starbucks.Application.Common.Interfaces.Data;
 using Starbucks.Application.Common.Interfaces.Services;
 using Starbucks.Application.Common.Models;
 using Starbucks.Domain.Identity;
+using System.Security.Cryptography;
 
 namespace Starbucks.Application.Features.Admin.Users.Commands;
 
@@ -77,9 +78,11 @@ public class ResetPasswordCommandHandler : IRequestHandler<ResetPasswordCommand,
     private static string GenerateTemporaryPassword()
     {
         const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%";
-        var random = new Random();
+        // Cryptographically secure RNG — temporary passwords are security credentials
+        // (CodeQL: cs/insecure-randomness). System.Random is predictable and seeded
+        // from the clock; RandomNumberGenerator is seeded from OS entropy.
         var password = new string(Enumerable.Range(0, 12)
-            .Select(_ => chars[random.Next(chars.Length)])
+            .Select(_ => chars[RandomNumberGenerator.GetInt32(chars.Length)])
             .ToArray());
         return password;
     }

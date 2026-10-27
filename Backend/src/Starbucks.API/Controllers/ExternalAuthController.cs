@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Starbucks.Application.Common.Interfaces.Services;
 using Starbucks.Application.DTOs.Auth;
+using Starbucks.Application.Common.Utilities;
 using Starbucks.Domain.Identity;
 using Starbucks.Domain.Entities;
 using Mapster;
@@ -172,7 +173,7 @@ public class ExternalAuthController : ControllerBase
             var createResult = await _userManager.CreateAsync(user);
             if (!createResult.Succeeded)
             {
-                _logger.LogError("Failed to create user {Email} via external login", email);
+                _logger.LogError("Failed to create user {Email} via external login", PiiGuard.MaskEmail(email));
                 return BadRequest(new { errors = createResult.Errors.Select(e => e.Description) });
             }
 
@@ -184,7 +185,7 @@ public class ExternalAuthController : ControllerBase
         var addLoginResult = await _userManager.AddLoginAsync(user, info);
         if (!addLoginResult.Succeeded)
         {
-            _logger.LogError("Failed to link external login for user {Email}", email);
+            _logger.LogError("Failed to link external login for user {Email}", PiiGuard.MaskEmail(email));
             return BadRequest(new { errors = addLoginResult.Errors.Select(e => e.Description) });
         }
 

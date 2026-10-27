@@ -80,5 +80,9 @@ public static class CacheKeyGenerator
     /// Generate a cache key for nearby locations.
     /// </summary>
     public static string NearbyLocations(double latitude, double longitude, double radius, int pageNumber = 1, int pageSize = 50)
-        => Generate("locations_nearby", $"{latitude:F4}", $"{longitude:F4}", radius, $"page{pageNumber}", $"size{pageSize}");
+        // Coordinates are user location data — hashed into a non-reversible
+        // ~110m bucket before entering any cache key (CodeQL: exposure of
+        // sensitive information to an external store / logs).
+        => Generate("locations_nearby", PiiGuard.HashCoordinates(latitude, longitude), radius,
+            $"page{pageNumber}", $"size{pageSize}");
 }
