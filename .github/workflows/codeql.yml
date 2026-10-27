@@ -31,8 +31,19 @@ jobs:
         with:
           languages: ${{ matrix.language }}
 
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v3
+      - name: Setup .NET
+        if: matrix.language == 'csharp'
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore .NET dependencies
+        if: matrix.language == 'csharp'
+        run: dotnet restore Backend/StarbucksEgypt.slnx
+
+      - name: Build .NET solution
+        if: matrix.language == 'csharp'
+        run: dotnet build Backend/StarbucksEgypt.slnx --configuration Release --no-restore
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
