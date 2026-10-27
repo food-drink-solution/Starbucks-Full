@@ -11,14 +11,15 @@ import { useLanguage } from "@/hooks/i18n/useLanguage";
  * - Stale Time: 24 hours (rarely changes)
  * - GC Time: 48 hours
  */
-export function useContactInfo() {
+export function useContactInfo(language?: string) {
   const { lang } = useLanguage();
+  const activeLanguage = language ?? lang;
   
   return useQuery({
-    queryKey: queryKeys.contact.all(lang),
+    queryKey: queryKeys.contact.all(activeLanguage),
     queryFn: async () => {
-      const language = lang === 'ar' ? 'ar' : 'en';
-      return contactFetchers.fetchContactInfo(language);
+      const normalizedLanguage = activeLanguage === 'ar' ? 'ar' : 'en';
+      return contactFetchers.fetchContactInfo(normalizedLanguage);
     },
     staleTime: CACHE_TIMES.PAGE_STALE,
     gcTime: CACHE_TIMES.PAGE_GC,

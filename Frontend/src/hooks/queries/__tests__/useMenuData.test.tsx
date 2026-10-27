@@ -2,6 +2,8 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useMenuData, useMenuCategory, useMenuItem } from '../useMenuData';
+
+vi.mock('@/hooks', () => ({ useLanguage: () => ({ lang: 'en' }) }));
 import { createTestQueryClient, mockMenuData } from '@/test/utils/test-utils';
 
 // Mock the fetchers
@@ -62,7 +64,7 @@ describe('useMenuData', () => {
       renderHook(() => useMenuData(), { wrapper });
 
       // Verify the query is configured with correct cache times
-      const query = queryClient.getQueryCache().find({ queryKey: ['menu'] });
+      const query = queryClient.getQueryCache().find({ queryKey: ['menu', 'en'] });
       expect(query).toBeDefined();
     });
   });
@@ -82,7 +84,7 @@ describe('useMenuData', () => {
       });
 
       expect(result.current.data).toEqual(categoryData);
-      expect(menuFetchers.fetchMenuCategory).toHaveBeenCalledWith('drinks');
+      expect(menuFetchers.fetchMenuCategory).toHaveBeenCalledWith('drinks', 'en');
     });
 
     it('does not fetch when categoryId is empty', () => {
@@ -130,7 +132,7 @@ describe('useMenuData', () => {
       });
 
       expect(result.current.data).toEqual(itemData);
-      expect(menuFetchers.fetchMenuItem).toHaveBeenCalledWith('drinks', 'espresso');
+      expect(menuFetchers.fetchMenuItem).toHaveBeenCalledWith('drinks', 'espresso', 'en');
     });
 
     it('does not fetch when categoryId or itemId is missing', () => {

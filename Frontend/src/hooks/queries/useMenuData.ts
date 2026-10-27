@@ -2,7 +2,7 @@ import { useQuery, type UseQueryResult } from "@tanstack/react-query";
 import { queryKeys } from "@/lib/api/queryKeys";
 import { menuFetchers } from "@/lib/api";
 import { useLanguage } from "@/hooks";
-import type { MenuData, MenuCategory } from "@/types";
+import type { MenuData } from "@/types";
 import { CACHE_TIMES } from "@/lib/core/constants";
 
 /**

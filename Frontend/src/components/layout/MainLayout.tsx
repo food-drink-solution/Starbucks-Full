@@ -3,7 +3,8 @@ import { Outlet } from "react-router-dom";
 import { Navbar } from "./Navbar";
 import { MobileTabBar } from "./MobileTabBar";
 import { Toaster } from "../ui/toaster";
-import { ErrorBoundary, CartDrawer } from "@/components";
+import { ErrorBoundary } from "@/components/error/ErrorBoundary";
+import { CartDrawer } from "@/components/widgets/CartDrawer";
 
 // Lazy load non-critical components to optimize first paint
 const Footer = lazy(() => import("./Footer").then(m => ({ default: m.Footer })));

@@ -2,22 +2,18 @@
 <html lang="ar" dir="rtl">
   <head>
     <meta charset="UTF-8" />
-    <!-- Immediately set dir from URL to prevent flash of incorrect direction (FOID) -->
-    <script>
-      (function () {
-        var m = window.location.pathname.match(/^\/(ar|en)(\/|$)/);
-        var l = m ? m[1] : 'ar';
-        document.documentElement.setAttribute('dir', l === 'ar' ? 'rtl' : 'ltr');
-        document.documentElement.setAttribute('lang', l);
-      })();
-    </script>
+
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/favicon.png" />
+    <link rel="preload" as="image" href="/home/banner/backgrouund.webp" type="image/webp" fetchpriority="high" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="Starbucks EG" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#006241" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com https://maps.googleapis.com https://maps.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https:; font-src 'self' data: https:; connect-src 'self' https: wss:; frame-src 'self' https:; object-src 'none'; base-uri 'self'; form-action 'self' https:" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <script src="/bootstrap.js" defer></script>
     <title>ستاربكس مصر | Starbucks Egypt</title>
     <meta name="description" content="اكتشف قهوة ستاربكس في مصر - مشروبات، قائمة الطعام، والمزيد من خلال تطبيقنا المتكامل" />
     <meta property="og:title" content="ستاربكس مصر | Starbucks Egypt" />
@@ -29,24 +25,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Noto+Sans+Arabic:wght@400;700&display=swap" rel="stylesheet">
     <style>body{background:#fff}@media(prefers-color-scheme:dark){body{background:#09090b}}</style>
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-NDTPL72C');</script>
-    <!-- End Google Tag Manager -->
-    <!-- Sentry Loader -->
-    <script
-      src="https://js-de.sentry-cdn.com/4a49aae599c60048d19041ac7514fdc6.min.js"
-      crossorigin="anonymous"
-    ></script>
+
+
   </head>
   <body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NDTPL72C"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
+
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

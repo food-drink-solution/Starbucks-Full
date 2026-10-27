@@ -4,14 +4,14 @@
       "id": "1",
       "title": "New Arrivals",
       "description": "Try our latest seasonal drinks",
-      "image": "/featured/new-arrivals.jpg",
+      "image": "/home/Generic.webp",
       "link": "/menu"
     },
     {
       "id": "2",
       "title": "Summer Collection",
       "description": "Refresh yourself with iced beverages",
-      "image": "/featured/summer.jpg",
+      "image": "/home/Summer.webp",
       "link": "/menu"
     }
   ]

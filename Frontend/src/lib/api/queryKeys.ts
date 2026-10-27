@@ -73,14 +73,14 @@ export const queryKeys = {
   // Featured queries
   featured: {
     all: () => ['featured'] as const,
-    cards: () => ['featured', 'cards'] as const,
-    hero: () => ['featured', 'hero'] as const,
-    statement: () => ['featured', 'statement'] as const,
+    cards: (language?: string) => ['featured', 'cards', language] as const,
+    hero: (language?: string) => ['featured', 'hero', language] as const,
+    statement: (language?: string) => ['featured', 'statement', language] as const,
   },
 
   // Contact queries
   contact: {
-    all: () => ['contact'] as const,
+    all: (language?: string) => ['contact', language] as const,
   },
 
   // Admin queries

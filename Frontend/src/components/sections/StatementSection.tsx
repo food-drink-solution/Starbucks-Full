@@ -2,7 +2,8 @@ import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui";
 import { Link } from "react-router-dom";
-import { useStatement, useLanguage } from "@/hooks";
+import { useStatement } from "@/hooks/queries/useFeaturedData";
+import { useLanguage } from "@/hooks/i18n/useLanguage";
 import { ANIMATION_CONFIG } from '@/lib/core/constants';
 
 
@@ -52,9 +53,9 @@ const StatementSection = () => {
             {t("pages:home.statement.title")}
           </h2>
           <div className="mb-8 space-y-4 text-center">
-            <h4 className="text-xl font-semibold text-starbucks-green">
+            <h3 className="text-xl font-semibold text-starbucks-green">
               {t("pages:home.statement.subtitle")}
-            </h4>
+            </h3>
             {Array.isArray(paragraphs) && paragraphs.map(
               (paragraph: string, index: number) => (
                 <p

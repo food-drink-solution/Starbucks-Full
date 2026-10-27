@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { CheckCircle2, Loader2, ArrowRight } from 'lucide-react';
+import { CheckCircle2, XCircle, Loader2, ArrowRight } from 'lucide-react';
 import { paymentService } from '@/services/api/paymentService';
 import { SEO } from '@/components';
 import { useLanguage } from '@/hooks';
@@ -58,17 +58,21 @@ export function PaymentSuccessPage() {
         ) : (
           <>
             <div className="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-emerald-50 text-emerald-800">
-              <CheckCircle2 className="h-12 w-12" />
+              {isSuccess ? <CheckCircle2 className="h-12 w-12" /> : <XCircle className="h-12 w-12" />}
             </div>
 
             <div className="space-y-2">
               <h2 className="text-2xl font-bold text-gray-900">
-                {isRTL ? 'تم الدفع بنجاح!' : 'Payment Successful!'}
+                {isRTL ? (isSuccess ? 'تم الدفع بنجاح!' : 'تعذر تأكيد الدفع') : (isSuccess ? 'Payment Successful!' : 'Payment Could Not Be Confirmed')}
               </h2>
               <p className="text-sm text-gray-500">
-                {isRTL
-                  ? 'شكراً لطلبك من ستاربكس. تم استلام دفعتك وتأكيد طلبك.'
-                  : 'Thank you for your order! Your payment was received and confirmed.'}
+                {isSuccess
+                  ? isRTL
+                    ? 'شكراً لطلبك من ستاربكس. تم استلام دفعتك وتأكيد طلبك.'
+                    : 'Thank you for your order! Your payment was received and confirmed.'
+                  : isRTL
+                    ? 'لم نتمكن من تأكيد دفعتك. يمكنك العودة إلى صفحة الدفع والمحاولة مرة أخرى.'
+                    : 'We could not confirm your payment. Return to checkout to try again.'}
               </p>
             </div>
 
@@ -82,10 +86,10 @@ export function PaymentSuccessPage() {
             )}
 
             <button
-              onClick={() => navigate(orderId ? `/${i18n.language}/order/${orderId}` : `/${i18n.language}`)}
+              onClick={() => navigate(isSuccess && orderId ? `/${i18n.language}/order/${orderId}` : `/${i18n.language}/checkout`)}
               className="w-full bg-emerald-800 hover:bg-emerald-950 text-white font-semibold py-4 px-6 rounded-full transition-all duration-200 flex items-center justify-center space-x-2 rtl:space-x-reverse"
             >
-              <span>{isRTL ? 'عرض تفاصيل الطلب' : 'View Order Details'}</span>
+              <span>{isSuccess ? (isRTL ? 'عرض تفاصيل الطلب' : 'View Order Details') : (isRTL ? 'العودة إلى الدفع' : 'Return to Checkout')}</span>
               <ArrowRight className="h-4 w-4 rtl:rotate-180" />
             </button>
           </>
