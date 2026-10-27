@@ -41,7 +41,7 @@ export const locationFetchers = {
         const locationsResources = data.resources;
         
         // Transform Backend API response to Location[]
-        if (locationsResources.stores && Array.isArray(locationsResources.stores)) {
+        if (Array.isArray(locationsResources?.stores)) {
           const getEnglish = (value?: LocalizedStoreText): string => {
             if (typeof value === 'string') return value;
             return value?.English ?? value?.en ?? '';
