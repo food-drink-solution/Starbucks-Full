@@ -1,7 +1,7 @@
 import { createRoot } from 'react-dom/client'
 import { HelmetProvider } from 'react-helmet-async'
 import { ThemeProvider } from './contexts/ThemeContext'
-import { ErrorBoundary } from './components'
+import { ErrorBoundary } from './components/error/ErrorBoundary'
 import { initSentry } from './lib/error/errorMonitoring'
 import './i18n'
 import './index.css'
