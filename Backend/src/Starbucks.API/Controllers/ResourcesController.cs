@@ -16,14 +16,14 @@ using System.Text.Json;
 /// - Resources versioned for cache busting
 /// </summary>
 [ApiController]
-[Route("api/v{version:apiVersion}/[controller]")]
+[Route("api/v{version:apiVersion}/resources")]
 [ApiVersion("1.0")]
-public class ResourcesController : ControllerBase
+public class LocalizationResourcesController : ControllerBase
 {
     private readonly IWebHostEnvironment _env;
-    private readonly ILogger<ResourcesController> _logger;
+    private readonly ILogger<LocalizationResourcesController> _logger;
 
-    public ResourcesController(IWebHostEnvironment env, ILogger<ResourcesController> logger)
+    public LocalizationResourcesController(IWebHostEnvironment env, ILogger<ResourcesController> logger)
     {
         _env = env;
         _logger = logger;
@@ -51,7 +51,7 @@ public class ResourcesController : ControllerBase
     /// <returns>All localization resources for the specified language</returns>
     [HttpGet("localization/{language}")]
     [ResponseCache(Duration = 86400, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] { "language" })]
-    [ProduceResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProduceResponseType(StatusCodes.Status404NotFound)]
     [ProduceResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetLocalizationByLanguage(string language)
