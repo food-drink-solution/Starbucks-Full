@@ -1,7 +1,7 @@
 import { Marker } from '@vis.gl/react-google-maps';
 
 interface UserLocationMarkerProps {
-  position: google.maps.LatLngLiteral | null;
+  position: { lat: number; lng: number } | null;
 }
 
 /*
