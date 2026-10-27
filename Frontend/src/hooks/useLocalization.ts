@@ -1,4 +1,4 @@
-import { useResources, useResourceModule, ResourcesResponse } from './useResources';
+import { useResources, useResourceModule } from './useResources';
 import { useLanguage } from './i18n/useLanguage';
 
 /**
@@ -14,9 +14,9 @@ export function useLocalization(module?: string) {
 
   // Get all resources or specific module
   const allResources = useResources(lang);
-  const specificModule = module ? useResourceModule(lang, module) : null;
+  const specificModule = useResourceModule(lang, module ?? 'common', Boolean(module));
 
-  if (module && specificModule) {
+  if (module) {
     return {
       resources: specificModule.data?.resources,
       loading: specificModule.isLoading,
@@ -61,15 +61,15 @@ export function useTranslation(path: string) {
   if (!data) return '';
 
   const keys = path.split('.');
-  let value: any = data.modules;
+  let value: unknown = data.modules;
 
   for (const key of keys) {
     if (value && typeof value === 'object') {
-      value = value[key];
+      value = (value as Record<string, unknown>)[key];
     } else {
       return '';
     }
   }
 
-  return value || '';
+  return typeof value === 'string' ? value : '';
 }
