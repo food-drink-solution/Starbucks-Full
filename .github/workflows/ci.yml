@@ -44,9 +44,22 @@ jobs:
         run: npm run test:coverage -- --reporter=verbose
         working-directory: Frontend
 
+      - name: Check optional Codecov token
+        id: codecov-auth
+        if: always()
+        run: |
+          if [ -n "$CODECOV_TOKEN" ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
-        if: always()
+        # Skip optional uploads when this repository has no Codecov token.
+        if: always() && steps.codecov-auth.outputs.enabled == 'true'
         with:
           file: ./Frontend/coverage/coverage-final.json
           flags: frontend
@@ -103,9 +116,22 @@ jobs:
             --results-directory ./coverage
         working-directory: Backend
 
+      - name: Check optional Codecov token
+        id: codecov-auth
+        if: always()
+        run: |
+          if [ -n "$CODECOV_TOKEN" ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
       - name: Upload backend unit test coverage to Codecov
         uses: codecov/codecov-action@v4
-        if: always()
+        # Skip optional uploads when this repository has no Codecov token.
+        if: always() && steps.codecov-auth.outputs.enabled == 'true'
         with:
           directory: Backend/coverage
           flags: backend-unit
@@ -159,9 +185,22 @@ jobs:
         env:
           DOTNET_ENVIRONMENT: Test
 
+      - name: Check optional Codecov token
+        id: codecov-auth
+        if: always()
+        run: |
+          if [ -n "$CODECOV_TOKEN" ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
       - name: Upload backend integration coverage
         uses: codecov/codecov-action@v4
-        if: always()
+        # Skip optional uploads when this repository has no Codecov token.
+        if: always() && steps.codecov-auth.outputs.enabled == 'true'
         with:
           directory: Backend/coverage
           flags: backend-integration
