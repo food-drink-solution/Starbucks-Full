@@ -108,7 +108,7 @@ export function LocationsPageContent({ locations }: LocationsPageContentProps) {
   /** Distance for the currently selected store (used in detail panel header). */
   const selectedDistanceKm = useMemo(() => {
     if (!selectedLocation || !userLocation) return undefined;
-    return processedLocations.find(({ loc }) => loc.id === selectedLocation.id)?.distanceKm;
+    return processedLocations.find(({ loc }) => loc === selectedLocation)?.distanceKm;
   }, [selectedLocation, userLocation, processedLocations]);
 
   const sortedByDistance = userLocation !== null;
