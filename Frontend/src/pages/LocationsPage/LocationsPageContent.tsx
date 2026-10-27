@@ -42,7 +42,7 @@ export function LocationsPageContent({ locations }: LocationsPageContentProps) {
 
   const [search, setSearch] = useState('');
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
-  const [userLocation, setUserLocation] = useState<google.maps.LatLngLiteral | null>(null);
+  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [geoStatus, setGeoStatus] = useState<'idle' | 'loading' | 'error'>('idle');
   const [viewMode, setViewMode] = useState<'list' | 'map'>('map');
 
