@@ -10,7 +10,8 @@
 import * as Sentry from '@sentry/react';
 
 const DSN = import.meta.env.VITE_SENTRY_DSN as string | undefined;
-const IS_ENABLED = import.meta.env.VITE_ERROR_MONITORING_ENABLED !== 'false' && !!DSN;
+const HAS_VALID_DSN = !!DSN?.trim() && !/^YOUR_.*_HERE$/i.test(DSN.trim());
+const IS_ENABLED = import.meta.env.VITE_ERROR_MONITORING_ENABLED !== 'false' && HAS_VALID_DSN;
 const ENV = (import.meta.env.MODE ?? 'development') as string;
 const IS_PROD = import.meta.env.PROD as boolean;
 
