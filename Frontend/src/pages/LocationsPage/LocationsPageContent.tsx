@@ -241,7 +241,7 @@ export function LocationsPageContent({ locations }: LocationsPageContentProps) {
                               location={location}
                               isRTL={isRTL}
                               t={t}
-                              isSelected={selectedLocation?.id === location.id}
+                              isSelected={selectedLocation === location}
                               distanceKm={distanceKm}
                               onClick={() => {
                                 setSelectedLocation(location);
