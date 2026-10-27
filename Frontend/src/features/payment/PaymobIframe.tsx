@@ -16,7 +16,7 @@ export const PaymobIframe: React.FC<PaymobIframeProps> = ({
   onPaymentSuccess,
   onPaymentFailed,
 }) => {
-  const { t, i18n } = useTranslation(['pages']);
+  const { i18n } = useTranslation(['pages']);
   const isRTL = i18n.language === 'ar';
   
   const { paymentStatus } = usePayment(orderId);
