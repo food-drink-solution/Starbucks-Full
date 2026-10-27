@@ -42,8 +42,10 @@ export function useLocalization(module?: string) {
  */
 export function useCommonResources() {
   const { resources, loading } = useLocalization('common');
+  const general = resources?.general;
+
   return {
-    ...resources?.general,
+    ...(general && typeof general === 'object' ? general : {}),
     loading,
   };
 }
