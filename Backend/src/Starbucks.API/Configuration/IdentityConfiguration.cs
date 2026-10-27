@@ -18,6 +18,11 @@ public static class IdentityConfiguration
         this IServiceCollection services,
         IConfiguration configuration)
     {
+        var isDevelopment = string.Equals(
+            configuration["ASPNETCORE_ENVIRONMENT"],
+            "Development",
+            StringComparison.OrdinalIgnoreCase);
+
         // Configure Identity with custom user and role
         services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
         {
@@ -40,9 +45,10 @@ public static class IdentityConfiguration
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
             
             // Sign-in settings
-            options.SignIn.RequireConfirmedEmail = false; // Enable when email service is ready
+            // Require confirmed email in Production; allow bypass only in Development until email service is fully integrated
+            options.SignIn.RequireConfirmedEmail = !isDevelopment;
             options.SignIn.RequireConfirmedPhoneNumber = false;
-            options.SignIn.RequireConfirmedAccount = false;
+            options.SignIn.RequireConfirmedAccount = !isDevelopment;
             
             // Token settings
             options.Tokens.AuthenticatorTokenProvider = TokenOptions.DefaultAuthenticatorProvider;
