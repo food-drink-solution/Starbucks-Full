@@ -20,7 +20,7 @@ using Starbucks.Application.Features.Resources.Queries;
 [ApiController]
 [Route("api/v{version:apiVersion}/[controller]")]
 [ApiVersion("1.0")]
-public class ResourcesController : BaseController
+public class ResourcesController : ControllerBase
 {
     private readonly IMediator _mediator;
 
@@ -34,7 +34,7 @@ public class ResourcesController : BaseController
     /// 
     /// Combines localization, content, and navigation in single response
     /// 
-    /// GET /api/v1/resources/bundle?language=ar&client=frontend
+    /// GET /api/v1/resources/bundle?language=ar&amp;client=frontend
     /// 
     /// Response includes:
     /// {
@@ -59,7 +59,7 @@ public class ResourcesController : BaseController
     /// <summary>
     /// Get localization resources only
     /// 
-    /// GET /api/v1/resources/localization?language=ar&module=menu
+    /// GET /api/v1/resources/localization?language=ar&amp;module=menu
     /// </summary>
     [HttpGet("localization")]
     [ResponseCache(Duration = 3600, VaryByQueryKeys = new[] { "language", "module", "client" })]
@@ -76,7 +76,7 @@ public class ResourcesController : BaseController
     /// <summary>
     /// Get content resources (menu, locations, pages)
     /// 
-    /// GET /api/v1/resources/content?language=ar&type=menu
+    /// GET /api/v1/resources/content?language=ar&amp;type=menu
     /// 
     /// Types: menu, locations, pages, contact, home
     /// </summary>
