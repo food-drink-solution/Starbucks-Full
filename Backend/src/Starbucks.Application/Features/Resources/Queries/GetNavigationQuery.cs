@@ -12,3 +12,13 @@ using Starbucks.Application.DTOs.Resources;
 public record GetNavigationQuery(
     string Language = "en"
 ) : IRequest<Result<NavigationResourceDto>>;
+
+public class GetNavigationQueryHandler : IRequestHandler<GetNavigationQuery, Result<NavigationResourceDto>>
+{
+    public Task<Result<NavigationResourceDto>> Handle(
+        GetNavigationQuery request,
+        CancellationToken cancellationToken)
+    {
+        return Task.FromResult(Result<NavigationResourceDto>.Success(StaticResources.Navigation()));
+    }
+}

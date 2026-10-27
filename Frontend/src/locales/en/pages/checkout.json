@@ -1,0 +1,29 @@
+{
+  "title": "Checkout",
+  "deliveryMethod": "Delivery Method",
+  "delivery": "Delivery",
+  "deliveryDescription": "Get your order delivered to your address",
+  "pickup": "Pickup",
+  "pickupDescription": "Collect your order from a nearby store",
+  "address": "Delivery Address",
+  "addressPlaceholder": "Enter your street address",
+  "phone": "Phone Number",
+  "phonePlaceholder": "Enter your phone number",
+  "notes": "Delivery Notes",
+  "notesPlaceholder": "Any special instructions?",
+  "addressRequired": "Please enter your delivery address",
+  "phoneRequired": "Please enter your phone number",
+  "phoneInvalid": "Please enter a valid phone number",
+  "orderSummary": "Order Summary",
+  "subtotal": "Subtotal",
+  "discount": "Discount",
+  "total": "Total",
+  "placeOrder": "Place Order",
+  "emptyCart": "Your bag is empty",
+  "emptyCartDescription": "Looks like you haven't added anything yet. Explore our menu to find your favorites!",
+  "steps": {
+    "delivery": "Delivery",
+    "payment": "Payment",
+    "summary": "Summary"
+  }
+}

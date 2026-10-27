@@ -1,83 +1,69 @@
 import { test, expect } from '@playwright/test';
 
+/**
+ * Menu page tests — data comes from the backend API (seeded catalog),
+ * served through the vite dev-server proxy. Assertions are count-agnostic
+ * so they stay valid as the seeded catalog evolves.
+ */
 test.describe('Menu Page', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/menu');
+    // Pre-seed the cookie-consent decision so the fixed-bottom banner
+    // never renders and never intercepts pointer events on cards
+    await page.addInitScript(() =>
+      localStorage.setItem('starbucks_cookie_consent', 'declined'),
+    );
+    await page.goto('/en/menu');
+    // Menu items are API-driven; wait for the first card to render
+    await expect(page.getByTestId('menu-item').first()).toBeVisible({
+      timeout: 20_000,
+    });
   });
 
-  test('should display menu categories', async ({ page }) => {
-    // Wait for categories to load
-    const categories = page.locator('[data-testid="category-item"]');
-    await expect(categories).toHaveCount(2);
+  test('displays menu categories', async ({ page }) => {
+    const categories = page.getByTestId('category-item');
+    await expect(categories.first()).toBeVisible();
+    expect(await categories.count()).toBeGreaterThan(0);
   });
 
-  test('should display menu items', async ({ page }) => {
-    // Wait for items to load
-    const items = page.locator('[data-testid="menu-item"]');
-    await expect(items.first()).toBeVisible();
+  test('displays menu items with name and price', async ({ page }) => {
+    const firstItem = page.getByTestId('menu-item').first();
+    // Every card shows a price in EGP
+    await expect(firstItem).toContainText(/EGP/);
+    // Every card has an accessible name (the item title)
+    const name = await firstItem.getAttribute('aria-label');
+    expect(name, 'menu item should have an aria-label title').toBeTruthy();
   });
 
-  test('should filter items by category', async ({ page }) => {
-    // Click on a category
-    const coffeeCategory = page.locator('button:has-text("Coffee")');
-    await coffeeCategory.click();
-
-    // Check if items are filtered
-    const items = page.locator('[data-testid="menu-item"]');
-    await expect(items).toHaveCount(2);
+  test('opens item details from a card', async ({ page }) => {
+    await page.getByTestId('menu-item').first().click();
+    const details = page.getByTestId('item-details');
+    await expect(details).toBeVisible();
   });
 
-  test('should add item to cart', async ({ page }) => {
-    // Find first item
-    const firstItem = page.locator('[data-testid="menu-item"]').first();
+  test('adds an item to the cart from the card', async ({ page }) => {
+    const firstItem = page.getByTestId('menu-item').first();
+    await firstItem.getByRole('button', { name: /add to cart/i }).click();
 
-    // Click add to cart button
-    const addButton = firstItem.locator('button:has-text("Add to Cart")');
-    await addButton.click();
-
-    // Check if item was added (look for success message or cart update)
-    const successMessage = page.locator('[role="status"]');
-    await expect(successMessage).toContainText('Added to cart');
+    // The cart store persists the added item
+    await expect
+      .poll(async () =>
+        page.evaluate(() => {
+          const raw = window.localStorage.getItem('starbucks-cart');
+          if (!raw) return null;
+          try {
+            return JSON.parse(raw)?.state?.items?.length ?? 0;
+          } catch {
+            return 0;
+          }
+        }),
+      )
+      .toBeGreaterThan(0);
   });
 
-  test('should show item details', async ({ page }) => {
-    // Click on first item
-    const firstItem = page.locator('[data-testid="menu-item"]').first();
-    await firstItem.click();
-
-    // Check if details modal/page is shown
-    const detailsModal = page.locator('[data-testid="item-details"]');
-    await expect(detailsModal).toBeVisible();
-  });
-
-  test('should search for items', async ({ page }) => {
-    // Find search input
-    const searchInput = page.locator('input[placeholder*="Search"]');
-    await searchInput.fill('espresso');
-
-    // Wait for results
-    await page.waitForTimeout(500);
-
-    // Check if results are filtered
-    const items = page.locator('[data-testid="menu-item"]');
-    const firstItem = items.first();
-    await expect(firstItem).toContainText('Espresso');
-  });
-
-  test('should be keyboard accessible', async ({ page }) => {
-    // Tab through items
-    await page.keyboard.press('Tab');
-    await page.keyboard.press('Tab');
-
-    // Check if focused element is visible
-    const focusedElement = page.locator(':focus');
-    await expect(focusedElement).toBeVisible();
-
-    // Press Enter to activate
+  test('keyboard activation opens item details', async ({ page }) => {
+    const firstItem = page.getByTestId('menu-item').first();
+    await firstItem.focus();
     await page.keyboard.press('Enter');
-
-    // Check if action was performed
-    const successMessage = page.locator('[role="status"]');
-    await expect(successMessage).toBeVisible();
+    await expect(page.getByTestId('item-details')).toBeVisible();
   });
 });

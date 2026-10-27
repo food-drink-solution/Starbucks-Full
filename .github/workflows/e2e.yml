@@ -1,9 +1,10 @@
 name: E2E Tests
 
-# Post-merge deep verification: full Playwright browser suite.
-# Not a pull-request gate — PRs are covered by the fast CI workflow
-# (lint / type check / unit tests). This keeps the PR gate quick and
-# leaves no "skipped" jobs in the UI.
+# Post-merge deep verification: the full Playwright browser suite runs
+# against a complete stack — SQL Server + Redis + the ASP.NET API (Development
+# seeding) + the vite dev server (proxying /api to the API) — mirroring the
+# local setup. Not a pull-request gate: PRs are covered by the fast CI
+# workflow (lint / type check / unit tests).
 
 on:
   push:
@@ -20,8 +21,12 @@ concurrency:
 
 jobs:
   e2e:
-    name: Playwright E2E Tests
+    name: Playwright E2E Tests (full stack)
     runs-on: ubuntu-latest
+    env:
+      # Test-only credentials for the SQL Server + API containers
+      SA_PASSWORD: Test123!SA
+      JWT_SECRET: e2e-ci-jwt-secret-0123456789abcdef0123456789abcdef
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -33,7 +38,7 @@ jobs:
           cache: 'npm'
           cache-dependency-path: 'Frontend/package-lock.json'
 
-      - name: Install dependencies
+      - name: Install frontend dependencies
         run: npm ci --legacy-peer-deps
         working-directory: Frontend
 
@@ -52,18 +57,75 @@ jobs:
         run: npx playwright install --with-deps chromium
         working-directory: Frontend
 
-      - name: Build frontend for E2E
-        run: npm run build
-        working-directory: Frontend
+      # ── Full-stack dependencies ───────────────────────────────────────────
+      - name: Start SQL Server 2022
+        run: |
+          docker run -d --name e2e-sql \
+            -e ACCEPT_EULA=Y -e MSSQL_SA_PASSWORD=$SA_PASSWORD \
+            -p 1433:1433 mcr.microsoft.com/mssql/server:2022-latest
+
+      - name: Start Redis
+        run: |
+          docker run -d --name e2e-redis -p 6379:6379 redis:7-alpine
+
+      - name: Wait for SQL Server to accept connections
+        run: |
+          for i in $(seq 1 30); do
+            if docker exec e2e-sql /opt/mssql-tools18/sqlcmd \
+              -S localhost -U sa -P "$SA_PASSWORD" -C -Q "SELECT 1" > /dev/null 2>&1; then
+              echo "SQL Server is ready"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "SQL Server did not become ready in time"
+          docker logs e2e-sql
+          exit 1
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+          cache: true
+          cache-dependency-path: 'Backend/StarbucksEgypt.slnx'
+
+      - name: Start backend API (Development seeding enabled)
+        run: |
+          cd Backend
+          dotnet run --project src/Starbucks.API \
+            -c Release \
+            --urls http://0.0.0.0:8080 &
+          echo $! > /tmp/backend.pid
         env:
-          VITE_API_URL: http://localhost:5000
+          ASPNETCORE_ENVIRONMENT: Development
+          ConnectionStrings__DefaultConnection: >-
+            Server=localhost;Database=StarbucksE2EDb;User Id=sa;Password=Test123!SA;TrustServerCertificate=true;MultipleActiveResultSets=true
+          Jwt__Secret: ${{ env.JWT_SECRET }}
+
+      - name: Wait for the API to become healthy
+        run: |
+          for i in $(seq 1 60); do
+            code=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8080/swagger/v1/swagger.json || true)
+            if [ "$code" = "200" ]; then
+              echo "API is ready"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "API did not become ready in time"
+          exit 1
 
       - name: Run Playwright tests
         run: npx playwright test --project=chromium
         working-directory: Frontend
         env:
           CI: true
-          BASE_URL: http://localhost:5173
+
+      - name: Backend log dump on failure
+        if: failure()
+        run: |
+          tail -n 300 "Backend/Logs"/*.log 2>/dev/null || true
+          docker logs e2e-sql --tail 100 2>/dev/null || true
 
       - name: Upload Playwright report
         uses: actions/upload-artifact@v4

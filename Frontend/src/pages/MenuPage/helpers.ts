@@ -1,4 +1,5 @@
 import type { MenuCategory } from "@/types";
+import type { LocalizedContent } from "@/lib/schemas";
 import type { FlatItem } from "./types";
 
 /**
@@ -9,6 +10,24 @@ import type { FlatItem } from "./types";
  * without any language-specific field switching — components receive
  * the full { English, Arabic } object and decide what to display.
  */
+/**
+ * Normalizes a localized value coming from the API. The API serializes
+ * localized content with lowercase keys ({ english, arabic }), while the
+ * internal LocalizedContent type uses capitalized keys ({ English, Arabic }).
+ */
+function toLocalized(raw: unknown): LocalizedContent {
+  const o = raw as Record<string, unknown> | undefined;
+
+  if (!o || typeof o !== "object") {
+    return { English: "", Arabic: "" };
+  }
+
+  return {
+    English: String(o.English ?? o.english ?? ""),
+    Arabic: String(o.Arabic ?? o.arabic ?? ""),
+  };
+}
+
 export function flattenItems(categories: MenuCategory[]): FlatItem[] {
   const result: FlatItem[] = [];
 
@@ -16,18 +35,19 @@ export function flattenItems(categories: MenuCategory[]): FlatItem[] {
     for (const sub of cat.subcategories ?? []) {
       for (const item of sub.items ?? []) {
         const raw = item as unknown as Record<string, unknown>;
-        
-        // Extract LocalizedContent objects from the API response
-        const itemName = raw.name as FlatItem['name'] | undefined;
-        const itemDescription = raw.description as FlatItem['description'] | undefined;
-        
+
+        const itemName = toLocalized(raw.name);
+        const itemDescription = toLocalized(raw.description);
+        const hasName = itemName.English || itemName.Arabic;
+
         result.push({
           id: String(item.id),
           // Store full { English, Arabic } — don't resolve here
-          name: itemName || { English: String(item.id), Arabic: String(item.id) },
-          description: itemDescription || { English: "", Arabic: "" },
+          name: hasName ? itemName : { English: String(item.id), Arabic: String(item.id) },
+          description: itemDescription,
           price: (raw.price as number) || 0,
-          image: item.image,
+          // API serializes the image URL as `imageUrl`
+          image: (raw.imageUrl as string) ?? item.image ?? "",
           href: String(raw.href ?? item.href ?? ""),
           category: (raw.category as string) || cat.id,
           categoryId: cat.id,

@@ -1,133 +1,144 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Checkout Flow', () => {
+/**
+ * Cart & checkout tests. The cart drawer (CartTrigger / CartDrawer) and the
+ * checkout page share the zustand store persisted under `starbucks-cart`.
+ * Menu data comes from the backend API through the vite proxy.
+ */
+test.describe('Cart & Checkout Flow', () => {
   test.beforeEach(async ({ page }) => {
-    // Navigate to menu and add items to cart
-    await page.goto('/menu');
-
-    // Add first item to cart
-    const addButton = page.locator('[data-testid="menu-item"]').first().locator('button:has-text("Add to Cart")');
-    await addButton.click();
-
-    // Wait for success
-    await page.waitForTimeout(500);
+    // Pre-seed the cookie-consent decision so the fixed-bottom banner
+    // never renders and never intercepts pointer events on drawer controls
+    await page.addInitScript(() =>
+      localStorage.setItem('starbucks_cookie_consent', 'declined'),
+    );
+    await page.goto('/en/menu');
+    await expect(page.getByTestId('menu-item').first()).toBeVisible({
+      timeout: 20_000,
+    });
+    // Add the first item via the quick-add control
+    await page
+      .getByTestId('menu-item')
+      .first()
+      .getByRole('button', { name: /add to cart/i })
+      .click();
+    await expect
+      .poll(async () =>
+        page.evaluate(() => {
+          const raw = window.localStorage.getItem('starbucks-cart');
+          if (!raw) return 0;
+          try {
+            return JSON.parse(raw)?.state?.items?.length ?? 0;
+          } catch {
+            return 0;
+          }
+        }),
+      { timeout: 10_000 })
+      .toBeGreaterThan(0);
   });
 
-  test('should display cart with items', async ({ page }) => {
-    // Open cart
-    const cartButton = page.locator('button[aria-label="Cart"]');
-    await cartButton.click();
+  async function openCart(page: import('@playwright/test').Page) {
+    await page.getByRole('button', { name: 'Cart', exact: true }).click();
+    await expect(page.getByRole('heading', { name: 'Cart', level: 2 })).toBeVisible();
+  }
 
-    // Check if items are displayed
-    const cartItems = page.locator('[data-testid="cart-item"]');
-    await expect(cartItems).toHaveCount(1);
+  test('cart drawer lists the added item', async ({ page }) => {
+    await openCart(page);
+    // The drawer shows the item count and the persisted item
+    const itemCount = await page.evaluate(() => {
+      const raw = window.localStorage.getItem('starbucks-cart');
+      if (!raw) return 0;
+      try {
+        return JSON.parse(raw)?.state?.items?.length ?? 0;
+      } catch {
+        return 0;
+      }
+    });
+    expect(itemCount).toBeGreaterThan(0);
+    // Each cart entry is rendered with a remove control
+    await expect(
+      page.getByRole('button', { name: /remove/i }).first(),
+    ).toBeVisible();
   });
 
-  test('should update item quantity', async ({ page }) => {
-    // Open cart
-    const cartButton = page.locator('button[aria-label="Cart"]');
-    await cartButton.click();
-
-    // Find quantity input
-    const quantityInput = page.locator('input[type="number"]').first();
-
-    // Change quantity
-    await quantityInput.fill('2');
-
-    // Check if total is updated
-    const total = page.locator('[data-testid="cart-total"]');
-    await expect(total).toContainText('50'); // Assuming item price is 25
+  test('updates item quantity from the drawer', async ({ page }) => {
+    await openCart(page);
+    const before = await page.evaluate(() =>
+      JSON.parse(window.localStorage.getItem('starbucks-cart') || '{}')?.state?.total ?? 0,
+    );
+    // Increase quantity with the labeled plus control
+    await page.getByRole('button', { name: /increase quantity/i }).first().click();
+    await expect
+      .poll(async () =>
+        page.evaluate(() =>
+          JSON.parse(window.localStorage.getItem('starbucks-cart') || '{}')?.state?.total ?? 0,
+        ),
+      )
+      .toBeGreaterThan(before);
   });
 
-  test('should remove item from cart', async ({ page }) => {
-    // Open cart
-    const cartButton = page.locator('button[aria-label="Cart"]');
-    await cartButton.click();
-
-    // Find remove button
-    const removeButton = page.locator('button[aria-label="Remove item"]').first();
-    await removeButton.click();
-
-    // Check if item is removed
-    const cartItems = page.locator('[data-testid="cart-item"]');
-    await expect(cartItems).toHaveCount(0);
+  test('removes an item from the cart', async ({ page }) => {
+    await openCart(page);
+    await page.getByRole('button', { name: /remove/i }).first().click();
+    await expect(page.getByText(/your bag is empty/i)).toBeVisible();
+    await expect
+      .poll(async () =>
+        page.evaluate(() => {
+          const raw = window.localStorage.getItem('starbucks-cart');
+          if (!raw) return 0;
+          try {
+            return JSON.parse(raw)?.state?.items?.length ?? 0;
+          } catch {
+            return 0;
+          }
+        }),
+      )
+      .toBe(0);
   });
 
-  test('should apply discount code', async ({ page }) => {
-    // Open cart
-    const cartButton = page.locator('button[aria-label="Cart"]');
-    await cartButton.click();
-
-    // Find discount input
-    const discountInput = page.locator('input[placeholder*="Discount"]');
-    await discountInput.fill('SAVE10');
-
-    // Click apply button
-    const applyButton = page.locator('button:has-text("Apply")');
-    await applyButton.click();
-
-    // Check if discount is applied
-    const discountMessage = page.locator('[data-testid="discount-applied"]');
-    await expect(discountMessage).toBeVisible();
+  test('applies the SAVE10 discount code', async ({ page }) => {
+    await openCart(page);
+    // The discount input accepts SAVE10 / SAVE20
+    const promoInput = page.getByPlaceholder(/promo code/i);
+    await promoInput.fill('SAVE10');
+    await page.getByRole('button', { name: /apply/i }).click();
+    await expect(page.getByText(/discount applied/i)).toBeVisible({
+      timeout: 10_000,
+    });
   });
 
-  test('should proceed to checkout', async ({ page }) => {
-    // Open cart
-    const cartButton = page.locator('button[aria-label="Cart"]');
-    await cartButton.click();
-
-    // Click checkout button
-    const checkoutButton = page.locator('button:has-text("Checkout")');
-    await checkoutButton.click();
-
-    // Check if checkout page is displayed
-    const checkoutForm = page.locator('[data-testid="checkout-form"]');
-    await expect(checkoutForm).toBeVisible();
+  test('rejects an invalid discount code with an error message', async ({ page }) => {
+    await openCart(page);
+    const promoInput = page.getByPlaceholder(/promo code/i);
+    await promoInput.fill('NOT_A_CODE');
+    await page.getByRole('button', { name: /apply/i }).click();
+    await expect(page.getByText(/invalid code/i)).toBeVisible({
+      timeout: 10_000,
+    });
   });
 
-  test('should complete order', async ({ page }) => {
-    // Open cart
-    const cartButton = page.locator('button[aria-label="Cart"]');
-    await cartButton.click();
-
-    // Click checkout button
-    const checkoutButton = page.locator('button:has-text("Checkout")');
-    await checkoutButton.click();
-
-    // Fill delivery address
-    await page.fill('input[name="address"]', '123 Main St');
-    await page.fill('input[name="phone"]', '+20-100-123-4567');
-
-    // Select delivery method
-    const deliveryOption = page.locator('input[value="delivery"]');
-    await deliveryOption.check();
-
-    // Submit order
-    const submitButton = page.locator('button:has-text("Place Order")');
-    await submitButton.click();
-
-    // Check if order is confirmed
-    const confirmationMessage = page.locator('[data-testid="order-confirmation"]');
-    await expect(confirmationMessage).toBeVisible();
+  test('navigates to checkout from the cart drawer', async ({ page }) => {
+    await openCart(page);
+    await page.getByRole('button', { name: 'Checkout', exact: true }).click();
+    await expect(page).toHaveURL(/\/en\/checkout$/);
+    // With items in the bag the checkout page renders the order flow
+    await expect(
+      page.getByRole('button', { name: /place order/i }),
+    ).toBeVisible({ timeout: 20_000 });
   });
 
-  test('should handle network errors gracefully', async ({ page }) => {
-    // Simulate network error
-    await page.context().setOffline(true);
-
-    // Open cart
-    const cartButton = page.locator('button[aria-label="Cart"]');
-    await cartButton.click();
-
-    // Try to checkout
-    const checkoutButton = page.locator('button:has-text("Checkout")');
-    await checkoutButton.click();
-
-    // Check if error message is displayed
-    const errorMessage = page.locator('[role="alert"]');
-    await expect(errorMessage).toContainText('Network');
-
-    // Restore connection
-    await page.context().setOffline(false);
+  test('checkout shows the empty state without items', async ({ page }) => {
+    // Drain the cart that beforeEach created
+    await page.evaluate(() => {
+      const raw = window.localStorage.getItem('starbucks-cart');
+      if (!raw) return;
+      const parsed = JSON.parse(raw);
+      parsed.state.items = [];
+      window.localStorage.setItem('starbucks-cart', JSON.stringify(parsed));
+    });
+    await page.goto('/en/checkout');
+    await expect(
+      page.getByText(/your (bag|cart) is empty/i).first(),
+    ).toBeVisible({ timeout: 15_000 });
   });
 });

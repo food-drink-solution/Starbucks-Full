@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Send, CheckCircle } from 'lucide-react';
 import { Button, Input, Select, Textarea } from '@/components';
+import { apiClient } from '@/lib/api/client';
 import type { ContactUsData as ContactData } from '@/types/pages';
 
 interface ContactFormProps {
@@ -23,6 +24,7 @@ export function ContactForm({ data, isRTL, textAlignClass }: ContactFormProps) {
   });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -30,13 +32,24 @@ export function ContactForm({ data, isRTL, textAlignClass }: ContactFormProps) {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+    setError(null);
+    try {
+      // Swagger: POST /api/v1/Contact — Submit a contact form / feedback
+      await apiClient.post('/api/v1/Contact', {
+        name: form.name,
+        email: form.email,
+        subject: form.subject,
+        message: form.message,
+      });
       setSubmitted(true);
-    }, 1200);
+    } catch {
+      setError(t('pages:contact.form.error', 'Something went wrong. Please try again.'));
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -75,6 +88,11 @@ export function ContactForm({ data, isRTL, textAlignClass }: ContactFormProps) {
           </motion.div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-10">
+            {error && (
+              <div className="rounded-2xl bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 p-4 text-red-700 dark:text-red-300 text-center" role="alert">
+                {error}
+              </div>
+            )}
             <div className="grid grid-cols-1 gap-10 sm:grid-cols-2">
               <div className="space-y-4">
                 <label className={`block text-lg font-black text-starbucks-dark dark:text-white px-2 ${textAlignClass}`}>

@@ -7,15 +7,19 @@ const API_URL = import.meta.env.VITE_API_URL || '/api';
 export const pageFetchers = {
   async fetchPageBySlug(slug: string, language: string = 'en'): Promise<GenericPageData> {
     try {
-      // Try Backend Resources API first (if page content is stored there)
+      // Swagger: GET /api/v1/resources/pages/{pageSlug}
+      // Only used when the payload carries renderable sections; otherwise
+      // fall through to the rich local page data below.
       const response = await fetch(
-        `${API_URL}/v1/resources/localization/${language}/pages/${slug}`,
+        `${API_URL}/v1/resources/pages/${slug}?language=${language}`,
         { headers: { 'Content-Type': 'application/json' } }
       );
 
       if (response.ok) {
         const data = await response.json();
-        return data.resources as GenericPageData;
+        if (Array.isArray(data?.sections)) {
+          return { ...data, slug } as GenericPageData;
+        }
       }
     } catch (err) {
       console.warn(`Backend page API not available for ${slug}, trying local data`, err);

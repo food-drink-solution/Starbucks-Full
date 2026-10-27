@@ -13,8 +13,9 @@ public class ResourceBundleDto
     /// <summary>
     /// All localization (UI text, labels, messages)
     /// Organized by module: common, menu, auth, checkout, locations, cart, navigation
+    /// Values are deep JSON objects loaded from the localization resource files.
     /// </summary>
-    public Dictionary<string, Dictionary<string, object>> Localization { get; set; } = new();
+    public Dictionary<string, object> Localization { get; set; } = new();
 
     /// <summary>
     /// All content resources

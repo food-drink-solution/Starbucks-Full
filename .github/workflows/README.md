@@ -9,7 +9,7 @@ Every workflow in this directory has exactly one job type: **run when it is supp
 | **PR gate (fast)** | `ci.yml` (`CI`) | PR → `main`/`develop`, push to `main`/`develop` | Lint, type check, unit tests, coverage — frontend + backend | ~5 min |
 | **Security** | `security-scan.yml` (`Security Scan`) | PR, push, weekly schedule | `npm audit` / .NET vulnerable-dependency scan + secret detection | ~3 min |
 | **Post-merge deep** | `backend-integration.yml` | push to `main`/`develop` (Backend paths) | Integration tests against SQL Server via Testcontainers | ~8–12 min |
-| **Post-merge deep** | `e2e.yml` (`E2E Tests`) | push to `main`/`develop` (Frontend/Backend paths) | Full Playwright browser suite, cached browsers | ~10–15 min |
+| **Post-merge deep** | `e2e.yml` (`E2E Tests`) | push to `main`/`develop` (Frontend/Backend paths) | Full-stack Playwright suite: SQL Server 2022 + Redis containers, API started in Development (seeds test users `customer@test.com` etc., password `Test@123456`), vite dev server proxies `/api` → `localhost:8080` | ~10–15 min |
 | **Post-merge deep** | `docker.yml` (`Docker Build Verification`) | push to `main`/`develop` | Builds both Docker images with layer caching | ~5–10 min |
 | **Scheduled** | `security-audit.yml` | weekly + dependency-file changes | Deep dependency audit (review-ready SARIF output) | weekly |
 | **Deploy** | `deploy.yml` (`Deploy`) | push to `main`, manual | Frontend → Vercel, Backend → MonsterASP.NET (FTPS upload of `dotnet publish` output), GitHub Release. Each phase runs only when its credentials are configured (checked at step level — the job itself always runs). | on demand |

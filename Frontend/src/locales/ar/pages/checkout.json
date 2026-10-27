@@ -1,0 +1,29 @@
+{
+  "title": "إتمام الطلب",
+  "deliveryMethod": "طريقة الاستلام",
+  "delivery": "توصيل",
+  "deliveryDescription": "اطلب توصيل طلبك إلى عنوانك",
+  "pickup": "استلام من الفرع",
+  "pickupDescription": "استلم طلبك من أقرب فرع",
+  "address": "عنوان التسليم",
+  "addressPlaceholder": "أدخل عنوانك",
+  "phone": "رقم الهاتف",
+  "phonePlaceholder": "أدخل رقم هاتفك",
+  "notes": "ملاحظات التوصيل",
+  "notesPlaceholder": "أي تعليمات خاصة؟",
+  "addressRequired": "يرجى إدخال عنوان التسليم",
+  "phoneRequired": "يرجى إدخال رقم الهاتف",
+  "phoneInvalid": "يرجى إدخال رقم هاتف صحيح",
+  "orderSummary": "ملخص الطلب",
+  "subtotal": "المجموع الفرعي",
+  "discount": "الخصم",
+  "total": "الإجمالي",
+  "placeOrder": "تقديم الطلب",
+  "emptyCart": "حقيبتك فارغة",
+  "emptyCartDescription": "يبدو أنك لم تضف شيئًا بعد. استكشف المنيو للعثور على مفضلاتك!",
+  "steps": {
+    "delivery": "التسليم",
+    "payment": "الدفع",
+    "summary": "الملخص"
+  }
+}
