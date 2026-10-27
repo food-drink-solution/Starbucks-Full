@@ -12,16 +12,19 @@ Every workflow in this directory has exactly one job type: **run when it is supp
 | **Post-merge deep** | `e2e.yml` (`E2E Tests`) | push to `main`/`develop` (Frontend/Backend paths) | Full Playwright browser suite, cached browsers | ~10–15 min |
 | **Post-merge deep** | `docker.yml` (`Docker Build Verification`) | push to `main`/`develop` | Builds both Docker images with layer caching | ~5–10 min |
 | **Scheduled** | `security-audit.yml` | weekly + dependency-file changes | Deep dependency audit (review-ready SARIF output) | weekly |
-| **Deploy** | `deploy.yml` (`Deploy`) | push to `main`, manual | Vercel (frontend) + Azure (backend) — each phase only runs when its credentials are configured | on demand |
+| **Deploy** | `deploy.yml` (`Deploy`) | push to `main`, manual | Frontend → Vercel, Backend → MonsterASP.NET (FTPS upload of `dotnet publish` output), GitHub Release. Each phase runs only when its credentials are configured (checked at step level — the job itself always runs). | on demand |
 | **Housekeeping** | `stale.yml` | daily schedule | Marks and closes stale issues/PRs | daily |
 
 ## Design rules
 
 1. **Fast PR gate.** Pull requests run only the cheap, deterministic checks. Everything expensive (Testcontainers SQL Server, Playwright browsers, Docker builds) is a **separate workflow triggered on push to `main`/`develop`** — it never appears on PR check lists, so nothing is ever "skipped" and PRs stay fast.
 2. **No conditional job gating inside a workflow.** Jobs with runtime `if:` conditions show up as "skipped" rows in the UI. Instead, a job either belongs in a workflow whose trigger guarantees it runs, or it does not exist.
-3. **Optional integrations degrade silently.** Codecov uploads and deploy credentials are checked inside a *step* (the `secrets` context is not available in job-level `if:`), not at job level. Missing credentials ⇒ info message, green run.
-4. **Concurrency everywhere.** Every workflow cancels superseded runs on the same ref to save minutes.
-5. **Caching everywhere.** npm (`setup-node cache`), NuGet (`actions/cache`), Playwright browsers (version-keyed), Docker layers (Buildx GHA cache).
+3. **Optional integrations degrade silently.** Codecov uploads and deploy credentials are checked inside a *step* (the `secrets` context is not available in job-level `if:`), not at job level. Missing credentials ⇒ info message, green run. A phase that is disabled logs exactly which secrets to add — no "skipped" job rows ever appear.
+4. **Secrets are generated into the deploy artifact, never committed.** `appsettings.Production.json` is built at deploy time from `DATABASE_CONNECTION_STRING`, `JWT_SECRET` and `CORS_ORIGINS` repository secrets. The database (MonsterASP SQL / databaseasp.net) is migrated and seeded by the app itself on startup — no external migration step.
+5. **Backend secrets to enable deploys:** `MONSTERASP_FTP_HOST`, `MONSTERASP_FTP_USER`, `MONSTERASP_FTP_PASS` (MonsterASP Control Panel → Websites → your site → Deploy → FTP / SFTP access), optionally `MONSTERASP_FTP_PORT`, `MONSTERASP_REMOTE_DIR` (default `wwwroot`), `MONSTERASP_SITE_URL` (enables a post-deploy swagger check), plus `DATABASE_CONNECTION_STRING`, `JWT_SECRET`, `CORS_ORIGINS`.
+6. **Frontend secrets to enable deploys:** `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`, plus `PROD_API_URL` (the MonsterASP backend URL) and optionally `SENTRY_DSN`.
+7. **Concurrency everywhere.** Every workflow cancels superseded runs on the same ref to save minutes.
+8. **Caching everywhere.** npm (`setup-node cache`), NuGet (`actions/cache`), Playwright browsers (version-keyed), Docker layers (Buildx GHA cache).
 
 ## Removed
 

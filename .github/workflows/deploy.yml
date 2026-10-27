@@ -15,10 +15,18 @@ concurrency:
 # reports a real status: each deployment phase simply logs an informative
 # notice when its credentials are not configured, instead of the job being
 # listed as "skipped".
+#
+# Hosting targets (matching the actual infrastructure):
+#   Frontend  → Vercel  (VERCEL_TOKEN / VERCEL_ORG_ID / VERCEL_PROJECT_ID)
+#   Backend   → MonsterASP.NET via FTPS
+#               (MONSTERASP_FTP_HOST / MONSTERASP_FTP_USER / MONSTERASP_FTP_PASS;
+#               optional MONSTERASP_FTP_PORT, MONSTERASP_REMOTE_DIR, MONSTERASP_SITE_URL)
+#   Database  → MonsterASP SQL (databaseasp.net) — set via DATABASE_CONNECTION_STRING;
+#               the app runs EF migrations + seeding itself on startup.
 
 jobs:
   deploy:
-    name: Deploy (Frontend → Vercel, Backend → Azure)
+    name: Deploy (Frontend → Vercel, Backend → MonsterASP.NET)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -34,14 +42,14 @@ jobs:
             echo "✓ Vercel credentials present."
           else
             echo "vercel=false" >> "$GITHUB_OUTPUT"
-            echo "ℹ️  Frontend deploy skipped: add VERCEL_TOKEN, VERCEL_ORG_ID and VERCEL_PROJECT_ID to repository secrets to enable it."
+            echo "ℹ️  Frontend deploy disabled: add VERCEL_TOKEN, VERCEL_ORG_ID and VERCEL_PROJECT_ID to repository secrets to enable it."
           fi
-          if [ -n "${{ secrets.AZURE_CREDENTIALS }}" ] && [ -n "${{ secrets.AZURE_WEBAPP_NAME }}" ]; then
-            echo "azure=true" >> "$GITHUB_OUTPUT"
-            echo "✓ Azure credentials present."
+          if [ -n "${{ secrets.MONSTERASP_FTP_HOST }}" ] && [ -n "${{ secrets.MONSTERASP_FTP_USER }}" ] && [ -n "${{ secrets.MONSTERASP_FTP_PASS }}" ]; then
+            echo "monsterasp=true" >> "$GITHUB_OUTPUT"
+            echo "✓ MonsterASP.NET FTP credentials present."
           else
-            echo "azure=false" >> "$GITHUB_OUTPUT"
-            echo "ℹ️  Backend deploy skipped: add AZURE_CREDENTIALS and AZURE_WEBAPP_NAME to repository secrets to enable it."
+            echo "monsterasp=false" >> "$GITHUB_OUTPUT"
+            echo "ℹ️  Backend deploy disabled: add MONSTERASP_FTP_HOST, MONSTERASP_FTP_USER and MONSTERASP_FTP_PASS (Deploy page → FTP / SFTP access) to repository secrets to enable it."
           fi
 
       # ── Frontend (Vercel, prebuilt artifacts) ──────────────────────────────
@@ -82,51 +90,89 @@ jobs:
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
-      # ── Backend (Azure Web App + EF migration bundle) ─────────────────────
+      # ── Backend (MonsterASP.NET via FTPS) ──────────────────────────────────
       - name: Setup .NET
-        if: steps.creds.outputs.azure == 'true'
+        if: steps.creds.outputs.monsterasp == 'true'
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '9.0.x'
           cache: true
           cache-dependency-path: 'Backend/StarbucksEgypt.slnx'
 
-      - name: Install EF Tool
-        if: steps.creds.outputs.azure == 'true'
-        run: dotnet tool install --global dotnet-ef
+      - name: Cache NuGet packages
+        if: steps.creds.outputs.monsterasp == 'true'
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json', '**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
 
       - name: Restore dependencies
-        if: steps.creds.outputs.azure == 'true'
+        if: steps.creds.outputs.monsterasp == 'true'
         run: dotnet restore StarbucksEgypt.slnx
         working-directory: Backend
 
-      - name: Create Migration Bundle
-        if: steps.creds.outputs.azure == 'true'
+      - name: Publish backend
+        if: steps.creds.outputs.monsterasp == 'true'
+        run: dotnet publish StarbucksEgypt.slnx -c Release -o ./publish --no-restore
+        working-directory: Backend
+
+      - name: Generate appsettings.Production.json from secrets
+        if: steps.creds.outputs.monsterasp == 'true'
         run: |
-          dotnet ef migrations bundle --project src/Starbucks.Infrastructure --startup-project src/Starbucks.API --output publish/migrate.exe --self-contained -r win-x64
+          jq -n \
+            --arg db "$DATABASE_CONNECTION_STRING" \
+            --arg jwt "$JWT_SECRET" \
+            --arg cors "$CORS_ORIGINS" \
+            '{
+              "ConnectionStrings": { "DefaultConnection": $db },
+              "Jwt": { "Secret": $jwt },
+              "Cors": { "AllowedOrigins": $cors },
+              "Logging": { "EnableSensitiveDataLogging": false }
+            }' > ./publish/appsettings.Production.json
+          echo "✓ appsettings.Production.json generated from repository secrets (never committed)."
         working-directory: Backend
         env:
-          ASPNETCORE_ENVIRONMENT: Production
+          # Rotate the DB password first — the old one was leaked in git history (issue #31).
+          DATABASE_CONNECTION_STRING: ${{ secrets.DATABASE_CONNECTION_STRING }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          CORS_ORIGINS: ${{ secrets.CORS_ORIGINS }}
 
-      - name: Build and Publish
-        if: steps.creds.outputs.azure == 'true'
+      - name: Install lftp
+        if: steps.creds.outputs.monsterasp == 'true'
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp
+
+      - name: Upload backend to MonsterASP.NET (FTPS)
+        if: steps.creds.outputs.monsterasp == 'true'
         run: |
-          dotnet build StarbucksEgypt.slnx --configuration Release --no-restore
-          dotnet publish StarbucksEgypt.slnx -c Release -o ./publish --no-build
+          # Mirror the publish folder to the site root (wwwroot) over FTPS.
+          # --delete keeps the server in sync; SSL is enforced.
+          lftp ftps://"$MONSTERASP_FTP_HOST":"$MONSTERASP_FTP_PORT" \
+            -u "$MONSTERASP_FTP_USER","$MONSTERASP_FTP_PASS" \
+            -e "set ftp:ssl-force yes; set ftp:ssl-protect-data yes; set ssl:verify-certificate no; mirror -R -v --delete --delete-first ./publish $MONSTERASP_REMOTE_DIR; bye"
         working-directory: Backend
+        env:
+          MONSTERASP_FTP_HOST: ${{ secrets.MONSTERASP_FTP_HOST }}
+          MONSTERASP_FTP_PORT: ${{ secrets.MONSTERASP_FTP_PORT }}
+          MONSTERASP_FTP_USER: ${{ secrets.MONSTERASP_FTP_USER }}
+          MONSTERASP_FTP_PASS: ${{ secrets.MONSTERASP_FTP_PASS }}
+          # MonsterASP serves the site from wwwroot (WebFTP root)
+          MONSTERASP_REMOTE_DIR: ${{ vars.MONSTERASP_REMOTE_DIR || 'wwwroot' }}
 
-      - name: Azure Login
-        if: steps.creds.outputs.azure == 'true'
-        uses: azure/login@v2
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Deploy to Azure Web App
-        if: steps.creds.outputs.azure == 'true'
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
-          package: Backend/publish
+      - name: Verify backend deployment
+        if: steps.creds.outputs.monsterasp == 'true' && secrets.MONSTERASP_SITE_URL != ''
+        run: |
+          sleep 10
+          HTTP=$(curl -s -o /dev/null -w "%{http_code}" "$MONSTERASP_SITE_URL/swagger/v1/swagger.json" || true)
+          echo "Swagger endpoint HTTP status: $HTTP"
+          if [ "$HTTP" != "200" ]; then
+            echo "⚠️  Backend did not respond with 200 — check the MonsterASP.NET control panel logs."
+            exit 1
+          fi
+          echo "✓ Backend is live."
+        env:
+          MONSTERASP_SITE_URL: ${{ secrets.MONSTERASP_SITE_URL }}
 
       # ── GitHub Release (always runs on production push) ───────────────────
       - name: Get Version
