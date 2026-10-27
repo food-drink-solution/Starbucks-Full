@@ -4,9 +4,10 @@ import { motion } from "framer-motion";
 import { MapPin, Search, Moon, Sun, User } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button, Tooltip } from "@/components/ui";
-import { CartTrigger } from "@/components";
+import { CartTrigger } from "@/components/widgets/CartDrawer";
 import { useAuth } from "@/hooks/auth/useAuth";
-import { Language, useLanguage } from "@/hooks";
+import { useLanguage } from "@/hooks/i18n/useLanguage";
+import type { Language } from "@/hooks/i18n/useLanguage";
 import { ANIMATION_CONFIG } from "@/lib/core/constants";
 import { Theme } from "@/types";
 
@@ -44,6 +45,7 @@ export function NavbarUtilities({
       >
         <NavLink
           to={`/${lang}/locations`}
+          aria-label={t("navigation:navbar.tooltips.locations")}
           className={({ isActive }) => `
             group flex items-center justify-center h-11 w-11 rounded-full hover:bg-gray-100 dark:hover:bg-zinc-900 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-starbucks-green
             ${isActive ? "text-starbucks-green" : "text-starbucks-dark hover:text-starbucks-green dark:text-foreground-dark"}
@@ -79,7 +81,7 @@ export function NavbarUtilities({
           size="icon"
           onClick={() => toggleLanguage()}
           className="group relative flex items-center justify-center font-bold text-starbucks-dark dark:text-foreground-dark hover:bg-gray-100 dark:hover:bg-zinc-900 rounded-full h-11 w-11 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-starbucks-green"
-          aria-label={t("navigation:navbar.tooltips.language")}
+          aria-label={`${lang === "ar" ? "EN" : "AR"} ${t("navigation:navbar.tooltips.language")}`}
         >
           <span className="text-sm font-black uppercase tracking-tighter">
             {lang === "ar" ? "EN" : "AR"}

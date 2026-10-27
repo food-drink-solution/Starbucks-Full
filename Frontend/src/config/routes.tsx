@@ -1,6 +1,6 @@
 import { lazy, ComponentType } from 'react';
 import { HomeSkeleton, MenuSkeleton, StaticPageSkeleton, ContactSkeleton, LocationsSkeleton } from '@/components/skeletons';
-import { ContactUsPage } from '@/pages';
+
 
 /**
  * Route configuration type
@@ -16,6 +16,8 @@ export interface PageRoute {
 }
 
 // Lazy loaded Pages for performance
+const ContactUsPage = lazy(() => import('@/pages/ContactUsPage/ContactUsPage').then((module) => ({ default: module.ContactUsPage })));
+
 const HomePage = lazy(() =>
   import('@/pages/HomePage').then((module) => ({ default: module.HomePage }))
 );
@@ -43,11 +45,11 @@ const LocationsPage = lazy(() =>
 );
 
 const CheckoutPage = lazy(() =>
-  import('@/pages').then((module) => ({ default: module.CheckoutPage }))
+  import('@/pages/CheckoutPage/CheckoutPage').then((module) => ({ default: module.CheckoutPage }))
 );
 
 const OrderConfirmationPage = lazy(() =>
-  import('@/pages').then((module) => ({ default: module.OrderConfirmationPage }))
+  import('@/pages/OrderConfirmationPage/OrderConfirmationPage').then((module) => ({ default: module.OrderConfirmationPage }))
 );
 
 const PaymentSuccessPage = lazy(() =>
@@ -59,7 +61,7 @@ const PaymentFailedPage = lazy(() =>
 );
 
 const NotFound = lazy(() =>
-  import('@/pages').then((module) => ({ default: module.NotFound }))
+  import('@/pages/NotFound/NotFound').then((module) => ({ default: module.NotFound }))
 );
 
 /**

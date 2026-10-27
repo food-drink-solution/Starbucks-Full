@@ -1,22 +1,23 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useTheme } from "@/hooks";
-import { useNavigation } from "@/hooks/queries";
+import { useTheme } from "@/hooks/ui/useTheme";
+import { useNavigation } from "@/hooks/queries/useNavigationData";
 import { motion, AnimatePresence } from "framer-motion";
 import { ANIMATION_CONFIG } from "@/lib/core/constants";
 import { Menu as MenuIcon, X } from "lucide-react";
 import { Button } from "@/components/ui";
 import { lazy, Suspense } from "react";
-import { useLanguage, usePrevious } from "@/hooks";
+import { useLanguage } from "@/hooks/i18n/useLanguage";
+import { usePrevious } from "@/hooks/common/usePrevious";
 import { usePrefetch } from "@/hooks/performance";
 import { NavbarHeader } from "./Navbar/NavbarHeader";
 import { NavbarDesktopMenu } from "./Navbar/NavbarDesktopMenu";
 import { NavbarUtilities } from "./Navbar/NavbarUtilities";
 import { NavbarMobileMenu } from "./Navbar/NavbarMobileMenu";
 
-const SearchModal = lazy(() => import("@/components").then(m => ({ default: m.SearchModal })));
-const AuthModal = lazy(() => import("@/components").then(m => ({ default: m.AuthModal })));
+const SearchModal = lazy(() => import("@/components/search/SearchModal").then(m => ({ default: m.SearchModal })));
+const AuthModal = lazy(() => import("@/components/widgets/AuthModal").then(m => ({ default: m.AuthModal })));
 
 /**
  * Main Navbar Component

@@ -45,6 +45,7 @@ const CookieConsent: React.FC = () => {
 
   const save = (value: string) => {
     localStorage.setItem(COOKIE_KEY, value)
+    window.dispatchEvent(new Event('starbucks-cookie-consent'))
     setVisible(false)
   }
 

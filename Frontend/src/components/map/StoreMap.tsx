@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react';
-import { Map, useMap } from '@vis.gl/react-google-maps';
+import { APIProvider, Map, useMap } from '@vis.gl/react-google-maps';
 import { StoreMarker } from './StoreMarker';
 import { UserLocationMarker } from './UserLocationMarker';
 import { MapControls } from './MapControls';
@@ -41,7 +41,7 @@ function MapPanner({ selectedLocation }: { selectedLocation: Location | null }) 
   return null;
 }
 
-export function StoreMap({
+function StoreMapContent({
   locations,
   userLocation,
   selectedLocation,
@@ -92,5 +92,22 @@ export function StoreMap({
         ))}
       </Map>
     </div>
+  );
+}
+
+export function StoreMap(props: StoreMapProps) {
+  const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+  if (!apiKey) {
+    return (
+      <div className="flex h-full min-h-[400px] items-center justify-center rounded-xl bg-gray-100 p-6 text-center text-gray-700" role="status">
+        Store map is unavailable. Use the store list to find a location.
+      </div>
+    );
+  }
+
+  return (
+    <APIProvider apiKey={apiKey}>
+      <StoreMapContent {...props} />
+    </APIProvider>
   );
 }

@@ -1,4 +1,4 @@
-import { useLanguage } from "@/hooks";
+import { useLanguage } from "@/hooks/i18n/useLanguage";
 
 export const SkipNav = () => {
   const { isRTL } = useLanguage();

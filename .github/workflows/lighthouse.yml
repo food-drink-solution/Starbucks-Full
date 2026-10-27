@@ -31,7 +31,7 @@ jobs:
         uses: treosh/lighthouse-ci-action@v11
         with:
           urls: |
-            http://localhost:4173/
+            http://localhost:4173/ar
           uploadArtifacts: true
           temporaryPublicStorage: true
           configPath: './Frontend/lighthouserc.json'

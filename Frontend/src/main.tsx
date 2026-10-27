@@ -18,7 +18,6 @@ initSentry()
   document.documentElement.setAttribute('lang', l)
 })()
 
-import { APIProvider } from '@vis.gl/react-google-maps'
 
 /*
  * StrictMode is intentionally omitted.
@@ -34,13 +33,17 @@ import { APIProvider } from '@vis.gl/react-google-maps'
  * builds. Remove this comment and re-add <StrictMode> once the library ships
  * React 19 StrictMode support (track: github.com/visgl/react-google-maps).
  */
+if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => undefined)
+  }, { once: true })
+}
+
 createRoot(document.getElementById('root')!).render(
   <ErrorBoundary>
     <HelmetProvider>
       <ThemeProvider>
-        <APIProvider apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY || ''}>
-          <App />
-        </APIProvider>
+        <App />
       </ThemeProvider>
     </HelmetProvider>
   </ErrorBoundary>,

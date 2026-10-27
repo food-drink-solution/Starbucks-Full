@@ -8,7 +8,7 @@ import {
   SidebarTemplate
 } from "@/components";
 import { MenuSkeleton } from "@/components/skeletons";
-import { NotFound } from "@/pages";
+import { NotFound } from "@/pages/NotFound/NotFound";
 import { useMenuData, useMenuCategory, useLanguage } from "@/hooks";
 
 import { QueryErrorBoundary } from "@/components";
