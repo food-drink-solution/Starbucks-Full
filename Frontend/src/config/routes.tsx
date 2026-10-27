@@ -42,10 +42,6 @@ const LocationsPage = lazy(() =>
   }))
 );
 
-const GenericPageWrapper = lazy(() =>
-  import('@/pages').then((module) => ({ default: module.GenericPageWrapper }))
-);
-
 const CheckoutPage = lazy(() =>
   import('@/pages').then((module) => ({ default: module.CheckoutPage }))
 );
