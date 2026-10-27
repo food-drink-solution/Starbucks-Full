@@ -47,6 +47,12 @@ jobs:
           if [ -n "${{ secrets.MONSTERASP_FTP_HOST }}" ] && [ -n "${{ secrets.MONSTERASP_FTP_USER }}" ] && [ -n "${{ secrets.MONSTERASP_FTP_PASS }}" ]; then
             echo "monsterasp=true" >> "$GITHUB_OUTPUT"
             echo "✓ MonsterASP.NET FTP credentials present."
+            if [ -n "${{ secrets.MONSTERASP_SITE_URL }}" ]; then
+              echo "siteurl=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "siteurl=false" >> "$GITHUB_OUTPUT"
+              echo "ℹ️  MONSTERASP_SITE_URL not set — post-deploy swagger check disabled."
+            fi
           else
             echo "monsterasp=false" >> "$GITHUB_OUTPUT"
             echo "ℹ️  Backend deploy disabled: add MONSTERASP_FTP_HOST, MONSTERASP_FTP_USER and MONSTERASP_FTP_PASS (Deploy page → FTP / SFTP access) to repository secrets to enable it."
@@ -161,7 +167,7 @@ jobs:
           MONSTERASP_REMOTE_DIR: ${{ vars.MONSTERASP_REMOTE_DIR || 'wwwroot' }}
 
       - name: Verify backend deployment
-        if: steps.creds.outputs.monsterasp == 'true' && secrets.MONSTERASP_SITE_URL != ''
+        if: steps.creds.outputs.monsterasp == 'true' && steps.creds.outputs.siteurl == 'true'
         run: |
           sleep 10
           HTTP=$(curl -s -o /dev/null -w "%{http_code}" "$MONSTERASP_SITE_URL/swagger/v1/swagger.json" || true)
