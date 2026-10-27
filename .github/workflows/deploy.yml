@@ -10,40 +10,15 @@ concurrency:
   cancel-in-progress: false
 
 # NOTE: the `secrets` context is NOT available in job-level `if:` conditions
-# (that fails the whole workflow with zero jobs). Job enablement is therefore
-# decided by a lightweight check job that probes the secrets in a step, and
-# every deploy step is gated on its outputs. With no credentials configured
-# the jobs skip gracefully and the pipeline stays green.
-jobs:
-  check-credentials:
-    name: Check deployment credentials
-    runs-on: ubuntu-latest
-    outputs:
-      vercel: ${{ steps.creds.outputs.vercel }}
-      azure: ${{ steps.creds.outputs.azure }}
-    steps:
-      - name: Probe secrets
-        id: creds
-        run: |
-          if [ -n "${{ secrets.VERCEL_TOKEN }}" ] && [ -n "${{ secrets.VERCEL_ORG_ID }}" ] && [ -n "${{ secrets.VERCEL_PROJECT_ID }}" ]; then
-            echo "vercel=true" >> "$GITHUB_OUTPUT"
-            echo "✓ Vercel credentials present."
-          else
-            echo "vercel=false" >> "$GITHUB_OUTPUT"
-            echo "ℹ️  VERCEL_TOKEN / VERCEL_ORG_ID / VERCEL_PROJECT_ID not configured — frontend deploy skipped."
-          fi
-          if [ -n "${{ secrets.AZURE_CREDENTIALS }}" ]; then
-            echo "azure=true" >> "$GITHUB_OUTPUT"
-            echo "✓ Azure credentials present."
-          else
-            echo "azure=false" >> "$GITHUB_OUTPUT"
-            echo "ℹ️  AZURE_CREDENTIALS not configured — backend deploy skipped."
-          fi
+# (that fails the whole workflow with zero jobs). Credential availability is
+# therefore probed inside the job at step level, so the job always runs and
+# reports a real status: each deployment phase simply logs an informative
+# notice when its credentials are not configured, instead of the job being
+# listed as "skipped".
 
-  deploy-frontend:
-    name: Deploy Frontend (Vercel)
-    needs: check-credentials
-    if: needs.check-credentials.outputs.vercel == 'true'
+jobs:
+  deploy:
+    name: Deploy (Frontend → Vercel, Backend → Azure)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -51,7 +26,27 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Check deployment credentials
+        id: creds
+        run: |
+          if [ -n "${{ secrets.VERCEL_TOKEN }}" ] && [ -n "${{ secrets.VERCEL_ORG_ID }}" ] && [ -n "${{ secrets.VERCEL_PROJECT_ID }}" ]; then
+            echo "vercel=true" >> "$GITHUB_OUTPUT"
+            echo "✓ Vercel credentials present."
+          else
+            echo "vercel=false" >> "$GITHUB_OUTPUT"
+            echo "ℹ️  Frontend deploy skipped: add VERCEL_TOKEN, VERCEL_ORG_ID and VERCEL_PROJECT_ID to repository secrets to enable it."
+          fi
+          if [ -n "${{ secrets.AZURE_CREDENTIALS }}" ] && [ -n "${{ secrets.AZURE_WEBAPP_NAME }}" ]; then
+            echo "azure=true" >> "$GITHUB_OUTPUT"
+            echo "✓ Azure credentials present."
+          else
+            echo "azure=false" >> "$GITHUB_OUTPUT"
+            echo "ℹ️  Backend deploy skipped: add AZURE_CREDENTIALS and AZURE_WEBAPP_NAME to repository secrets to enable it."
+          fi
+
+      # ── Frontend (Vercel, prebuilt artifacts) ──────────────────────────────
       - name: Setup Node.js
+        if: steps.creds.outputs.vercel == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: '20'
@@ -59,9 +54,11 @@ jobs:
           cache-dependency-path: 'Frontend/package-lock.json'
 
       - name: Install Vercel CLI
+        if: steps.creds.outputs.vercel == 'true'
         run: npm install --global vercel@latest
 
       - name: Pull Vercel Environment Information
+        if: steps.creds.outputs.vercel == 'true'
         run: vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
         working-directory: Frontend
         env:
@@ -70,6 +67,7 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: Build Project Artifacts
+        if: steps.creds.outputs.vercel == 'true'
         run: vercel build --prod --token="$VERCEL_TOKEN"
         working-directory: Frontend
         env:
@@ -78,21 +76,15 @@ jobs:
           VITE_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
 
       - name: Deploy Project Artifacts to Vercel
+        if: steps.creds.outputs.vercel == 'true'
         run: vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN"
         working-directory: Frontend
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
-  deploy-backend:
-    name: Deploy Backend (Azure)
-    needs: check-credentials
-    if: needs.check-credentials.outputs.azure == 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
+      # ── Backend (Azure Web App + EF migration bundle) ─────────────────────
       - name: Setup .NET
+        if: steps.creds.outputs.azure == 'true'
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '9.0.x'
@@ -100,13 +92,16 @@ jobs:
           cache-dependency-path: 'Backend/StarbucksEgypt.slnx'
 
       - name: Install EF Tool
+        if: steps.creds.outputs.azure == 'true'
         run: dotnet tool install --global dotnet-ef
 
       - name: Restore dependencies
+        if: steps.creds.outputs.azure == 'true'
         run: dotnet restore StarbucksEgypt.slnx
         working-directory: Backend
 
       - name: Create Migration Bundle
+        if: steps.creds.outputs.azure == 'true'
         run: |
           dotnet ef migrations bundle --project src/Starbucks.Infrastructure --startup-project src/Starbucks.API --output publish/migrate.exe --self-contained -r win-x64
         working-directory: Backend
@@ -114,35 +109,26 @@ jobs:
           ASPNETCORE_ENVIRONMENT: Production
 
       - name: Build and Publish
+        if: steps.creds.outputs.azure == 'true'
         run: |
           dotnet build StarbucksEgypt.slnx --configuration Release --no-restore
           dotnet publish StarbucksEgypt.slnx -c Release -o ./publish --no-build
         working-directory: Backend
 
       - name: Azure Login
+        if: steps.creds.outputs.azure == 'true'
         uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Deploy to Azure Web App
+        if: steps.creds.outputs.azure == 'true'
         uses: azure/webapps-deploy@v3
         with:
           app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
           package: Backend/publish
 
-  create-release:
-    name: Create GitHub Release
-    runs-on: ubuntu-latest
-    needs: [check-credentials, deploy-frontend]
-    if: always() && needs.check-credentials.outputs.vercel == 'true' && needs.deploy-frontend.result == 'success'
-    permissions:
-      contents: write
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
+      # ── GitHub Release (always runs on production push) ───────────────────
       - name: Get Version
         id: version
         run: |
