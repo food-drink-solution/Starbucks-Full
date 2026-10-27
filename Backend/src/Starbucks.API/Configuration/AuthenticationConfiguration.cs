@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Starbucks.Application.Common.Settings;
 using System.Text;
 
 namespace Starbucks.API.Configuration;
@@ -20,6 +21,11 @@ public static class AuthenticationConfiguration
         var secret = jwtSection["Secret"]
             ?? throw new InvalidOperationException(
                 "Jwt:Secret is not configured. Set it via environment variable Jwt__Secret, User Secrets, or Key Vault.");
+
+        // Bind the strongly-typed settings consumed by TokenService.
+        // (Without this registration IOptions<JwtSettings> resolves to a
+        // default instance and login fails in every environment.)
+        services.Configure<JwtSettings>(jwtSection);
 
         if (secret.Contains("PLACEHOLDER", StringComparison.OrdinalIgnoreCase) ||
             secret.Contains("REPLACE_WITH", StringComparison.OrdinalIgnoreCase) ||

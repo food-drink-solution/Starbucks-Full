@@ -96,6 +96,7 @@ public class MenuRepository : Repository<MenuItem>, IMenuRepository
         return await _context.MenuCategories
             .Where(c => c.IsActive)
             .Include(c => c.Subcategories.Where(s => s.IsActive))
+            .ThenInclude(s => s.Items.Where(i => i.IsActive))
             .OrderBy(c => c.SortOrder)
             .ToListAsync(cancellationToken);
     }

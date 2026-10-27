@@ -1,3 +1,5 @@
+using Starbucks.API.Services;
+using Starbucks.Application.Common.Interfaces.Services;
 using Starbucks.Infrastructure.Extensions;
 
 namespace Starbucks.API.Configuration;
@@ -21,6 +23,9 @@ public static class ServiceCollectionExtensions
                 options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
             });
         services.AddProblemDetails();
+
+        // File-based localization resources (wwwroot JSON) used by Resources handlers
+        services.AddSingleton<ILocalizationResourceProvider, LocalizationResourceProvider>();
 
         // API Configuration
         services.AddApiVersioningConfiguration();

@@ -220,7 +220,7 @@ export const handlers = [
     });
   }),
 
-  http.get('*/api/v1/User/profile', () => {
+  http.get('*/api/v1/Account/profile', () => {
     return HttpResponse.json({
       id: '1',
       email: 'test@example.com',

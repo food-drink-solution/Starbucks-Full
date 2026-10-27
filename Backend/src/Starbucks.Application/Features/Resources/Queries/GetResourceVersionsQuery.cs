@@ -13,3 +13,13 @@ using Starbucks.Application.DTOs.Resources;
 /// Cache key: resources:versions (cached for 5 minutes)
 /// </summary>
 public record GetResourceVersionsQuery() : IRequest<Result<ResourceVersionsDto>>;
+
+public class GetResourceVersionsQueryHandler : IRequestHandler<GetResourceVersionsQuery, Result<ResourceVersionsDto>>
+{
+    public Task<Result<ResourceVersionsDto>> Handle(
+        GetResourceVersionsQuery request,
+        CancellationToken cancellationToken)
+    {
+        return Task.FromResult(Result<ResourceVersionsDto>.Success(new ResourceVersionsDto()));
+    }
+}

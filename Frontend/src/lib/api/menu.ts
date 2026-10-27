@@ -13,8 +13,11 @@ export const menuFetchers = {
    * Falls back to local data if API unavailable.
    */
   async fetchMenuData(language: string = 'en'): Promise<MenuData> {
+    // The Resources API may serve a localization bundle whose `categories`
+    // is an object keyed by slug — MenuPage needs a flat array. Only trust
+    // the resources payload when it actually contains the array; otherwise
+    // resolve the catalog from the Menu API (with its own mock fallback).
     try {
-      // Try Backend Resources API first
       const response = await fetch(
         `${API_URL}/v1/resources/localization/${language}/menu`,
         { headers: { 'Content-Type': 'application/json' } }
@@ -24,18 +27,18 @@ export const menuFetchers = {
         const data = await response.json();
         const menuResources = data.resources;
 
-        // Transform Backend API response to MenuData
-        return {
-          categories: menuResources.categories || [],
-          allergyInfo: menuResources.allergyInfo,
-          sidebar: menuResources.sidebar,
-        } as MenuData;
+        if (Array.isArray(menuResources?.categories)) {
+          return {
+            categories: menuResources.categories,
+            allergyInfo: menuResources.allergyInfo,
+            sidebar: menuResources.sidebar,
+          } as MenuData;
+        }
       }
     } catch (err) {
       console.warn('Backend Resources API unavailable, using fallback', err);
     }
 
-    // Fallback to local JSON when backend is unavailable
     try {
       const categories = await menuService.getCategories(language);
       return {

@@ -1,5 +1,8 @@
 {
   "title": "Checkout",
+  "emptyCart": "Your bag is empty",
+  "emptyCartDescription": "Add items from the menu to get started.",
+  "backToMenu": "Back to Menu",
   "steps": {
     "delivery": "Delivery",
     "payment": "Payment",

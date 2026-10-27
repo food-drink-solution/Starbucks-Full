@@ -1,78 +1,103 @@
 import { test, expect } from '@playwright/test';
 
+/**
+ * Authentication flow tests.
+ *
+ * The API seeds demo users on startup in Development (see
+ * IdentityDataSeeder.SeedTestUsersAsync): customer@test.com,
+ * employee@test.com and manager@test.com — all with password
+ * `Test@123456`. The login form posts to /api/v1/Auth/login through the
+ * vite dev-server proxy.
+ */
+const DEMO_USER = {
+  email: 'customer@test.com',
+  password: 'Test@123456',
+};
+
 test.describe('Authentication Flow', () => {
   test.beforeEach(async ({ page }) => {
+    // Pre-seed the cookie-consent decision so the fixed-bottom banner
+    // never renders and never intercepts pointer events on the navbar
+    await page.addInitScript(() =>
+      localStorage.setItem('starbucks_cookie_consent', 'declined'),
+    );
     await page.goto('/');
   });
 
-  test('should display login modal', async ({ page }) => {
-    // Look for auth button
-    const authButton = page.locator('[data-testid="auth-trigger-button"]');
-    await authButton.click();
+  test('opens the login modal from the navbar', async ({ page }) => {
+    const authTrigger = page.getByTestId('auth-trigger-button');
+    await expect(authTrigger).toBeVisible();
+    await authTrigger.click();
 
-    // Check if modal is visible
-    const modal = page.locator('[role="dialog"]');
-    await expect(modal).toBeVisible();
+    // The auth modal contains the login form
+    const emailInput = page.locator('#login-email');
+    await expect(emailInput).toBeVisible();
+    await expect(page.locator('#login-password')).toBeVisible();
   });
 
-  test('should login successfully', async ({ page }) => {
-    // Click auth button
-    const authButton = page.locator('[data-testid="auth-trigger-button"]');
-    await authButton.click();
+  test('logs in with valid seeded credentials', async ({ page }) => {
+    await page.getByTestId('auth-trigger-button').click();
 
-    // Fill login form
-    await page.fill('input[type="email"]', 'test@example.com');
-    await page.fill('input[type="password"]', 'password123');
+    const loginResponse = page.waitForResponse(
+      (res) => res.url().includes('/api/v1/Auth/login') && res.request().method() === 'POST',
+      { timeout: 15_000 },
+    );
 
-    // Submit form
-    const submitButton = page.locator('button:has-text("Login")');
-    await submitButton.click();
+    await page.locator('#login-email').fill(DEMO_USER.email);
+    await page.locator('#login-password').fill(DEMO_USER.password);
+    await page.locator('button[type="submit"]').click();
 
-    // Wait for navigation or success message
-    await page.waitForTimeout(1000);
+    const response = await loginResponse;
+    expect(response.status()).toBe(200);
+    const body = await response.json();
+    expect(body.accessToken).toBeTruthy();
 
-    // Check if user is logged in (look for user menu or profile)
-    const userMenu = page.locator('[data-testid="user-menu"]');
-    await expect(userMenu).toBeVisible();
+    // The auth store persists the session
+    await expect
+      .poll(async () =>
+        page.evaluate(() => window.localStorage.getItem('auth_token')),
+      )
+      .toBeTruthy();
+    const authState = await page.evaluate(() => {
+      const raw = window.localStorage.getItem('auth-storage');
+      if (!raw) return null;
+      try {
+        return JSON.parse(raw)?.state ?? null;
+      } catch {
+        return null;
+      }
+    });
+    expect(authState?.isAuthenticated).toBe(true);
+
+    // Modal closes after successful login
+    await expect(page.locator('#login-email')).toBeHidden();
   });
 
-  test('should show validation errors', async ({ page }) => {
-    // Click auth button
-    const authButton = page.locator('[data-testid="auth-trigger-button"]');
-    await authButton.click();
+  test('shows an error message for invalid credentials', async ({ page }) => {
+    await page.getByTestId('auth-trigger-button').click();
 
-    // Try to submit empty form
-    const submitButton = page.locator('button:has-text("Login")');
-    await submitButton.click();
+    await page.locator('#login-email').fill(DEMO_USER.email);
+    await page.locator('#login-password').fill('WrongPassword1!');
+    await page.locator('button[type="submit"]').click();
 
-    // Check for error messages
-    const errorMessage = page.locator('[role="alert"]');
-    await expect(errorMessage).toBeVisible();
+    // The modal surfaces the API error in an alert region
+    const alert = page.locator('[role="alert"]');
+    await expect(alert).toBeVisible({ timeout: 15_000 });
+
+    // Session was not created
+    const token = await page.evaluate(() => window.localStorage.getItem('auth_token'));
+    expect(token).toBeNull();
   });
 
-  test('should logout successfully', async ({ page }) => {
-    // Login first
-    const authButton = page.locator('[data-testid="auth-trigger-button"]');
-    await authButton.click();
+  test('navbar switches to the account link once authenticated', async ({ page }) => {
+    await page.getByTestId('auth-trigger-button').click();
+    await page.locator('#login-email').fill(DEMO_USER.email);
+    await page.locator('#login-password').fill(DEMO_USER.password);
+    await page.locator('button[type="submit"]').click();
 
-    await page.fill('input[type="email"]', 'test@example.com');
-    await page.fill('input[type="password"]', 'password123');
-
-    const submitButton = page.locator('button:has-text("Login")');
-    await submitButton.click();
-
-    await page.waitForTimeout(1000);
-
-    // Click user menu
-    const userMenu = page.locator('[data-testid="user-menu"]');
-    await userMenu.click();
-
-    // Click logout
-    const logoutButton = page.locator('button:has-text("Logout")');
-    await logoutButton.click();
-
-    // Check if logged out
-    const signInButton = page.locator('[data-testid="auth-trigger-button"]');
-    await expect(signInButton).toBeVisible();
+    // Unauthenticated users see the trigger button; authenticated users
+    // see a link to their profile instead (no dropdown menu exists).
+    const accountLink = page.locator('a[href$="/account/profile"]');
+    await expect(accountLink).toBeVisible({ timeout: 15_000 });
   });
 });

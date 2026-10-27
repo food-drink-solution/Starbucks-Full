@@ -1,5 +1,8 @@
 {
   "title": "الدفع",
+  "emptyCart": "حقيبتك فارغة",
+  "emptyCartDescription": "أضف منتجات من المنيو للبدء.",
+  "backToMenu": "العودة إلى المنيو",
   "steps": {
     "delivery": "التسليم",
     "payment": "الدفع",

@@ -4,9 +4,17 @@ import { captureError, addBreadcrumb } from '@/lib/error/errorMonitoring';
 
 /**
  * Standard API Client with interceptors for error monitoring
+ *
+ * Base URL normalization: service paths already include the `/api` prefix
+ * (e.g. `/api/v1/Auth/login`), while VITE_API_URL is configured WITH the
+ * trailing `/api` segment (e.g. `http://localhost:8080/api`). Strip the
+ * trailing segment here so requests resolve to `…/api/v1/…` exactly once —
+ * a double `/api/api/v1/…` produced 404s (surfaced as "Network Error").
  */
+const normalizeApiBaseUrl = (url: string): string => url.replace(/\/api\/?$/, '');
+
 export const apiClient = axios.create({
-  baseURL: API_CONFIG.BASE_URL,
+  baseURL: normalizeApiBaseUrl(API_CONFIG.BASE_URL),
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',

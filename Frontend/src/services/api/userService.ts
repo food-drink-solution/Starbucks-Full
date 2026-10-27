@@ -18,14 +18,14 @@ export interface UpdateProfileData {
  * Get current user profile
  */
 export const getProfile = async (): Promise<User> => {
-  return apiService.get<User>('/api/v1/User/profile');
+  return apiService.get<User>('/api/v1/Account/profile');
 };
 
 /**
  * Update user profile
  */
 export const updateProfile = async (data: UpdateProfileData): Promise<User> => {
-  return apiService.put<User>('/api/v1/User/profile', data);
+  return apiService.put<User>('/api/v1/Account/profile', data);
 };
 
 /**
