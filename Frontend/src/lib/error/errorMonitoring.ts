@@ -4,7 +4,7 @@
  * Single source of truth for all Sentry configuration.
  * Uses @sentry/react which bundles everything needed (browser SDK + React integrations).
  *
- * Call `initSentry()` once at application startup in main.tsx, BEFORE React.render().
+ * Call `initSentry()` once at startup. The SDK is imported only when a valid DSN is configured.
  */
 
 type SeverityLevel = 'fatal' | 'error' | 'warning' | 'log' | 'info' | 'debug';
