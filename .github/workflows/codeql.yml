@@ -8,9 +8,38 @@ on:
   schedule:
     - cron: '0 0 * * 1'  # Run every Monday at midnight
 
+# This repository is PRIVATE: GitHub code scanning (CodeQL uploads) requires
+# GitHub Advanced Security, which is not available on this plan. The
+# `ghas-check` job probes the code-scanning API and skips the analysis jobs
+# cleanly while Advanced Security is unavailable, so CI stays green. As soon
+# as Advanced Security is enabled (or the repository becomes public), the
+# workflow starts running automatically with no changes needed.
 jobs:
+  ghas-check:
+    name: Check Advanced Security availability
+    runs-on: ubuntu-latest
+    outputs:
+      enabled: ${{ steps.check.outputs.enabled }}
+    steps:
+      - name: Probe code-scanning API
+        id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          CODE=$(gh api "repos/${{ github.repository }}/code-scanning/default-setup" \
+            --silent -H "Accept: application/vnd.github+json" >/dev/null 2>&1 && echo 200 || echo 403)
+          echo "enabled=$([[ "$CODE" == "200" ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+          if [[ "$CODE" == "200" ]]; then
+            echo "✓ Advanced Security available — CodeQL will run."
+          else
+            echo "ℹ️  Advanced Security is not available for this private repository (HTTP $CODE)."
+            echo "   CodeQL analysis is skipped. Enable GitHub Advanced Security to activate it."
+          fi
+
   analyze:
-    name: Analyze Code
+    name: Analyze Code (${{ matrix.language }})
+    needs: ghas-check
+    if: needs.ghas-check.outputs.enabled == 'true'
     runs-on: ubuntu-latest
     permissions:
       actions: read

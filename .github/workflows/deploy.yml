@@ -9,70 +9,103 @@ concurrency:
   group: deploy-${{ github.ref }}
   cancel-in-progress: false
 
+# NOTE: the `secrets` context is NOT available in job-level `if:` conditions
+# (that fails the whole workflow with zero jobs). Job enablement is therefore
+# decided by a lightweight check job that probes the secrets in a step, and
+# every deploy step is gated on its outputs. With no credentials configured
+# the jobs skip gracefully and the pipeline stays green.
 jobs:
+  check-credentials:
+    name: Check deployment credentials
+    runs-on: ubuntu-latest
+    outputs:
+      vercel: ${{ steps.creds.outputs.vercel }}
+      azure: ${{ steps.creds.outputs.azure }}
+    steps:
+      - name: Probe secrets
+        id: creds
+        run: |
+          if [ -n "${{ secrets.VERCEL_TOKEN }}" ] && [ -n "${{ secrets.VERCEL_ORG_ID }}" ] && [ -n "${{ secrets.VERCEL_PROJECT_ID }}" ]; then
+            echo "vercel=true" >> "$GITHUB_OUTPUT"
+            echo "✓ Vercel credentials present."
+          else
+            echo "vercel=false" >> "$GITHUB_OUTPUT"
+            echo "ℹ️  VERCEL_TOKEN / VERCEL_ORG_ID / VERCEL_PROJECT_ID not configured — frontend deploy skipped."
+          fi
+          if [ -n "${{ secrets.AZURE_CREDENTIALS }}" ]; then
+            echo "azure=true" >> "$GITHUB_OUTPUT"
+            echo "✓ Azure credentials present."
+          else
+            echo "azure=false" >> "$GITHUB_OUTPUT"
+            echo "ℹ️  AZURE_CREDENTIALS not configured — backend deploy skipped."
+          fi
+
   deploy-frontend:
     name: Deploy Frontend (Vercel)
+    needs: check-credentials
+    if: needs.check-credentials.outputs.vercel == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
           cache-dependency-path: 'Frontend/package-lock.json'
-      
+
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
-        if: ${{ secrets.VERCEL_TOKEN != '' }}
-      
+
       - name: Pull Vercel Environment Information
-        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
         working-directory: Frontend
-        if: ${{ secrets.VERCEL_TOKEN != '' }}
         env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-      
+
       - name: Build Project Artifacts
-        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel build --prod --token="$VERCEL_TOKEN"
         working-directory: Frontend
-        if: ${{ secrets.VERCEL_TOKEN != '' }}
         env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VITE_API_URL: ${{ secrets.PROD_API_URL }}
           VITE_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
-      
+
       - name: Deploy Project Artifacts to Vercel
-        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN"
         working-directory: Frontend
-        if: ${{ secrets.VERCEL_TOKEN != '' }}
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
   deploy-backend:
     name: Deploy Backend (Azure)
+    needs: check-credentials
+    if: needs.check-credentials.outputs.azure == 'true'
     runs-on: ubuntu-latest
-    if: ${{ secrets.AZURE_CREDENTIALS != '' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '9.0.x'
           cache: true
           cache-dependency-path: 'Backend/StarbucksEgypt.slnx'
-      
+
       - name: Install EF Tool
         run: dotnet tool install --global dotnet-ef
-      
+
       - name: Restore dependencies
         run: dotnet restore StarbucksEgypt.slnx
         working-directory: Backend
-      
+
       - name: Create Migration Bundle
         run: |
           dotnet ef migrations bundle --project src/Starbucks.Infrastructure --startup-project src/Starbucks.API --output publish/migrate.exe --self-contained -r win-x64
@@ -85,7 +118,7 @@ jobs:
           dotnet build StarbucksEgypt.slnx --configuration Release --no-restore
           dotnet publish StarbucksEgypt.slnx -c Release -o ./publish --no-build
         working-directory: Backend
-      
+
       - name: Azure Login
         uses: azure/login@v2
         with:
@@ -100,8 +133,8 @@ jobs:
   create-release:
     name: Create GitHub Release
     runs-on: ubuntu-latest
-    needs: [deploy-frontend]
-    if: always()
+    needs: [check-credentials, deploy-frontend]
+    if: always() && needs.check-credentials.outputs.vercel == 'true' && needs.deploy-frontend.result == 'success'
     permissions:
       contents: write
     steps:
@@ -114,12 +147,12 @@ jobs:
         id: version
         run: |
           VERSION=$(node -p "require('./Frontend/package.json').version")
-          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
-        
+          echo "VERSION=$VERSION" >> "$GITHUB_OUTPUT"
+
       - name: Create Tag
         run: |
-          git tag v${{ steps.version.outputs.VERSION }} || true
-          git push origin v${{ steps.version.outputs.VERSION }} || true
+          git tag "v${{ steps.version.outputs.VERSION }}" || true
+          git push origin "v${{ steps.version.outputs.VERSION }}" || true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         continue-on-error: true
