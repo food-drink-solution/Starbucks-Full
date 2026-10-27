@@ -5,9 +5,11 @@ import { UserLocationMarker } from './UserLocationMarker';
 import { MapControls } from './MapControls';
 import type { Location } from '@/types';
 
+type LatLngLiteral = { lat: number; lng: number };
+
 interface StoreMapProps {
   locations: Location[];
-  userLocation: google.maps.LatLngLiteral | null;
+  userLocation: LatLngLiteral | null;
   selectedLocation: Location | null;
   onLocationSelect: (location: Location | null) => void;
   onLocateMe: () => void;
