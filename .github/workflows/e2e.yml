@@ -70,16 +70,18 @@ jobs:
 
       - name: Wait for SQL Server to accept connections
         run: |
-          for i in $(seq 1 30); do
+          # Cold-boot SQL Server on a fresh container copies system database
+          # files and runs upgrade steps; this takes 60-120s+ on hosted runners.
+          for i in $(seq 1 120); do
             if docker exec e2e-sql /opt/mssql-tools18/sqlcmd \
               -S localhost -U sa -P "$SA_PASSWORD" -C -Q "SELECT 1" > /dev/null 2>&1; then
-              echo "SQL Server is ready"
+              echo "SQL Server is ready (after $((i * 2))s)"
               exit 0
             fi
             sleep 2
           done
           echo "SQL Server did not become ready in time"
-          docker logs e2e-sql
+          docker logs e2e-sql --tail 200 || true
           exit 1
 
       - name: Setup .NET
@@ -104,7 +106,7 @@ jobs:
 
       - name: Wait for the API to become healthy
         run: |
-          for i in $(seq 1 60); do
+          for i in $(seq 1 90); do
             code=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8080/swagger/v1/swagger.json || true)
             if [ "$code" = "200" ]; then
               echo "API is ready"
