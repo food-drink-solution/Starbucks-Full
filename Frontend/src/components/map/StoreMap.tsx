@@ -16,7 +16,7 @@ interface StoreMapProps {
   geoStatus: 'idle' | 'loading' | 'error';
 }
 
-function getPosition(location: Location): google.maps.LatLngLiteral {
+function getPosition(location: Location): LatLngLiteral {
   return (
     location.coordinates || {
       lat: location.latitude || 0,
