@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+using Starbucks.Application.Common.Utilities;
 using Starbucks.Domain.Identity;
 
 namespace Starbucks.Infrastructure.Data.Seeds;
@@ -126,7 +127,7 @@ public class IdentityDataSeeder
         
         if (createResult.Succeeded)
         {
-            _logger.LogInformation("Created admin user: {Email}", adminEmail);
+            _logger.LogInformation("Created admin user: {Email}", PiiGuard.MaskEmail(adminEmail));
             
             // Add to SuperAdmin role
             var roleResult = await _userManager.AddToRoleAsync(adminUser, "SuperAdmin");

@@ -73,10 +73,9 @@ public class GetNearbyLocationsQueryHandler : CachedPagedQueryHandler<GetNearbyL
             if (!locationList.Any())
             {
                 _logger.LogWarning(
-                    "No locations found within {Radius} km of coordinates ({Latitude}, {Longitude})",
+                    "No locations found within {Radius} km of coordinates ({CoordBucket})",
                     request.Radius,
-                    request.Latitude,
-                    request.Longitude
+                    PiiGuard.HashCoordinates(request.Latitude, request.Longitude)
                 );
                 return Result<PagedResult<LocationDto>>.Failure(
                     $"No locations found within {request.Radius} km of the specified coordinates"

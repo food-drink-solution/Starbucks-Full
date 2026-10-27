@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Starbucks.Application.Common.Interfaces.Services;
 using Starbucks.Application.Common.Models;
 using Starbucks.Application.DTOs.Auth;
+using Starbucks.Application.Common.Utilities;
 using Starbucks.Domain.Identity;
 using Mapster;
 
@@ -48,7 +49,8 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<LoginRes
             var user = await _userManager.FindByEmailAsync(request.Request.Email);
             if (user == null)
             {
-                _logger.LogWarning("Login attempt with non-existent email: {Email}", request.Request.Email);
+                // Mask the email — never log user-provided personal data in clear text
+                _logger.LogWarning("Login attempt with non-existent email: {Email}", PiiGuard.MaskEmail(request.Request.Email));
                 return Result<LoginResponse>.Failure("Invalid email or password");
             }
 
