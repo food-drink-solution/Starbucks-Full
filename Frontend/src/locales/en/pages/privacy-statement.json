@@ -1,0 +1,138 @@
+{
+  "title": "Privacy Statement | Starbucks",
+  "header": "Privacy Statement",
+  "lastUpdated": "Last Updated: October 2023",
+  "sections": {
+    "intro": {
+      "title": "Privacy Statement",
+      "paragraphs": [
+        "Alshaya Co.WLL (\"Alshaya\"), as the regional franchisee for Starbucks in the Middle East, North Africa, Turkey, and Central Asia (\"we\", \"us\", \"our company\"), provides this policy to inform you of our practices regarding the collection, use, disclosure, and protection of personal information. This policy applies to our website, mobile applications, and all other digital services we offer.",
+        "By visiting or using this website, you acknowledge that you have reviewed this policy, understood its terms, and accepted them. If you do not agree to this Privacy Policy, please do not use this Site."
+      ]
+    },
+    "collection": {
+      "title": "Information We Collect",
+      "paragraphs": [
+        "We may collect the following information about you:"
+      ],
+      "list": [
+        "Personally identifiable information, such as name, email address, phone number, and date of birth.",
+        "Account information when registering for the rewards program or Starbucks digital services.",
+        "Details of purchases and commercial transactions.",
+        "Geographic information when using the location feature to find the nearest branch.",
+        "Usage data such as pages you visit and searches you perform.",
+        "Device information such as browser type, operating system, and IP address.",
+        "Cookies and similar technologies."
+      ]
+    },
+    "usage": {
+      "title": "How We Use Information",
+      "paragraphs": [
+        "We use the information we collect for the following purposes:"
+      ],
+      "list": [
+        "Providing our services, processing your orders, and managing your account.",
+        "Sending order confirmations, shipping notifications, and updates related to your account.",
+        "Managing the rewards program and sending personalized offers to you.",
+        "Improving our services, products, and website content.",
+        "Responding to your inquiries and technical support requests.",
+        "Sending marketing messages and promotional offers (with your consent).",
+        "Complying with legal and regulatory obligations.",
+        "Protecting our rights, our site's security, and preventing fraud."
+      ]
+    },
+    "sharing": {
+      "title": "Information Sharing with Third Parties",
+      "paragraphs": [
+        "We do not sell your personal information to third parties. However, we may share your information in the following cases:"
+      ],
+      "list": [
+        "With Starbucks Coffee International for brand management purposes.",
+        "With service providers who help us operate our website and provide our services.",
+        "With delivery partners like Talabat to process delivery orders.",
+        "When necessary to comply with laws, court orders, or government requests.",
+        "In the event of a merger, acquisition, or asset sale, with prior notice to you."
+      ]
+    },
+    "cookies": {
+      "title": "Cookies",
+      "paragraphs": [
+        "We use cookies and similar technologies to improve your experience on our site. These files are used to remember your preferences, analyze traffic, and customize the content provided to you. You can adjust your browser to refuse cookies, though this may affect some site functionalities."
+      ],
+      "subsections": [
+        {
+          "title": "Essential Cookies:",
+          "paragraphs": [
+            "Necessary for site operation and cannot be disabled."
+          ]
+        },
+        {
+          "title": "Functional Cookies:",
+          "paragraphs": [
+            "Allow us to analyze site usage and measure and improve performance."
+          ]
+        },
+        {
+          "title": "Advertising Cookies:",
+          "paragraphs": [
+            "Used by advertising companies to deliver ads related to your interests."
+          ]
+        }
+      ]
+    },
+    "international": {
+      "title": "International Data Transfer",
+      "paragraphs": [
+        "Your personal information may be stored and processed in countries outside your own, including countries that may not have the same level of data protection. In such cases, we take appropriate measures to ensure your information is protected in accordance with this policy and applicable laws."
+      ]
+    },
+    "security": {
+      "title": "Data Security",
+      "paragraphs": [
+        "We are committed to protecting your personal information and take appropriate technical, administrative, and physical security measures to protect against unauthorized access, disclosure, modification, or destruction. However, we cannot fully guarantee the security of data transmitted over the Internet."
+      ]
+    },
+    "retention": {
+      "title": "Data Retention",
+      "paragraphs": [
+        "We retain your personal information as long as necessary to achieve the purposes outlined in this policy, or for longer periods as required by law. When it is no longer needed, we delete or anonymize your information in secure ways."
+      ]
+    },
+    "rights": {
+      "title": "Your Rights",
+      "paragraphs": [
+        "According to applicable laws, you may have the following rights:"
+      ],
+      "list": [
+        "Right to access your personal information that we hold.",
+        "Right to correct inaccurate or incomplete information.",
+        "Right to delete your personal information in certain circumstances.",
+        "Right to object to the processing of your information in some cases.",
+        "Right to withdraw your consent at any time without affecting the lawfulness of processing based on consent before its withdrawal.",
+        "Right to lodge a complaint with the competent data protection authority."
+      ],
+      "note": "To exercise these rights, please contact us via email: privacy@alshaya.com"
+    },
+    "children": {
+      "title": "Children's Privacy",
+      "paragraphs": [
+        "Our site is not directed to children under 13, and we do not knowingly collect personal information from them. If we discover we have collected information from a child under 13, we will delete it immediately. If you believe your child has provided us with personal information, please contact us."
+      ]
+    },
+    "modifications": {
+      "title": "Modifications to Privacy Policy",
+      "paragraphs": [
+        "We may modify this policy from time to time. We will notify you of any material changes via a prominent notice on our site or via email. Your continued use of the site after the modifications are posted constitutes your acceptance of the revised policy."
+      ]
+    },
+    "contact": {
+      "title": "Contact Us",
+      "paragraphs": [
+        "For any inquiries or requests regarding the privacy policy or your personal data, please contact our Data Protection Officer:"
+      ],
+      "contactInfo": {
+        "address": "Alshaya Co.WLL — Kuwait, P.O. Box 1960, Safat 13020"
+      }
+    }
+  }
+}

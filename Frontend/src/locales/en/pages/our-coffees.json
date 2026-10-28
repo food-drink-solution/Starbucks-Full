@@ -1,0 +1,59 @@
+{
+  "title": "Our Coffees",
+  "intro": {
+    "title": "Our Passion for Coffee",
+    "paragraphs": [
+      "At Starbucks, we have always been and continue to be committed to the highest standards of coffee quality. Our passion for coffee drives us to share it.",
+      "Now you can enjoy an exceptional coffee experience in the comfort of your home, whether you want to enjoy a cup alone or share it with friends.",
+      "We offer you many options to enjoy your favorite coffee."
+    ]
+  },
+  "sections": {
+    "roasts": {
+      "title": "Enjoy Starbucks Coffee in Various Roasts",
+      "paragraphs": [
+        "Our coffee is characterized by its rich taste and is classified into three different roast levels, allowing you to choose the perfect flavor and intensity.",
+        "Starbucks® Blonde Roast features a lighter roast and intensity, offering a unique, mild flavor perfect for you. (Blonde Roast)",
+        "Enjoy the smooth and balanced flavor of our Medium Roast, perfect for any time of day. (Medium Roast)",
+        "This coffee features a rich flavor and strong intensity for lovers of bold coffee. (Dark Roast)"
+      ]
+    },
+    "at-home": {
+      "title": "Starbucks Coffee At Home",
+      "paragraphs": [
+        "Enjoy your favorite Starbucks coffee your way at home...",
+        "Pike Place Roast (Medium Roast)",
+        "House Blend (Medium Roast)",
+        "Espresso Roast (Dark Roast)",
+        "Decaf Espresso Roast (Dark Roast)"
+      ]
+    },
+    "brewing-guides": {
+      "title": "Brewing Guides",
+      "paragraphs": [
+        "Brewing coffee using different methods can enhance various flavors and characteristics. We offer you different brewing methods based on our expertise so you can enjoy a richly flavored cup every time."
+      ]
+    }
+  },
+  "accordion": {
+    "title": "Step-by-Step Brewing Methods",
+    "items": [
+      {
+        "title": "Coffee Press",
+        "content": "Brewing with a coffee press retains the precious natural coffee oils that paper filters absorb, extracting the coffee's full flavor while giving it a rich, dense consistency.\n\n1. Grind and Measure\nRemember coffee is an agricultural product. We recommend purchasing smaller quantities so you can enjoy its fresh flavor.\n\n2. Add Hot Water\nFor the best possible flavor, ensure you use pure (filtered) or bottled water.\n\n3. Place the Plunger\nPlace the plunger back on without pushing it down, and let the coffee brew for 4 minutes.\n\n4. Press and Pour\nGently push the plunger all the way down, then enjoy a unique cup of coffee."
+      },
+      {
+        "title": "Pour-Over",
+        "content": "The pour-over method is a simple and easy process to get a single cup of coffee with a distinct flavor and rich body.\n\n1. Measure and Boil\nMeasure the amount of water you wish to use, then add a little extra to rinse the filter, and bring it to a boil.\n\n2. Pre-wet the Filter\nPour some hot water over the paper filter to rinse it, then discard the water. This helps you get a cup of coffee with the purest flavor possible.\n\n3. Measure and Grind\nDetermine the appropriate amount of coffee. Ensure the coffee is ground finely, similar to granulated sugar. Use 2 tablespoons of coffee for every 6 fluid ounces of water.\n\n4. Pour and Pause\nUse the boiling water immediately and fill the paper cone halfway until the coffee grounds are submerged. Stop for 10 seconds and wait for the coffee to bloom. Blooming releases carbon dioxide, which enhances the coffee's flavor.\n\n5. Enjoy the Perfect Taste\nFor precision, make sure to use a timer. Brewing a cup of coffee takes about 3 minutes."
+      },
+      {
+        "title": "Iced Pour-Over",
+        "content": "This is an easy and effective way to prepare richly flavored iced coffee, one pitcher at a time.\n\n1. Pre-wet the Filter\nPour hot water over the paper filter to rinse it, then discard the water. This helps ensure the purest possible flavor.\n\n2. Choose the Right Grind\nFor the pour-over method, make sure the coffee is ground finely, resembling granulated sugar.\n\n3. Measure\nWhen making iced pour-over coffee, you must brew it at double strength because of the ice. Use 4 tablespoons of coffee for every 6 fluid ounces of hot water.\n\n4. Pour and Pause\nFill the paper cone halfway with hot water until the grounds are submerged, then stop for 10 seconds to let the coffee bloom, releasing carbon dioxide and enhancing the flavor.\n\n5. Brew\nSlowly add water in a circular motion until all the grounds are covered.\n\n6. Add Ice\nUse an African coffee for this method to get a delicious, refreshing taste with citrus notes."
+      },
+      {
+        "title": "Coffee Brewer",
+        "content": "A coffee brewer is a great way to enjoy coffee at home. You can enjoy a wonderful cup of coffee through a coffee brewer by using the correct grind and pure water.\n\n1. Choose the Right Grind\nFor flat-bottom filters, make sure the coffee is ground to a medium coarseness resembling sea salt. For cone filters, use a fine grind similar to granulated sugar.\n\n2. Measure\nUse 2 tablespoons of freshly ground coffee for every 6 fluid ounces of water.\n\n3. Enjoy Your Coffee\nTip: Make sure to enjoy your freshly brewed coffee immediately for a rich, strong flavor, as reheating coffee diminishes its richness."
+      }
+    ]
+  }
+}

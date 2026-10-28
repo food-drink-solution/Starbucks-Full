@@ -7,12 +7,14 @@ import { useLanguage } from "@/hooks/i18n/useLanguage";
 import { ANIMATION_CONFIG } from '@/lib/core/constants';
 
 
+import defaultStatement from "@/data/home/statement.json";
+
 const StatementSection = () => {
   const { t } = useTranslation(["pages", "common"]);
   const { lang } = useLanguage();
 
   // Fetch statement data using TanStack Query
-  const { data: statementData, isLoading, error } = useStatement();
+  const { data: statementData, isLoading } = useStatement();
 
   // Show loading state (minimal skeleton)
   if (isLoading) {
@@ -31,13 +33,11 @@ const StatementSection = () => {
     );
   }
 
-  // Show error state (minimal fallback)
-  if (error || !statementData) {
-    return null; // Gracefully hide section if data fails to load
-  }
+  const effectiveStatement = statementData || defaultStatement;
 
   // Paragraphs are stored as an array in pages.json
-  const paragraphs = t("pages:home.statement.paragraphs", { returnObjects: true }) as string[];
+  const rawParagraphs = t("pages:home.statement.paragraphs", { returnObjects: true });
+  const paragraphs = Array.isArray(rawParagraphs) ? rawParagraphs : [];
 
   return (
     <section className="bg-background py-16 transition-colors">
@@ -67,7 +67,7 @@ const StatementSection = () => {
               ),
             )}
           </div>
-          <Link to={`/${lang}${statementData.ctaLink}`}>
+          <Link to={`/${lang}${effectiveStatement.ctaLink}`}>
             <Button variant="outline" size="lg">
               {t("pages:home.statement.ctaText")}
             </Button>

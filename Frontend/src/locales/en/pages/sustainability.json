@@ -1,0 +1,46 @@
+{
+  "title": "#MakeTheChange: Leading The Way To A Resource Positive Future",
+  "header": "Sustainability",
+  "intro": {
+    "paragraphs": [
+      "We love your love for coffee. Whether you’re headed to work, meeting friends, going to the gym, or just out-and-about, we are part of your daily routine, habit, or ritual. Wherever you go, we go. Just as you are part of our journey to be a resource-positive company.",
+      "Taking care of the environment is as important to us as our coffee craft. That’s why we’re expanding our plant-based and environmentally-friendly-based menu, shifting from single-use to reusable packaging, and innovating to develop greener stores. As our partners, customers, and stakeholders, you can help us #MakeTheChange and take steps on our sustainability journey across our 900 stores in the MENA region.",
+      "We can’t do this alone; it takes all of us. Pay attention to the little choices. Take simple steps. Here’s one: every time you head out, carry a reusable cup with you and #MakeTheChange. It’s easy yet effective. You become a part of our success in giving back more than we take from the planet. So, we invite you to make reusables a part of your everyday routine. Every small effort makes a huge difference to us."
+    ]
+  },
+  "sections": {
+    "reusables": {
+      "title": "Make The Change",
+      "subtitle": "Sustainability Reusable Demonstrate",
+      "paragraphs": [
+        "Here’s how the reusables experience works in-store. It’s safe, contactless, and on the go! Bring your clean reusable cup to enjoy your favorite Starbucks beverage and help us #MakeTheChange."
+      ],
+      "cta": "Watch How"
+    },
+    "coffee-grounds": {
+      "title": "Flowers Love Coffee",
+      "subtitle": "Flowers love coffee too!",
+      "paragraphs": [
+        "Ever wonder how far a coffee bean could go? Beyond the daily hot cup of coffee you enjoy, we have found a way to use coffee grounds to nurture and give back to the environment.",
+        "Coffee grounds are a great source of nutrients for your flowers and plants. Inspired by this, Starbucks started its Grounds for Your Garden program in 1995.",
+        "This is where spent coffee grounds are carefully packed into bags, for you to take home and use on your garden. Used coffee grounds make excellent compost, particularly for plants that flourish in acidic soils. Here are three ways for you to use our coffee grounds."
+      ],
+      "list": [
+        "Mixed directly into soil around plants, such as heathers, rhododendrons, azaleas, magnolias, hydrangeas and camellias",
+        "Added to compost to help accelerate the composting process",
+        "Applied as top-dressing to fast growing vegetables, hoeing into the soil to avoid contamination of foliage"
+      ],
+      "note": "For best results, the coffee grounds should be no more than 25% of the total compost pile content; the remaining 75% would be the soil. Coffee grounds should be mixed well with the soil to allow air to ventilate the compost pile. Coffee grounds should be used within 2-3 weeks of brewing in order to capture the most nutritional value."
+    },
+    "strawless-lids": {
+      "title": "Strawless Lids",
+      "subtitle": "New Strawless Lid in MENA",
+      "paragraphs": [
+        "Reducing Waste and Enabling Innovation. The small things we do can have a big impact on our world.",
+        "Taking the decision to start removing plastic straws from our Starbucks stores is a small but important step on our journey to be more environmentally conscious, to lessen our impact on the world around us, reduce the amount of waste we produce and reach our goal of being resource positive here in the MENA region.",
+        "This journey began in July 2018 when globally Starbucks announced that plastic straws would be phased out and a transition towards using only paper straws would get underway. Now, we’ve gone one step further and started to remove the need for straws altogether through the introduction of our new strawless lids for our cold beverages range.",
+        "Through a combination of great design, innovative thinking and a focus on finding a better, greener solution, the fully recyclable strawless lid was born. The arrival of the strawless lid in the MENA region represents a leap forward in eco-friendly thinking and problem solving. Proof that small changes really can have a big impact."
+      ]
+    }
+  }
+}

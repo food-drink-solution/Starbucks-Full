@@ -1,0 +1,37 @@
+{
+  "title": "Account Profile",
+  "personal_info": "Personal Information",
+  "no_phone": "No phone number provided",
+  "tabs": {
+    "settings": "Settings",
+    "orders": "My Orders",
+    "admin": "Admin Tools"
+  },
+  "settings": {
+    "notifications": "Notifications",
+    "notifications_desc": "Manage how we reach you",
+    "payments": "Payment Methods",
+    "payments_desc": "Manage your saved cards",
+    "addresses": "Saved Addresses",
+    "addresses_desc": "Manage your delivery addresses"
+  },
+  "orders": {
+    "empty_title": "No orders yet",
+    "empty_desc": "Your order history is currently empty. Start exploring our menu to place your first order!"
+  },
+  "admin": {
+    "users": "User Management",
+    "categories": "Category Manager",
+    "menu_items": "Menu Items",
+    "orders": "Order Management",
+    "settings": "System Settings",
+    "banners": "Banner Management",
+    "notifications": "App Notifications",
+    "exports": "Export Data",
+    "analytics": "Analytics",
+    "daily_reports": "Daily Reports",
+    "control_center": "Admin Control Center",
+    "control_center_desc": "Access advanced administrative tools to manage the Starbucks Egypt platform, monitor system health, and oversee user activity.",
+    "enter_panel": "Enter Admin Panel"
+  }
+}

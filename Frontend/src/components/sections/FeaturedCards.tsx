@@ -5,12 +5,14 @@ import { useFeaturedCards } from "@/hooks/queries/useFeaturedData";
 import { useLanguage } from "@/hooks/i18n/useLanguage";
 import { FeaturedCard } from "./FeaturedCard";
 
+import defaultFeaturedCards from "@/data/home/featured-cards.json";
+
 export function FeaturedCards() {
   const { t } = useTranslation(["pages", "common"]);
   const { lang } = useLanguage();
 
   // Fetch featured cards data using TanStack Query
-  const { data: featuredCardsData, isLoading, error } = useFeaturedCards();
+  const { data: featuredCardsData, isLoading } = useFeaturedCards();
 
   // Show skeleton while loading
   if (isLoading) {
@@ -22,16 +24,7 @@ export function FeaturedCards() {
     );
   }
 
-  // Show error state (fallback to skeleton to avoid breaking the page)
-  if (error || !featuredCardsData) {
-    const errorMessage = lang === "ar" ? "فشل تحميل البطاقات المميزة." : "Failed to load featured cards.";
-    return (
-      <>
-        <LiveRegion message={errorMessage} politeness="assertive" />
-        <FeaturedCardsSkeleton />
-      </>
-    );
-  }
+  const effectiveCardsData = featuredCardsData || defaultFeaturedCards;
 
   return (
     <section className="py-12 relative overflow-hidden bg-background transition-colors">
@@ -39,7 +32,7 @@ export function FeaturedCards() {
 
       <div className="container mx-auto max-w-7xl px-4 relative z-10">
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-6">
-          {featuredCardsData?.cards?.map((card: { id: string; image: string; theme?: string; ctaLink?: string; secondaryCtaLink?: string; [key: string]: unknown }, index: number) => {
+          {effectiveCardsData?.cards?.map((card: { id: string; image: string; theme?: string; ctaLink?: string; secondaryCtaLink?: string; [key: string]: unknown }, index: number) => {
             const title = t(`pages:home.featured.${card.id}.title`);
             const description = t(`pages:home.featured.${card.id}.description`);
             const cta = t(`pages:home.featured.${card.id}.cta`) as string;

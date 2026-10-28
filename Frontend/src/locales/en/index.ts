@@ -10,9 +10,11 @@ import loading from "./common/loading.json";
 import accessibility from "./common/accessibility.json";
 import cookieConsent from "./common/cookieConsent.json";
 import cart from "./common/cart.json";
+import home from "./pages/home.json";
 
 // Page-specific translations are loaded lazily per route via
-// src/lib/i18n/pageTranslations.ts — they are NOT part of the main bundle.
+// src/lib/i18n/pageTranslations.ts — they are NOT part of the main bundle,
+// except home which is needed on initial render.
 
 const common = {
   ...general,
@@ -35,4 +37,7 @@ const navigation = {
 export default {
   common,
   navigation,
+  pages: {
+    home,
+  },
 };

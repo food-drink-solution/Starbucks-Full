@@ -1,0 +1,80 @@
+{
+  "hero": {
+    "title": "The Starbucks Foundation and Alshaya are donating to support humanitarian aid in Gaza",
+    "description": "We are committed to supporting the communities we serve",
+    "ctaText": "Learn More",
+    "imageAlt": "Starbucks Banner"
+  },
+  "statement": {
+    "title": "A Statement from Starbucks",
+    "subtitle": "Facts About Starbucks in the Middle East",
+    "paragraphs": [
+      "Starbucks has been operating in the Middle East since 1999 through a partnership with Alshaya Group. We are proud to serve our communities and provide the unique Starbucks experience to our customers in the region.",
+      "Learn more about Starbucks Middle East via the link below."
+    ],
+    "ctaText": "Learn More"
+  },
+  "featured": {
+    "new-era": {
+      "title": "New Era. Same Icons.",
+      "description": "Discover 3 iconic orders inspired by The Devil Wears Prada: Miranda's Coffee, Andy's Oatmilk Cappuccino, and Nigel's Espresso with Whipped Cream. Available in stores for a limited time.",
+      "cta": "Discover More",
+      "imageAlt": "New Era"
+    },
+    "official-statement": {
+      "title": "Starbucks®",
+      "description": "Enjoy your favorite drinks now",
+      "cta": "Order Now",
+      "secondaryCta": "Discover Our Locations",
+      "imageAlt": "Starbucks"
+    },
+    "delivery-promo": {
+      "title": "Official Starbucks Statement",
+      "description": "Truth matters. In response to misinformation, we're sharing the facts about what Starbucks believes and stands for.",
+      "cta": "Learn More",
+      "imageAlt": "Official Starbucks Statement"
+    },
+    "rewards-promo": {
+      "title": "Starbucks Coffee Delight",
+      "description": "Discover new flavors with Starbucks coffee roast levels",
+      "cta": "Discover More",
+      "imageAlt": "Starbucks Coffee"
+    },
+    "summer-menu": {
+      "title": "Starbucks Delivery",
+      "description": "Get your favorite flavor delivered straight to your door",
+      "cta": "Order Now",
+      "ctaLink": "https://www.talabat.com/en/egypt/restaurant/516787/starbucks-city-scape-6th-of-october?aid=7935",
+      "imageAlt": "Delivery Service"
+    }
+  },
+  "about-us": {
+    "title": "About Us",
+    "intro": {
+      "title": "About Us",
+      "paragraphs": [
+        "Starbucks serves coffee to millions of customers worldwide each week, yet we serve each customer their unique drink in a special way.",
+        "While it seems simple—serving a coffee drink in moments—those short moments mean a lot to us, as they express our care for our customers."
+      ]
+    },
+    "sections": {
+      "connecting": {
+        "title": "Connecting with Customers",
+        "paragraphs": [
+          "We care about the smallest details in everything we do to enhance the connection with our customers through our commitment to the highest coffee quality standards in the world, serving our customers and community in a unique and sustainable way. From the beginning, when we opened our first cafe nearly 40 years ago, we have always worked to improve our cafes in every country we operate."
+        ]
+      },
+      "history": {
+        "title": "Our History",
+        "paragraphs": [
+          "From our beginning to today, we work every day on two core principles: sharing a unique coffee experience with friends and helping make this world a better place.",
+          "We have committed to these core principles since the opening of the first Starbucks in 1971. At that time, the company was a single small cafe in Seattle's Pike Place Market, offering the world's finest fresh-roasted whole bean coffees. The name 'Starbucks' was inspired by the story of Moby Dick, reflecting the seafaring tradition of early coffee traders.",
+          "In 1981, Howard Schultz first visited a Starbucks store. He enjoyed his first cup of Sumatra so much that he joined the company a year later. He is now the chairman and CEO of Starbucks.",
+          "In 1983, Howard traveled to Italy and fell in love with Italian coffee bars and their romantic coffee experience. He envisioned bringing the tradition of the Italian coffee house to the United States. He briefly left Starbucks to start his own Il Giornale coffee houses and returned in August 1987 to purchase Starbucks with the help of local investors.",
+          "From the beginning, Starbucks set out to be a different kind of company. One that not only celebrated coffee and the rich tradition, but that also brought a feeling of connection. Our mission is to inspire and nurture the human spirit – one person, one cup, and one neighborhood at a time.",
+          "Today, with more than 15,000 stores in 50 countries, Starbucks is the premier roaster and retailer of specialty coffee in the world. And with every cup, we strive to bring both our heritage and an exceptional experience to life."
+        ]
+      }
+    }
+  }
+}

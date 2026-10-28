@@ -10,6 +10,8 @@ import { HomeSkeleton } from "@/components/skeletons";
 import { useLanguage } from "@/hooks/i18n/useLanguage";
 import { useHero } from "@/hooks/queries/useFeaturedData";
 
+import defaultHero from "@/data/home/hero.json";
+
 interface HeroData {
   ctaLink: string;
   imageUrl: string;
@@ -67,9 +69,11 @@ export const HomePage = () => {
     );
   }
 
+  const effectiveHero = (heroData as HeroData) || (defaultHero as HeroData);
+
   return (
     <QueryErrorBoundary>
-      {heroData && <HomePageContent heroData={heroData as HeroData} />}
+      <HomePageContent heroData={effectiveHero} />
     </QueryErrorBoundary>
   );
 };

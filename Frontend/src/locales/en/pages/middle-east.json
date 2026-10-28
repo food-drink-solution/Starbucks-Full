@@ -1,0 +1,37 @@
+{
+  "title": "Starbucks Official Statement",
+  "lastUpdated": "Updated October 2023",
+  "intro": {
+    "title": "Facts about Starbucks in the Middle East",
+    "paragraphs": [
+      "Despite being an American company, Starbucks prides itself on being a global company with a presence in 86 countries around the world, including nearly 1,900 cafes in 11 countries in the Middle East and North Africa region, employing more than 19,000 partners. We are proud to be part of the fabric of the local communities where we operate."
+    ]
+  },
+  "sections": {
+    "political-neutrality": {
+      "title": "Starbucks is a Non-Political Organization",
+      "paragraphs": [
+        "We have 400,000 partners (employees) worldwide who hold diverse views and perspectives on various issues. Regardless of those beliefs, Starbucks remains a non-political brand. Likewise, neither Starbucks nor its former chairman and CEO Howard Schultz provide financial support to the Israeli government and/or the Israeli military in any way."
+      ]
+    },
+    "faq-support": {
+      "title": "Does Starbucks provide financial support to Israel?",
+      "paragraphs": [
+        "No. This is a malicious rumor with no basis in truth. Neither Starbucks nor Howard Schultz provides any kind of financial support to the Israeli government and/or the Israeli military. Starbucks is a publicly traded company and is required to disclose any corporate giving each year."
+      ]
+    },
+    "faq-israel-stores": {
+      "title": "Why did Starbucks close its stores in Israel?",
+      "paragraphs": [
+        "We decided to dissolve our partnership in Israel in 2003 due to ongoing operational challenges we experienced in that market. We do not make business decisions based on political issues. It was a difficult decision but we believe it remains the right decision for our businesses."
+      ]
+    },
+    "alshaya-partnership": {
+      "title": "Partnership with Alshaya Group",
+      "paragraphs": [
+        "Through a licensing agreement with trading partner and licensee MH Alshaya Co. WLL, a private Kuwait family business, Starbucks has operated in the Middle East since 1999. Today Alshaya Group operates more than 1,900 Starbucks stores."
+      ]
+    }
+  },
+  "updateNote": "This updates a statement originally posted to the Starbucks Newsroom in 2010, updated October 2023."
+}

@@ -1,0 +1,51 @@
+{
+  "hero": {
+    "title": "Would you like to know how to contact us?",
+    "image_alt": "Connect with the Starbucks Team"
+  },
+  "info": {
+    "inquiry": "Do you have any inquiry?",
+    "email_label": "You can contact our customer service team by email:",
+    "social_label": "Or through our Facebook and Instagram pages.",
+    "phone_label": "Call us at:"
+  },
+  "form": {
+    "title": "Send Us a Message",
+    "subtitle": "Our team will respond to your inquiry as soon as possible.",
+    "success": {
+      "title": "Thank you for contacting us!",
+      "message": "Your message has been received. We will get back to you shortly."
+    },
+    "fields": {
+      "name": {
+        "label": "Full Name *",
+        "placeholder": "Enter your full name"
+      },
+      "email": {
+        "label": "Email *",
+        "placeholder": "Enter your email"
+      },
+      "phone": {
+        "label": "Phone Number",
+        "placeholder": "Enter your phone number"
+      },
+      "subject": {
+        "label": "Subject *",
+        "placeholder": "Select subject"
+      },
+      "message": {
+        "label": "Message *",
+        "placeholder": "Write your message here..."
+      },
+      "submit": "Send Message"
+    },
+    "subjects": {
+      "general": "General Inquiry",
+      "complaint": "Complaint",
+      "feedback": "Feedback / Suggestion",
+      "delivery": "Delivery Service",
+      "rewards": "Rewards Program",
+      "other": "Other"
+    }
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "title": "Terms of Use | Starbucks",
+  "header": "Terms of Use",
+  "sections": {
+    "intro": {
+      "title": "Terms of Use",
+      "paragraphs": [
+        "These Terms and Conditions (\"Agreement\") constitute a legal agreement between users of this website (\"Site\") and Alshaya Co.WLL (\"Alshaya\"), the regional franchisee for Starbucks Coffee International in the region. Your use of this Site signifies your agreement to be bound by the terms and conditions listed below. If you do not agree to these terms, please do not use this Site.",
+        "Alshaya reserves the right to modify this Agreement at any time, and your continued use of the Site after the posting of any modifications will constitute your acceptance of those modifications. This Agreement also applies to all content, software, and services contained in or available through the Site and provided by Alshaya."
+      ]
+    },
+    "responsibilities": {
+      "title": "User Responsibilities",
+      "paragraphs": [
+        "You agree to use this Site only for lawful purposes and not to transmit or post any content that would:"
+      ],
+      "list": [
+        "Violate any local or international laws or regulations.",
+        "Post any unlawful, harmful, threatening, abusive, harassing, defamatory, vulgar, or obscene materials.",
+        "Infringe upon the intellectual property rights of any party.",
+        "Transmit any information or software containing viruses, malicious code, or any other corrupted files.",
+        "Impede other users from using this Site."
+      ]
+    },
+    "intellectual_property": {
+      "title": "Intellectual Property",
+      "paragraphs": [
+        "All contents of this Site, including but not limited to text, images, graphics, logos, button icons, audio clips, digital downloads, data compilations, and software, are the property of Starbucks Coffee International or its content suppliers and are protected by applicable intellectual property laws.",
+        "The Starbucks trademark, its logos, and related trade dress are service marks or registered trademarks owned by Starbucks Coffee International. These trademarks may not be used in connection with any product or service not associated with Starbucks or in any manner that is likely to cause confusion among customers or disparage Starbucks."
+      ]
+    },
+    "license": {
+      "title": "Site License and Use",
+      "paragraphs": [
+        "Alshaya grants you a limited, non-transferable, and non-exclusive license to access and use this Site for personal and non-commercial purposes only. This license includes the right to download and print Site content for personal and non-commercial purposes only.",
+        "You may not use this Site for any commercial or public purpose without the prior written permission of Alshaya. Additionally, you may not use any robots, spiders, or other automated devices or any manual process to monitor or copy any pages of this Site."
+      ]
+    },
+    "comments": {
+      "title": "Comments, Suggestions, and Other Content",
+      "paragraphs": [
+        "You may post comments, reviews, suggestions, questions, or other content, provided that such content is not illegal, obscene, threatening, defamatory, invasive of privacy, objectionable, or otherwise injurious to minors. Such content must not contain commercial, promotional, or political references, repeated requests, chain letters, or any other content deemed as unsolicited commercial email (spam).",
+        "If you do post any content, you grant Alshaya a non-exclusive, royalty-free, perpetual, and sublicensable right to use, reproduce, modify, publish, translate, create derivative works from, distribute, perform, and display such content worldwide in any media."
+      ]
+    },
+    "disclaimer": {
+      "title": "Disclaimer",
+      "paragraphs": [
+        "This Site is provided on an \"as is\" basis without any warranties of any kind, express or implied. Alshaya makes no express or implied warranties regarding the operation of this Site or the information, content, materials, or products available therein. Alshaya does not guarantee the accuracy or completeness of the information available on this Site.",
+        "Alshaya will not be liable for any damages of any kind arising from the use of this Site, including but not limited to direct, indirect, incidental, punitive, and consequential damages."
+      ]
+    },
+    "links": {
+      "title": "Links to Other Sites",
+      "paragraphs": [
+        "This Site may contain links to other websites operated by third parties. Alshaya does not control these sites and assumes no responsibility for them. Therefore, Alshaya does not guarantee the accuracy or completeness of the information available on these sites and assumes no liability for such information."
+      ]
+    },
+    "law": {
+      "title": "Applicable Law",
+      "paragraphs": [
+        "This Agreement shall be governed by and construed in accordance with the laws of the State of Kuwait. In the event of any dispute regarding this Agreement, you agree to submit to the personal and exclusive jurisdiction of the competent courts in Kuwait."
+      ]
+    },
+    "modifications": {
+      "title": "Modifications to Terms and Conditions",
+      "paragraphs": [
+        "Alshaya reserves the right to modify these terms and conditions at any time without prior notice. Your continued use of the Site after the posting of any modifications will constitute your acceptance of those modifications."
+      ]
+    },
+    "contact": {
+      "title": "Contact Us",
+      "paragraphs": [
+        "If you have any questions or feedback regarding these terms and conditions, please contact us:"
+      ]
+    }
+  }
+}

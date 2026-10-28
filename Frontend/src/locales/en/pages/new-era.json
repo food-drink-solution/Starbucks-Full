@@ -1,0 +1,32 @@
+{
+  "title": "New Era. Same Icons.",
+  "intro": {
+    "paragraphs": [
+      "Celebrate The Devil Wears Prada with a special menu inspired by its iconic characters.\nWhether you command the room like Miranda, turn heads like Andy, or add your bold touch like Nigel — your Starbucks order just got a whole new presence.",
+      "3 iconic drinks for every mood and every moment, available in stores for a limited time."
+    ]
+  },
+  "sections": {
+    "miranda": {
+      "title": "☕ Miranda's Coffee",
+      "subtitle": "A commanding presence, every detail calculated.",
+      "paragraphs": [
+        "Caffè Latte with no foam, extra espresso and steamed milk at a higher temperature."
+      ]
+    },
+    "andy": {
+      "title": "🌾 Andy's Oatmilk Cappuccino",
+      "subtitle": "Smooth, chic, and ready to turn heads.",
+      "paragraphs": [
+        "Cappuccino with oat milk, caramel sauce and a light dusting of cinnamon."
+      ]
+    },
+    "nigel": {
+      "title": "🖤 Nigel's Espresso con Panna",
+      "subtitle": "Bold and impossible to ignore.",
+      "paragraphs": [
+        "Double Espresso Con Panna with mocha sauce."
+      ]
+    }
+  }
+}

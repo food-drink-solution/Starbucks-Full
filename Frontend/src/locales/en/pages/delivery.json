@@ -1,0 +1,48 @@
+{
+  "title": "Starbucks Delivery",
+  "intro": {
+    "paragraphs": [
+      "Enjoying Starbucks is now easier than ever. Discover if delivery is available in your area. Order now from Starbucks and enjoy your favorite beverages and food."
+    ]
+  },
+  "sections": {
+    "partners": {
+      "title": "Our Delivery Partners",
+      "subtitle": "Starbucks delivery is available via Talabat",
+      "paragraphs": [
+        "Enjoy your favorite Starbucks drink with delivery via Talabat. Order now and get everything you love from Starbucks wherever you are."
+      ],
+      "cta": "Order Now via Talabat"
+    },
+    "how-it-works": {
+      "title": "How to Order",
+      "subtitle": "Simple steps to get your coffee",
+      "paragraphs": [
+        "Getting Starbucks delivered to your home or office is simple. Just follow these steps to get started."
+      ],
+      "list": [
+        "Open the Talabat app or website.",
+        "Search for 'Starbucks' in the search engine.",
+        "Select your favorite beverages and food.",
+        "Confirm your order and wait for it to arrive."
+      ]
+    }
+  },
+  "accordion": {
+    "title": "Delivery Frequently Asked Questions",
+    "items": [
+      {
+        "title": "How do I get Starbucks delivery?",
+        "content": "Easily order through the Talabat app."
+      },
+      {
+        "title": "Can all items on the Starbucks menu be ordered for delivery?",
+        "content": "To maintain high quality standards and service levels, we have a specific delivery menu. Therefore, some select food and beverage items are currently not available for delivery."
+      },
+      {
+        "title": "Can I pay using a Starbucks card or the Starbucks app for delivery?",
+        "content": "Please note that payment via Starbucks card or the app is currently unavailable for delivery orders. Please pay through the Talabat app when ordering."
+      }
+    ]
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "title": "Starbucks Cookie Policy",
+  "lastUpdated": "Effective Date: March 15, 2021",
+  "intro": {
+    "paragraphs": [
+      "Starbucks, like most companies, works with specific service providers to use cookies and other similar technologies (collectively referred to as \"cookies\") on our websites and mobile applications (collectively referred to as \"Sites\").",
+      "Our Cookie Policy aims to provide clear and comprehensive information to users of our Sites (\"you\") about the types of cookies we may use, the purpose of their use, and how you can manage and use cookies.",
+      "For more information about our general data and privacy policy, or to contact us with any inquiries, please review the Privacy Policy on the Starbucks website or view the Starbucks Privacy Policy terms here \"Privacy Statement\"."
+    ]
+  },
+  "accordion": {
+    "title": "Contents",
+    "items": [
+      {
+        "title": "1. What are cookies?",
+        "content": "They are small text files that a website stores on your computer or mobile device when you visit a site, use a mobile application, or click on specific marketing links sent via email. When you visit this site or use the mobile application in the future, the cookies will be recognized by the site owner or other parties that set the cookies."
+      },
+      {
+        "title": "2. Do you have to allow cookies to be activated?",
+        "content": "No, you do not need to allow cookies to be activated unless it is required (or \"strictly necessary\") for the operation of the Sites, as explained below. However, if you disable cookies, please note that the site may not load completely, and you may experience some issues and difficulties while browsing."
+      },
+      {
+        "title": "3. Are there key terms you should know?",
+        "content": "Yes, there are specific terms you should know and understand to be able to change some settings regarding the use of cookies."
+      },
+      {
+        "title": "4. What types of cookies do we use?",
+        "content": "The chart below identifies the types of cookies used by sites owned or operated by Starbucks."
+      },
+      {
+        "title": "5. What other information do we collect using cookies?",
+        "content": "Computer and Usage Information - We may collect information about your browser or device."
+      },
+      {
+        "title": "6. Can you change your cookie settings?",
+        "content": "Yes, you can change your cookie settings at any time by loading the Consent Management Platform by clicking on the Cookies Notice button at the bottom of the page."
+      },
+      {
+        "title": "7. Are there other ways to opt-out of cookies?",
+        "content": "Yes, there are special opt-out platforms you can use to opt-out of cookies."
+      },
+      {
+        "title": "8. How can I get more information?",
+        "content": "For more information and details about cookies, you can visit: www.allaboutcookies.org"
+      }
+    ]
+  }
+}

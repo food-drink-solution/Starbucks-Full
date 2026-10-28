@@ -1,11 +1,88 @@
 {
-  "primary": [
-    { "label": "Home", "href": "/" },
-    { "label": "Menu", "href": "/menu" },
-    { "label": "Locations", "href": "/locations" }
-  ],
-  "secondary": [
-    { "label": "About", "href": "/about-us" },
-    { "label": "Contact", "href": "/contact" }
-  ]
+  "navbar": {
+    "links": [
+      { "id": "menu", "href": "/menu", "slug": null },
+      { "id": "delivery", "href": "/delivery", "slug": "delivery" },
+      { "id": "sustainability", "href": "/social-impact-sustainability", "slug": "sustainability" },
+      { "id": "middle_east", "href": "/starbucks-middle-east", "slug": "middle-east" }
+    ]
+  },
+  "footer": {
+    "sections": [
+      {
+        "id": "about",
+        "links": [
+          { "id": "about_us", "href": "/about-us" },
+          { "id": "our_coffees", "href": "/our-coffees" }
+        ]
+      },
+      {
+        "id": "contact",
+        "links": [
+          { "id": "contact_us", "href": "/contact-us" },
+          { "id": "store_locator", "href": "/locations" }
+        ]
+      },
+      {
+        "id": "social_impact",
+        "links": [
+          { "id": "sustainability", "href": "/social-impact-sustainability" }
+        ]
+      }
+    ],
+    "legal": [
+      { "id": "privacy_policy", "href": "/privacy-statement" },
+      { "id": "terms_conditions", "href": "/terms-of-use" },
+      { "id": "cookie_notice", "href": "/cookie-notice" }
+    ],
+    "app": {
+      "appStore": "https://apps.apple.com/app/starbucks/id331177714",
+      "googlePlay": "https://play.google.com/store/apps/details?id=com.starbucks.mobilecard"
+    },
+    "socials": [
+      { "name": "spotify", "href": "https://open.spotify.com/user/starbucks" },
+      { "name": "facebook", "href": "https://facebook.com/StarbucksMiddleEast" },
+      { "name": "pinterest", "href": "https://pinterest.com/starbucks" },
+      { "name": "instagram", "href": "https://instagram.com/starbucksegypt" },
+      { "name": "youtube", "href": "https://youtube.com/starbucks" },
+      { "name": "tiktok", "href": "https://tiktok.com/@starbucks" }
+    ],
+    "countries": [
+      { "name": "United States", "href": "https://www.starbucks.com" },
+      { "name": "Starbucks Stories", "href": "https://stories.starbucks.com" },
+      { "name": "Egypt", "href": "https://www.starbucks.eg" },
+      { "name": "Austria", "href": "https://www.starbucks.at" },
+      { "name": "Bahrain", "href": "https://www.starbucks.com.bh" },
+      { "name": "Belgium", "href": "https://www.starbucks.be" },
+      { "name": "Bulgaria", "href": "https://www.starbucks.bg" },
+      { "name": "Colombia", "href": "https://www.starbucks.com.co" },
+      { "name": "Czech Republic", "href": "https://www.starbuckscoffee.cz" },
+      { "name": "France", "href": "https://www.starbucks.fr" },
+      { "name": "Germany", "href": "https://www.starbucks.de" },
+      { "name": "Hungary", "href": "https://www.starbucks.hu" },
+      { "name": "Ireland", "href": "https://www.starbucks.ie" },
+      { "name": "Iceland", "href": "https://www.starbucks.is" },
+      { "name": "Jordan", "href": "https://www.starbucks.com.jo" },
+      { "name": "Kazakhstan", "href": "https://www.starbucks.com.kz" },
+      { "name": "Kuwait", "href": "https://www.starbucks.com.kw" },
+      { "name": "Lebanon", "href": "https://www.starbucks.com.lb" },
+      { "name": "Malta", "href": "https://www.starbucks.mt" },
+      { "name": "Morocco", "href": "https://www.starbucks.co.ma" },
+      { "name": "Netherlands", "href": "https://www.starbucks.nl" },
+      { "name": "Norway", "href": "https://www.starbucks.no" },
+      { "name": "Oman", "href": "https://www.starbucks.com.om" },
+      { "name": "Poland", "href": "https://www.starbucks.pl" },
+      { "name": "Portugal", "href": "https://www.starbucks.pt" },
+      { "name": "Qatar", "href": "https://www.starbucks.qa" },
+      { "name": "Romania", "href": "https://www.starbucksromania.ro" },
+      { "name": "Saudi Arabia", "href": "https://www.starbucks.sa" },
+      { "name": "Serbia", "href": "https://www.starbucks.rs" },
+      { "name": "Slovakia", "href": "https://www.starbucksslovakia.sk" },
+      { "name": "South Africa", "href": "https://www.starbucks.co.za" },
+      { "name": "Spain", "href": "https://www.starbucks.es" },
+      { "name": "Switzerland", "href": "https://www.starbucks.ch" },
+      { "name": "UAE", "href": "https://www.starbucks.ae" },
+      { "name": "United Kingdom", "href": "https://www.starbucks.co.uk" }
+    ]
+  }
 }

@@ -1,0 +1,30 @@
+{
+  "title": "Find Your Nearest Starbucks | Egypt",
+  "hero": {
+    "title": "FIND YOUR\nNEAREST\nSTARBUCKS",
+    "subtitle": "in Egypt",
+    "search_placeholder": "Find a store",
+    "use_my_location": "Use my location",
+    "locating": "Locating...",
+    "location_unavailable": "Location unavailable"
+  },
+  "content": {
+    "title": "Our Locations in Egypt",
+    "subtitle": "Discover your nearest store and enjoy the Starbucks experience.",
+    "all_cities": "All Cities",
+    "no_results": "No locations found",
+    "stores_count": "stores"
+  },
+  "promo": {
+    "joy": {
+      "title": "The Joy of Starbucks Coffee",
+      "desc": "Discover Starbucks Roast Spectrum and dive deep into brewing techniques",
+      "cta": "Read more"
+    },
+    "delivery": {
+      "title": "Starbucks Delivers",
+      "desc": "Get your Starbucks favourite delivered to your door!",
+      "cta": "Order now"
+    }
+  }
+}

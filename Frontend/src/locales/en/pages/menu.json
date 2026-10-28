@@ -1,0 +1,59 @@
+{
+  "order_url": "https://www.talabat.com/en/egypt/restaurant/516787/starbucks-city-scape-6th-of-october?aid=7935",
+  "title": "Menu",
+  "description": "Starbucks offers you delicious handcrafted beverages and great tasting snacks made from high quality ingredients. Coffee is our first passion, and so is everything we do to make your Starbucks experience enjoyable wherever you are.\n\nWhether you want a signature coffee drink or a light meal, Starbucks is your favorite destination to start your day perfectly every day.",
+  "categories": {
+    "drinks": {
+      "title": "Explore Beverages",
+      "description": "Enjoy the wonderful world of signature Starbucks drinks, refreshing hot or cold beverages with a rich flavor.",
+      "sidebarTitle": "Beverages",
+      "subcategories": {
+        "espresso": {
+          "title": "Espresso Beverages",
+          "items": {
+            "caffe-latte": {
+              "title": "Caffe Latte",
+              "description": "Our dark, rich espresso balanced with steamed milk and a light layer of foam."
+            }
+          }
+        },
+        "frappuccino": {
+          "title": "Frappuccino® - With Coffee",
+          "items": {}
+        }
+      }
+    },
+    "food": {
+      "title": "Explore Food",
+      "description": "Starbucks offers you a wide selection of sandwiches, salads or desserts to suit all tastes.",
+      "sidebarTitle": "Food",
+      "subcategories": {
+        "sandwiches": {
+          "title": "Sandwiches",
+          "items": {
+            "halloumi": {
+              "title": "Arabic Style Halloumi Panini",
+              "description": "Grilled halloumi with herbs, prepared Arabic style with grilled halloumi cheese, dried tomatoes and black olive paste."
+            }
+          }
+        },
+        "salads": {
+          "title": "Salads",
+          "items": {}
+        }
+      }
+    }
+  },
+  "allergyInfo": {
+    "title": "Allergens",
+    "description": "Please be advised that we cannot confirm that our food or drinks are completely free of allergenic ingredients result of handle with common equipment in our cafes.",
+    "linkLabel": "More information on allergens"
+  },
+  "sidebar": {
+    "title": "Menu",
+    "actions": {
+      "order": "Order Now",
+      "stores": "Find our Stores"
+    }
+  }
+}
