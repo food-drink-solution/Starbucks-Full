@@ -20,7 +20,7 @@ concurrency:
 #   Frontend  → Vercel  (VERCEL_TOKEN / VERCEL_ORG_ID / VERCEL_PROJECT_ID)
 #   Backend   → MonsterASP.NET via FTPS
 #               (MONSTERASP_FTP_HOST / MONSTERASP_FTP_USER / MONSTERASP_FTP_PASS;
-#               optional MONSTERASP_FTP_PORT, MONSTERASP_REMOTE_DIR, MONSTERASP_SITE_URL)
+#               optional MONSTERASP_FTP_PORT and MONSTERASP_REMOTE_DIR)
 #   Database  → MonsterASP SQL (databaseasp.net) — set via DATABASE_CONNECTION_STRING;
 #               the app runs EF migrations + seeding itself on startup.
 
@@ -47,12 +47,6 @@ jobs:
           if [ -n "${{ secrets.MONSTERASP_FTP_HOST }}" ] && [ -n "${{ secrets.MONSTERASP_FTP_USER }}" ] && [ -n "${{ secrets.MONSTERASP_FTP_PASS }}" ]; then
             echo "monsterasp=true" >> "$GITHUB_OUTPUT"
             echo "✓ MonsterASP.NET FTP credentials present."
-            if [ -n "${{ secrets.MONSTERASP_SITE_URL }}" ]; then
-              echo "siteurl=true" >> "$GITHUB_OUTPUT"
-            else
-              echo "siteurl=false" >> "$GITHUB_OUTPUT"
-              echo "ℹ️  MONSTERASP_SITE_URL not set — post-deploy swagger check disabled."
-            fi
           else
             echo "monsterasp=false" >> "$GITHUB_OUTPUT"
             echo "ℹ️  Backend deploy disabled: add MONSTERASP_FTP_HOST, MONSTERASP_FTP_USER and MONSTERASP_FTP_PASS (Deploy page → FTP / SFTP access) to repository secrets to enable it."
@@ -127,7 +121,7 @@ jobs:
 
       - name: Publish backend
         if: steps.creds.outputs.monsterasp == 'true'
-        run: dotnet publish StarbucksEgypt.slnx -c Release -o ./publish --no-restore
+        run: dotnet publish src/Starbucks.API/Starbucks.API.csproj -c Release -o ./publish --no-restore
         working-directory: Backend
 
       - name: Generate appsettings.Production.json from secrets
@@ -159,10 +153,10 @@ jobs:
         if: steps.creds.outputs.monsterasp == 'true'
         run: |
           # Mirror the publish folder to the site root (wwwroot) over FTPS.
-          # --delete keeps the server in sync; SSL is enforced.
+          # --delete keeps the server in sync; the FTPS certificate is verified.
           lftp ftps://"$MONSTERASP_FTP_HOST":"$MONSTERASP_FTP_PORT" \
             -u "$MONSTERASP_FTP_USER","$MONSTERASP_FTP_PASS" \
-            -e "set ftp:ssl-force yes; set ftp:ssl-protect-data yes; set ssl:verify-certificate no; mirror -R -v --delete --delete-first ./publish $MONSTERASP_REMOTE_DIR; bye"
+            -e "set ftp:ssl-force yes; set ftp:ssl-protect-data yes; set ssl:verify-certificate yes; mirror -R -v --delete --delete-first ./publish $MONSTERASP_REMOTE_DIR; bye"
         working-directory: Backend
         env:
           MONSTERASP_FTP_HOST: ${{ secrets.MONSTERASP_FTP_HOST }}
@@ -172,19 +166,26 @@ jobs:
           # MonsterASP serves the site from wwwroot (WebFTP root)
           MONSTERASP_REMOTE_DIR: ${{ vars.MONSTERASP_REMOTE_DIR || 'wwwroot' }}
 
-      - name: Verify backend deployment
-        if: steps.creds.outputs.monsterasp == 'true' && steps.creds.outputs.siteurl == 'true'
+      - name: Verify Swagger endpoint
+        if: steps.creds.outputs.monsterasp == 'true'
         run: |
-          sleep 10
-          HTTP=$(curl -s -o /dev/null -w "%{http_code}" "$MONSTERASP_SITE_URL/swagger/v1/swagger.json" || true)
+          HTTP="000"
+          for attempt in $(seq 1 12); do
+            HTTP=$(curl --silent --show-error --output /dev/null --write-out "%{http_code}" --max-time 15 "$MONSTERASP_SITE_URL/swagger/v1/swagger.json" || true)
+            if [ "$HTTP" = "200" ]; then
+              break
+            fi
+            echo "Swagger is not ready yet (HTTP $HTTP; attempt $attempt/12)."
+            sleep 10
+          done
           echo "Swagger endpoint HTTP status: $HTTP"
           if [ "$HTTP" != "200" ]; then
-            echo "⚠️  Backend did not respond with 200 — check the MonsterASP.NET control panel logs."
+            echo "::error::Backend did not become ready. Check the MonsterASP.NET application and stdout logs for the startup exception."
             exit 1
           fi
-          echo "✓ Backend is live."
+          echo "✓ Swagger JSON is responding."
         env:
-          MONSTERASP_SITE_URL: ${{ secrets.MONSTERASP_SITE_URL }}
+          MONSTERASP_SITE_URL: ${{ secrets.MONSTERASP_SITE_URL || 'http://starbucks-coffe.runasp.net' }}
 
       # ── GitHub Release (always runs on production push) ───────────────────
       - name: Get Version
