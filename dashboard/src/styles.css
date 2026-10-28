@@ -40,7 +40,7 @@
     /* ── Text ─────────────────────────────── */
     --text-primary:    #111827;
     --text-secondary:  #4b5563;
-    --text-muted:      #9ca3af;
+    --text-muted:      #6b7280;   /* 4.83:1 on white (was #9ca3af, 2.54:1 — WCAG AA fail) */
 
     /* ── Scrollbar ────────────────────────── */
     --sb-thumb:        var(--sb-green);
@@ -287,8 +287,8 @@
   .badge-info    { @apply bg-blue-50    text-blue-700    ring-1 ring-blue-200;    }
   .badge-muted   { @apply bg-gray-100   text-gray-600;                            }
   .badge-purple  { @apply bg-violet-50  text-violet-700  ring-1 ring-violet-200;  }
-  .badge-open    { @apply text-white; background: rgba(52,211,153,0.85); }
-  .badge-closed  { @apply text-white; background: rgba(248,113,113,0.85); }
+  .badge-open    { @apply bg-emerald-100 text-emerald-800 ring-1 ring-emerald-300; }
+  .badge-closed  { @apply bg-red-100 text-red-800 ring-1 ring-red-300; }
   .badge-gold    { @apply bg-amber-50 text-amber-700; }
   .badge-demo    { @apply bg-amber-50 border border-amber-200 text-amber-700 text-xs font-semibold px-2.5 py-1.5 rounded-xl inline-flex items-center gap-1.5; }
 
@@ -351,7 +351,7 @@
 
   .toggle { @apply relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none; }
   .toggle-on  { background-color: var(--sb-green); }
-  .toggle-off { @apply bg-gray-200; }
+  .toggle-off { @apply bg-gray-500; }
   .toggle-knob { @apply inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform; }
   .toggle-knob-on  { @apply translate-x-6; }
   .toggle-knob-off { @apply translate-x-1; }
@@ -369,7 +369,7 @@
   .sidebar-section-label {
     @apply px-4 pt-5 pb-1 text-[9px] font-bold uppercase;
     letter-spacing: 0.14em;
-    color: var(--sb-gold-muted);
+    color: var(--sb-gold);   /* ~7:1 on the dark sidebar gradient (was gold-muted 0.45 alpha, ~2.4:1) */
   }
 
   .sidebar-section-divider {
@@ -380,11 +380,11 @@
   /* Nav link base */
   .sidebar-link {
     @apply flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-150;
-    color: rgba(255,255,255,0.55);
+    color: rgba(255,255,255,0.70);   /* ~5.4:1 on sidebar gradient (was 0.55, borderline ~4.8) */
   }
   .sidebar-link:hover {
     background: rgba(255,255,255,0.07);
-    color: rgba(255,255,255,0.90);
+    color: rgba(255,255,255,0.95);
   }
 
   /* Active nav link */
@@ -397,12 +397,12 @@
   /* Collapse/close button in brand area */
   .sidebar-collapse-btn {
     @apply w-6 h-6 rounded-lg flex items-center justify-center transition-colors shrink-0;
-    color: rgba(255,255,255,0.35);
+    color: rgba(255,255,255,0.60);   /* ~3:1 UI component minimum (was 0.35) */
     background: rgba(255,255,255,0.05);
   }
   .sidebar-collapse-btn:hover {
     background: rgba(255,255,255,0.12);
-    color: rgba(255,255,255,0.8);
+    color: rgba(255,255,255,0.90);
   }
 
   /* Today mini-stat card inside sidebar */
@@ -427,12 +427,12 @@
   /* Theme toggle button inside sidebar footer */
   .sidebar-theme-btn {
     @apply flex items-center gap-2 px-2.5 py-1.5 rounded-lg transition-all duration-200 shrink-0;
-    color: rgba(255,255,255,0.50);
+    color: rgba(255,255,255,0.70);   /* ~5.4:1 (was 0.50) */
     background: rgba(255,255,255,0.05);
     border: 1px solid rgba(255,255,255,0.07);
   }
   .sidebar-theme-btn:hover {
-    color: rgba(255,255,255,0.85);
+    color: rgba(255,255,255,0.95);
     background: rgba(255,255,255,0.10);
   }
   .sidebar-theme-btn-active {
@@ -516,7 +516,7 @@
   --border-default:  rgba(255,255,255,0.12);
   --text-primary:    #f0f5f2;
   --text-secondary:  #8ba898;
-  --text-muted:      #5a7a6a;
+  --text-muted:      #7d9c8b;   /* ~5.3:1 on dark surfaces (was #5a7a6a, 3.32:1 — WCAG AA fail) */
   --shadow-card:        0 1px 4px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.2);
   --shadow-card-hover:  0 6px 28px rgba(0,0,0,0.4), 0 2px 6px rgba(0,0,0,0.2);
   color-scheme: dark;
@@ -544,6 +544,42 @@
 
 .dark .table-head-row {
   background: var(--surface-raised);
+}
+
+/* Dark toggle-off: gray-500 knob-on-gray-600 has poor knob contrast in dark theme */
+.dark .toggle-off {
+  background: #4b5563;   /* gray-600 — white knob stays visible, track visible on dark bg */
+}
+
+/* Dark-mode text overrides:
+   The templates hardcode Tailwind gray text utilities for meta/body text and
+   headings; gray-400..900 are unreadable on the dark palette (gray-500 is only
+   ~3.2:1 on dark surfaces, gray-900 ~1.05:1), so remap the whole scale. */
+.dark .text-gray-400,
+.dark .text-gray-500 {
+  color: #94a3b8;      /* meta text ~6:1 on dark surfaces */
+}
+.dark .text-gray-600,
+.dark .text-gray-700 {
+  color: #a3b3aa;      /* secondary text ~7:1 */
+}
+.dark .text-gray-800,
+.dark .text-gray-900 {
+  color: #e2e8e5;      /* headings ~13:1 */
+}
+
+/* Light chip/card backgrounds that carry the gray text above would clash with
+   the remapped light text — switch them to dark equivalents in dark mode. */
+.dark .bg-gray-50,
+.dark .bg-gray-100 {
+  background-color: #24352d;
+}
+.dark .bg-gray-200 {
+  background-color: #32453b;
+}
+.dark .border-gray-100,
+.dark .border-gray-200 {
+  border-color: rgba(255,255,255,0.10);
 }
 
 .dark .btn-outline {

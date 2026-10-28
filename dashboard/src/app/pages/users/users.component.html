@@ -153,7 +153,7 @@
                   <div class="avatar-md avatar-dark shrink-0">{{ initials(user.name) }}</div>
                   <div>
                     <p class="text-sm font-semibold text-gray-800 leading-tight">{{ user.name }}</p>
-                    <p class="text-[11px] text-gray-400 mt-0.5">{{ user.email }}</p>
+                    <p class="text-[11px] text-gray-500 mt-0.5">{{ user.email }}</p>
                   </div>
                 </div>
               </td>
@@ -168,7 +168,7 @@
               <td class="td hidden sm:table-cell">
                 <span class="text-sm font-semibold text-gray-900">EGP {{ user.totalSpent.toFixed(0) }}</span>
               </td>
-              <td class="td text-sm text-gray-400 hidden lg:table-cell">{{ user.joinedAt }}</td>
+              <td class="td text-sm text-gray-500 hidden lg:table-cell">{{ user.joinedAt }}</td>
               <!-- Actions -->
               <td class="td">
                 <div class="flex items-center gap-0.5">
@@ -197,11 +197,11 @@
               <td colspan="8" class="py-16 text-center">
                 <div class="flex flex-col items-center gap-3">
                   <div class="w-14 h-14 rounded-2xl flex items-center justify-center" style="background: var(--surface-sunken);">
-                    <lucide-angular name="users" [size]="26" class="text-gray-300"></lucide-angular>
+                    <lucide-angular name="users" [size]="26" class="text-gray-500"></lucide-angular>
                   </div>
                   <div>
                     <p class="text-sm font-semibold text-gray-600">No users found</p>
-                    <p class="text-xs text-gray-400 mt-0.5">Try adjusting your search or filters</p>
+                    <p class="text-xs text-gray-500 mt-0.5">Try adjusting your search or filters</p>
                   </div>
                   <button (click)="search=''; roleFilter=''; statusFilter=''" class="btn-outline text-xs px-3 py-1.5">
                     Clear filters

@@ -37,7 +37,7 @@
         </div>
         <p class="stat-label mb-1">{{ metric.label }}</p>
         <p class="stat-value">{{ metric.value }}</p>
-        <p class="text-[11px] text-gray-400 mt-1">vs last month</p>
+        <p class="text-[11px] text-gray-500 mt-1">vs last month</p>
       </div>
     }
   </div>
@@ -50,7 +50,7 @@
       <div class="flex items-center justify-between mb-5">
         <div>
           <h3 class="card-title">Monthly Revenue</h3>
-          <p class="text-xs text-gray-400 mt-0.5">EGP — 2026</p>
+          <p class="text-xs text-gray-500 mt-0.5">EGP — 2026</p>
         </div>
         <div class="text-right">
           <p class="text-lg font-bold text-gray-900 font-heading">EGP 1.87M</p>
@@ -70,7 +70,7 @@
               [style.height.px]="(m.pct / 100) * 152"
               [class]="m.isCurrentMonth ? 'bg-sb-green' : 'bg-sb-green/20 group-hover:bg-sb-green/40 transition-colors'">
             </div>
-            <span [class]="'text-[10px] font-medium ' + (m.isCurrentMonth ? 'text-sb-green' : 'text-gray-400')">
+            <span [class]="'text-[10px] font-medium ' + (m.isCurrentMonth ? 'text-sb-green' : 'text-gray-500')">
               {{ m.month }}
             </span>
           </div>
@@ -93,7 +93,7 @@
               </div>
               <div class="flex items-center gap-2">
                 <span class="text-sm font-bold text-gray-900">{{ cat.pct }}%</span>
-                <span class="text-[11px] text-gray-400">EGP {{ cat.amount }}k</span>
+                <span class="text-[11px] text-gray-500">EGP {{ cat.amount }}k</span>
               </div>
             </div>
             <div class="chart-bar-track">
@@ -106,11 +106,11 @@
       <div class="grid grid-cols-2 gap-3 text-center">
         <div class="bg-gray-50 rounded-xl p-3">
           <p class="text-lg font-bold text-gray-900 font-heading">4,820</p>
-          <p class="text-[11px] text-gray-400">Total Orders</p>
+          <p class="text-[11px] text-gray-500">Total Orders</p>
         </div>
         <div class="bg-gray-50 rounded-xl p-3">
           <p class="text-lg font-bold text-gray-900 font-heading">EGP 142</p>
-          <p class="text-[11px] text-gray-400">Avg. Order Value</p>
+          <p class="text-[11px] text-gray-500">Avg. Order Value</p>
         </div>
       </div>
     </div>
@@ -142,7 +142,7 @@
               <tr class="tr">
                 <td class="td">
                   <div class="flex items-center justify-center w-6 h-6 rounded-full text-[11px] font-bold"
-                    [class]="idx === 0 ? 'bg-sb-gold/20 text-amber-700' : idx === 1 ? 'bg-gray-100 text-gray-600' : 'bg-gray-50 text-gray-400'">
+                    [class]="idx === 0 ? 'bg-sb-gold/20 text-amber-700' : idx === 1 ? 'bg-gray-100 text-gray-600' : 'bg-gray-50 text-gray-500'">
                     {{ idx + 1 }}
                   </div>
                 </td>
@@ -151,7 +151,7 @@
                     <div class="avatar-md avatar-green ring-1 ring-emerald-100 ring-offset-1">{{ customer.name[0] }}</div>
                     <div>
                       <p class="text-sm font-semibold text-gray-800">{{ customer.name }}</p>
-                      <p class="text-[11px] text-gray-400">{{ customer.email }}</p>
+                      <p class="text-[11px] text-gray-500">{{ customer.email }}</p>
                     </div>
                   </div>
                 </td>
@@ -160,7 +160,7 @@
                 </td>
                 <td class="td text-sm font-bold text-gray-900">EGP {{ customer.totalSpent }}</td>
                 <td class="td text-sm text-gray-500 hidden md:table-cell">EGP {{ customer.avgOrder }}</td>
-                <td class="td text-sm text-gray-400 hidden lg:table-cell">{{ customer.lastOrder }}</td>
+                <td class="td text-sm text-gray-500 hidden lg:table-cell">{{ customer.lastOrder }}</td>
               </tr>
             }
           </tbody>
@@ -177,7 +177,7 @@
       <div class="divide-y divide-gray-50">
         @for (p of topProducts; track p.name; let idx = $index) {
           <div class="px-4 py-3 flex items-center gap-3 hover:bg-gray-50/60 transition-colors">
-            <span class="text-[11px] font-bold text-gray-300 w-4 shrink-0">{{ idx + 1 }}</span>
+            <span class="text-[11px] font-bold text-gray-500 w-4 shrink-0">{{ idx + 1 }}</span>
             <div [class]="'w-8 h-8 rounded-xl flex items-center justify-center text-white text-xs font-bold shrink-0 ' + p.iconBg">
               {{ p.name[0] }}
             </div>

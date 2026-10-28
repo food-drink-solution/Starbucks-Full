@@ -89,12 +89,12 @@
                 style="background: rgba(203,162,88,0.15);">
                 <lucide-angular name="trending-up" [size]="11" style="color: var(--sb-gold);"></lucide-angular>
               </div>
-              <span class="text-[11px] font-medium" style="color: rgba(255,255,255,0.50);">Revenue</span>
+              <span class="text-[11px] font-medium" style="color: rgba(255,255,255,0.70);">Revenue</span>
               <span class="ml-auto text-[10px] font-semibold text-emerald-400">↑ 12%</span>
             </div>
             <p class="text-base font-bold text-white font-heading">EGP 42,580</p>
-            <div class="mt-1.5 h-1 rounded-full" style="background: rgba(255,255,255,0.08);">
-              <div class="h-1 rounded-full" style="width: 68%; background: var(--sb-gold); opacity: 0.7;"></div>
+            <div class="mt-1.5 h-1 rounded-full" style="background: rgba(255,255,255,0.15);">
+              <div class="h-1 rounded-full" style="width: 68%; background: var(--sb-gold);"></div>
             </div>
           </div>
           <!-- Active users -->
@@ -104,12 +104,12 @@
                 style="background: rgba(52,211,153,0.12);">
                 <lucide-angular name="users" [size]="11" class="text-emerald-400"></lucide-angular>
               </div>
-              <span class="text-[11px] font-medium" style="color: rgba(255,255,255,0.50);">Active Now</span>
+              <span class="text-[11px] font-medium" style="color: rgba(255,255,255,0.70);">Active Now</span>
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-auto"></span>
             </div>
             <p class="text-base font-bold text-white font-heading">1,284</p>
-            <div class="mt-1.5 h-1 rounded-full" style="background: rgba(255,255,255,0.08);">
-              <div class="h-1 rounded-full bg-emerald-400" style="width: 55%; opacity: 0.7;"></div>
+            <div class="mt-1.5 h-1 rounded-full" style="background: rgba(255,255,255,0.15);">
+              <div class="h-1 rounded-full bg-emerald-400" style="width: 55%;"></div>
             </div>
           </div>
         </div>
@@ -123,7 +123,7 @@
     <!-- Theme toggle row -->
     <div [class]="'flex items-center px-3 py-2 ' + (collapsed() ? 'justify-center' : 'justify-between gap-2')">
       @if (!collapsed()) {
-        <span class="text-[10px] font-semibold uppercase tracking-widest" style="color: rgba(255,255,255,0.35);">Appearance</span>
+        <span class="text-[10px] font-semibold uppercase tracking-widest" style="color: var(--sb-gold);">Appearance</span>
       }
       <button
         (click)="toggleTheme()"

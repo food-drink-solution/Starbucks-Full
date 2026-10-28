@@ -39,7 +39,7 @@ import { ContentService, ContentPage } from '../../services/content.service';
                 <span [class]="page.published ? 'text-green-600 text-sm font-medium' : 'text-gray-500 text-sm font-medium'">
                   {{ page.published ? '✓ Published' : '○ Draft' }}
                 </span>
-                <span class="text-xs text-gray-400">{{ page.updatedAt | date:'short' }}</span>
+                <span class="text-xs text-gray-500">{{ page.updatedAt | date:'short' }}</span>
               </div>
             </div>
           </div>
