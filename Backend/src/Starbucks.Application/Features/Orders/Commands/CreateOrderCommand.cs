@@ -128,7 +128,7 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Res
 
         // Send confirmation email (async/fire-and-forget or background job would be better, but keeping it simple here)
         var user = await _context.Users.FindAsync(new object[] { _currentUserService.UserId.Value }, cancellationToken);
-        if (user != null)
+        if (user != null && !string.IsNullOrEmpty(user.Email))
         {
             await _email.SendOrderConfirmationAsync(user.Email, order.OrderNumber, order.Total, cancellationToken);
         }

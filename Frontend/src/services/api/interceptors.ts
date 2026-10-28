@@ -91,7 +91,7 @@ export class ApiInterceptors {
       throw new Error('No refresh token available');
     }
 
-    const response = await this.client.post('/auth/refresh', {
+    const response = await this.client.post('/api/v1/Auth/refresh', {
       refreshToken,
     });
 

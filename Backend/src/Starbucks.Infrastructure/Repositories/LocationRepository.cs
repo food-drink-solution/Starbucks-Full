@@ -12,11 +12,8 @@ namespace Starbucks.Infrastructure.Repositories;
 /// </summary>
 public class LocationRepository : Repository<Location>, ILocationRepository
 {
-    private readonly ApplicationDbContext _context;
-
     public LocationRepository(ApplicationDbContext context) : base(context)
     {
-        _context = context;
     }
 
     /// <summary>

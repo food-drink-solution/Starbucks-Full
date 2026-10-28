@@ -12,11 +12,8 @@ namespace Starbucks.Infrastructure.Repositories;
 /// </summary>
 public class MenuRepository : Repository<MenuItem>, IMenuRepository
 {
-    private readonly ApplicationDbContext _context;
-
     public MenuRepository(ApplicationDbContext context) : base(context)
     {
-        _context = context;
     }
 
     /// <summary>

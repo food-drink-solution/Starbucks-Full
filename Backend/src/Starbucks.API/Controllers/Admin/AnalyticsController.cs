@@ -49,37 +49,32 @@ public class AnalyticsController : ControllerBase
     }
 
     [HttpGet("sales")]
-    public async Task<IActionResult> GetSalesAnalytics([FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
+    public IActionResult GetSalesAnalytics([FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
     {
-        // Placeholder implementation
         return Ok(new List<object>());
     }
 
     [HttpGet("users")]
-    public async Task<IActionResult> GetUserAnalytics([FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
+    public IActionResult GetUserAnalytics([FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
     {
-        // Placeholder implementation
         return Ok(new List<object>());
     }
 
     [HttpGet("orders")]
-    public async Task<IActionResult> GetOrderAnalytics([FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
+    public IActionResult GetOrderAnalytics([FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
     {
-        // Placeholder implementation
         return Ok(new List<object>());
     }
 
     [HttpGet("locations")]
-    public async Task<IActionResult> GetLocationPerformance()
+    public IActionResult GetLocationPerformance()
     {
-        // Placeholder implementation
         return Ok(new List<object>());
     }
 
     [HttpGet("menu-items")]
-    public async Task<IActionResult> GetMenuItemPopularity()
+    public IActionResult GetMenuItemPopularity()
     {
-        // Placeholder implementation
         return Ok(new List<object>());
     }
 }

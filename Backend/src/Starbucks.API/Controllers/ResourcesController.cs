@@ -79,7 +79,10 @@ public class LocalizationResourcesController : ControllerBase
                 var moduleName = Path.GetFileNameWithoutExtension(file);
                 var content = await System.IO.File.ReadAllTextAsync(file);
                 var json = JsonSerializer.Deserialize<object>(content);
-                resources[moduleName] = json;
+                if (json != null)
+                {
+                    resources[moduleName] = json;
+                }
             }
 
             return Ok(new

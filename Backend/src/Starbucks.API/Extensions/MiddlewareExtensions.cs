@@ -105,22 +105,20 @@ public static class MiddlewareExtensions
             context.Response.Headers["Referrer-Policy"]         = "strict-origin-when-cross-origin";
             context.Response.Headers["Permissions-Policy"]      = "geolocation=(), microphone=(), camera=()";
             
-            // HSTS with preload for production
-            var isProduction = context.RequestServices
-                .GetRequiredService<IWebHostEnvironment>()
-                .IsProduction();
-            
-            context.Response.Headers["Strict-Transport-Security"] = isProduction
-                ? "max-age=31536000; includeSubDomains; preload"
-                : "max-age=31536000; includeSubDomains";
+            // HSTS only if request is HTTPS
+            if (context.Request.IsHttps)
+            {
+                context.Response.Headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains";
+            }
 
-            var isLocalhost = context.Request.Host.Value?.Contains("localhost") ?? true;
-
-            context.Response.Headers["Content-Security-Policy"] = isLocalhost
-                ? "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob:;"
-                : "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; " +
-                  "img-src 'self' data: https:; font-src 'self' data:; " +
-                  "connect-src 'self'; frame-ancestors 'none';";
+            // CSP policy allowing Swagger UI, icons, scripts, and API calls
+            context.Response.Headers["Content-Security-Policy"] = 
+                "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https: http:; " +
+                "script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; " +
+                "style-src 'self' 'unsafe-inline' https:; " +
+                "img-src 'self' data: https: http: blob:; " +
+                "font-src 'self' data: https:; " +
+                "connect-src 'self' https: http: ws: wss:; frame-ancestors 'none';";
 
             await next();
         });

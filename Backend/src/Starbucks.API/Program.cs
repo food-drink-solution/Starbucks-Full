@@ -41,7 +41,10 @@ try
     app.UseGlobalExceptionHandler();        // must be early — catches everything below
     app.UseRequestLocalization();           // handle culture early for localized responses
     app.UseSecurityHeaders();
-    app.UseHttpsRedirection();
+    if (app.Configuration.GetValue<bool>("EnableHttpsRedirection", false))
+    {
+        app.UseHttpsRedirection();
+    }
     app.UseStaticFiles();                   // serve static files from wwwroot (images, etc.)
     app.UseCors(CorsConfiguration.AllowFrontendPolicy);
     AspNetCoreRateLimit.StartupExtensions.UseIpRateLimiting(app);
@@ -59,33 +62,45 @@ try
     // ── Database Initialization & Identity Seeding ────────────────────────────
     using (var scope = app.Services.CreateScope())
     {
-        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-        var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
-        var seederLogger = scope.ServiceProvider.GetRequiredService<ILogger<IdentityDataSeeder>>();
-        var appLogger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+        try
+        {
+            var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
+            var seederLogger = scope.ServiceProvider.GetRequiredService<ILogger<IdentityDataSeeder>>();
 
-        if (app.Environment.IsDevelopment())
-        {
-            // Development: create schema directly
-            await context.Database.EnsureCreatedAsync();
-            
-            // Seed Identity data (roles and admin user)
-            var identitySeeder = new IdentityDataSeeder(userManager, roleManager, seederLogger);
-            await identitySeeder.SeedAsync();
-            await identitySeeder.SeedTestUsersAsync();
-            
-            // Seed other data
-            await DataSeeder.SeedAsync(context);
+            if (app.Environment.IsDevelopment())
+            {
+                // Development: create schema directly
+                await context.Database.EnsureCreatedAsync();
+                
+                // Seed Identity data (roles and admin user)
+                var identitySeeder = new IdentityDataSeeder(userManager, roleManager, seederLogger);
+                await identitySeeder.SeedAsync();
+                await identitySeeder.SeedTestUsersAsync();
+                
+                // Seed other data
+                await DataSeeder.SeedAsync(context);
+            }
+            else
+            {
+                // Production / Staging: apply any pending EF migrations automatically
+                Log.Information("Applying EF Core migrations if pending...");
+                await context.Database.MigrateAsync();
+                Log.Information("EF Core migrations applied successfully.");
+                
+                // Seed Identity roles and default admin user
+                var identitySeeder = new IdentityDataSeeder(userManager, roleManager, seederLogger);
+                await identitySeeder.SeedAsync();
+
+                // Seed catalog data (categories, items, locations) if empty
+                await DataSeeder.SeedAsync(context);
+                Log.Information("Database seeding completed.");
+            }
         }
-        else
+        catch (Exception ex)
         {
-            // Production / Staging: apply any pending EF migrations automatically
-            await context.Database.MigrateAsync();
-            
-            // Seed Identity roles only (no test users)
-            var identitySeeder = new IdentityDataSeeder(userManager, roleManager, seederLogger);
-            await identitySeeder.SeedAsync();
+            Log.Error(ex, "An error occurred during database migration or seeding: {Message}", ex.Message);
         }
     }
 
@@ -95,7 +110,6 @@ try
 catch (Exception ex)
 {
     Log.Fatal(ex, "Application terminated unexpectedly");
-    throw;
 }
 finally
 {

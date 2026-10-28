@@ -19,7 +19,9 @@ public static class CacheConfiguration
     {
         var redisConnection = configuration.GetConnectionString("Redis");
 
-        if (!string.IsNullOrWhiteSpace(redisConnection))
+        if (!string.IsNullOrWhiteSpace(redisConnection) &&
+            !redisConnection.Contains("YOUR_REDIS", StringComparison.OrdinalIgnoreCase) &&
+            !redisConnection.Contains("PLACEHOLDER", StringComparison.OrdinalIgnoreCase))
         {
             // Redis is configured — use it as the distributed cache
             services.AddSingleton<IConnectionMultiplexer>(sp =>

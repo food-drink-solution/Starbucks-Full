@@ -13,11 +13,8 @@ namespace Starbucks.Infrastructure.Repositories;
 /// </summary>
 public class UserRepository : Repository<ApplicationUser>, IUserRepository
 {
-    private readonly ApplicationDbContext _context;
-
     public UserRepository(ApplicationDbContext context) : base(context)
     {
-        _context = context;
     }
 
     public async Task<ApplicationUser?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)

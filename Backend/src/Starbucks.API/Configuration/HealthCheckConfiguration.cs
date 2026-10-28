@@ -19,7 +19,9 @@ public static class HealthCheckConfiguration
             .AddDbContextCheck<ApplicationDbContext>("database", tags: new[] { "ready" });
 
         var redisConnection = configuration.GetConnectionString("Redis");
-        if (!string.IsNullOrWhiteSpace(redisConnection))
+        if (!string.IsNullOrWhiteSpace(redisConnection) &&
+            !redisConnection.Contains("YOUR_REDIS", StringComparison.OrdinalIgnoreCase) &&
+            !redisConnection.Contains("PLACEHOLDER", StringComparison.OrdinalIgnoreCase))
         {
             healthChecks.AddRedis(redisConnection, "redis", tags: new[] { "ready" });
         }

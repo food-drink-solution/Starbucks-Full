@@ -128,7 +128,7 @@ public class CacheService : IDistributedCacheService
     /// <summary>
     /// Gets cache performance statistics
     /// </summary>
-    public async Task<CacheStatistics> GetStatisticsAsync()
+    public Task<CacheStatistics> GetStatisticsAsync()
     {
         try
         {
@@ -144,12 +144,12 @@ public class CacheService : IDistributedCacheService
                 LastUpdated = DateTime.UtcNow
             };
 
-            return stats;
+            return Task.FromResult(stats);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error getting cache statistics");
-            return new CacheStatistics();
+            return Task.FromResult(new CacheStatistics());
         }
     }
 }
