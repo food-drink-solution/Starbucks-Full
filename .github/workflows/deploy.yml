@@ -96,6 +96,21 @@ jobs:
           cache: true
           cache-dependency-path: 'Backend/StarbucksEgypt.slnx'
 
+      - name: Validate backend production secrets
+        if: steps.creds.outputs.monsterasp == 'true'
+        run: |
+          if [ -z "$DATABASE_CONNECTION_STRING" ]; then
+            echo "::error::DATABASE_CONNECTION_STRING is required for the production backend. Configure it as a repository or environment secret."
+            exit 1
+          fi
+          if [ -z "$JWT_SECRET" ] || [ ${#JWT_SECRET} -lt 32 ]; then
+            echo "::error::JWT_SECRET must be configured and contain at least 32 characters."
+            exit 1
+          fi
+        env:
+          DATABASE_CONNECTION_STRING: ${{ secrets.DATABASE_CONNECTION_STRING }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+
       - name: Cache NuGet packages
         if: steps.creds.outputs.monsterasp == 'true'
         uses: actions/cache@v4
