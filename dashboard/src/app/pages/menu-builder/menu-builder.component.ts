@@ -1,29 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { LucideModule } from '@lucide/angular';
-import { MenuBuilderService } from '../../services/menu-builder.service';
-
-interface MenuItem {
-  id: string;
-  name: { en: string; ar: string };
-  description: { en: string; ar: string };
-  price: number;
-  categoryId: string;
-  image?: string;
-  available: boolean;
-}
-
-interface MenuCategory {
-  id: string;
-  name: { en: string; ar: string };
-  items: MenuItem[];
-}
+import { LucideAngularModule } from '../../lucide-angular-shim.module';
+import { MenuBuilderService, MenuItem, MenuCategory } from '../../services/menu-builder.service';
 
 @Component({
   selector: 'app-menu-builder',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, LucideModule],
+  imports: [CommonModule, ReactiveFormsModule, LucideAngularModule],
   template: `
     <div class="p-6 bg-gray-50 min-h-screen">
       <div class="max-w-6xl mx-auto">

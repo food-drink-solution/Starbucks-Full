@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 export interface MenuItem {
-  id?: string;
+  id: string;
   name: { en: string; ar: string };
   description: { en: string; ar: string };
   price: number;
@@ -14,10 +14,14 @@ export interface MenuItem {
 }
 
 export interface MenuCategory {
-  id?: string;
+  id: string;
   name: { en: string; ar: string };
-  items?: MenuItem[];
+  items: MenuItem[];
 }
+
+/** Server-assigned fields are set by the API on create. */
+export type CreateCategoryPayload = Pick<MenuCategory, 'name'>;
+export type CreateItemPayload = Omit<MenuItem, 'id'>;
 
 @Injectable({
   providedIn: 'root'
@@ -32,11 +36,11 @@ export class MenuBuilderService {
     return this.http.get<MenuCategory[]>(`${this.apiUrl}/categories`);
   }
 
-  createCategory(category: MenuCategory): Observable<MenuCategory> {
+  createCategory(category: CreateCategoryPayload): Observable<MenuCategory> {
     return this.http.post<MenuCategory>(`${this.apiUrl}/categories`, category);
   }
 
-  updateCategory(id: string, category: MenuCategory): Observable<MenuCategory> {
+  updateCategory(id: string, category: CreateCategoryPayload): Observable<MenuCategory> {
     return this.http.put<MenuCategory>(`${this.apiUrl}/categories/${id}`, category);
   }
 
@@ -45,11 +49,11 @@ export class MenuBuilderService {
   }
 
   // Items
-  createItem(item: MenuItem): Observable<MenuItem> {
+  createItem(item: CreateItemPayload): Observable<MenuItem> {
     return this.http.post<MenuItem>(`${this.apiUrl}/items`, item);
   }
 
-  updateItem(id: string, item: MenuItem): Observable<MenuItem> {
+  updateItem(id: string, item: CreateItemPayload): Observable<MenuItem> {
     return this.http.put<MenuItem>(`${this.apiUrl}/items/${id}`, item);
   }
 

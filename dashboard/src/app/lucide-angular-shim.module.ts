@@ -11,7 +11,7 @@ import { LucideDynamicIcon } from '@lucide/angular';
  * Wrapper component that mimics the old <lucide-angular> element selector
  */
 @Component({
-  selector: 'lucide-angular',
+  selector: 'lucide-angular, i-lucide',
   standalone: true,
   imports: [LucideDynamicIcon],
   template: `<svg [lucideIcon]="name" [size]="size" [color]="color" [strokeWidth]="strokeWidth" [absoluteStrokeWidth]="absoluteStrokeWidth"></svg>`

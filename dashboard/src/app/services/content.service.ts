@@ -4,15 +4,18 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 export interface ContentPage {
-  id?: string;
+  id: string;
   slug: string;
   title: { en: string; ar: string };
   description: { en: string; ar: string };
   content: { en: string; ar: string };
   published: boolean;
-  createdAt?: string;
-  updatedAt?: string;
+  createdAt: string;
+  updatedAt: string;
 }
+
+/** Server-assigned fields (id, timestamps) are set by the API on create. */
+export type CreatePagePayload = Pick<ContentPage, 'slug' | 'title' | 'description' | 'content' | 'published'>;
 
 @Injectable({
   providedIn: 'root'
@@ -30,11 +33,11 @@ export class ContentService {
     return this.http.get<ContentPage>(`${this.apiUrl}/${slug}`);
   }
 
-  createPage(page: ContentPage): Observable<ContentPage> {
+  createPage(page: CreatePagePayload): Observable<ContentPage> {
     return this.http.post<ContentPage>(this.apiUrl, page);
   }
 
-  updatePage(id: string, page: ContentPage): Observable<ContentPage> {
+  updatePage(id: string, page: CreatePagePayload): Observable<ContentPage> {
     return this.http.put<ContentPage>(`${this.apiUrl}/${id}`, page);
   }
 

@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { LucideModule } from '@lucide/angular';
+import { LucideAngularModule } from '../../lucide-angular-shim.module';
 import { StoreManagerService, Store } from '../../services/store-manager.service';
 
 @Component({
   selector: 'app-store-manager',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, LucideModule],
+  imports: [CommonModule, ReactiveFormsModule, LucideAngularModule],
   template: `
     <div class="p-6 bg-gray-50 min-h-screen">
       <div class="max-w-6xl mx-auto">

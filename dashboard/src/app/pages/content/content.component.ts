@@ -1,24 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { LucideModule } from '@lucide/angular';
-import { ContentService } from '../../services/content.service';
-
-interface ContentPage {
-  id: string;
-  slug: string;
-  title: { en: string; ar: string };
-  description: { en: string; ar: string };
-  content: { en: string; ar: string };
-  published: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
+import { LucideAngularModule } from '../../lucide-angular-shim.module';
+import { ContentService, ContentPage } from '../../services/content.service';
 
 @Component({
   selector: 'app-content',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, LucideModule],
+  imports: [CommonModule, ReactiveFormsModule, LucideAngularModule],
   template: `
     <div class="p-6 bg-gray-50 min-h-screen">
       <div class="max-w-6xl mx-auto">
@@ -141,7 +130,6 @@ interface ContentPage {
                   formControlName="slug"
                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-starbucks-green focus:border-transparent"
                   placeholder="about-us"
-                  disabled
                 />
                 <p class="text-xs text-gray-500 mt-1">Auto-generated from title</p>
               </div>

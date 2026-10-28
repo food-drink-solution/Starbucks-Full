@@ -74,25 +74,16 @@ jobs:
       - name: Pull Vercel Environment Information
         if: steps.creds.outputs.vercel == 'true'
         run: vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
-        working-directory: Frontend
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
-      - name: Build Project Artifacts
+      # Services mode: the project root vercel.json defines all services
+      # (frontend + dashboard); the build runs on Vercel's infrastructure.
+      - name: Deploy Project to Vercel (services mode)
         if: steps.creds.outputs.vercel == 'true'
-        run: vercel build --prod --token="$VERCEL_TOKEN"
-        working-directory: Frontend
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VITE_API_URL: ${{ secrets.PROD_API_URL }}
-          VITE_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
-
-      - name: Deploy Project Artifacts to Vercel
-        if: steps.creds.outputs.vercel == 'true'
-        run: vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN"
-        working-directory: Frontend
+        run: vercel deploy --prod --yes --token="$VERCEL_TOKEN"
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
