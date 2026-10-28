@@ -16,7 +16,9 @@ import {
   LucideFilter, LucideDownload, LucideCalendar, LucidePlus, LucideCheckCircle,
   LucideClock, LucideXCircle, LucideAlertCircle, LucideStar, LucideSparkles, LucideLock,
   LucideMapPin, LucidePhone, LucideStore, LucideWrench, LucideShieldCheck, LucideGlobe,
-  LucideToggleLeft, LucideToggleRight, LucideSave, LucideRefreshCw
+  LucideToggleLeft, LucideToggleRight, LucideSave, LucideRefreshCw,
+  LucideSun, LucideMoon, LucideChevronDown, LucideExternalLink, LucideMap,
+  LucideDoorOpen, LucideCar, LucideUserPlus
 } from '@lucide/angular';
 
 export const appConfig: ApplicationConfig = {
@@ -50,7 +52,9 @@ export const appConfig: ApplicationConfig = {
       LucideFilter, LucideDownload, LucideCalendar, LucidePlus, LucideCheckCircle,
       LucideClock, LucideXCircle, LucideAlertCircle, LucideStar, LucideSparkles, LucideLock,
       LucideMapPin, LucidePhone, LucideStore, LucideWrench, LucideShieldCheck, LucideGlobe,
-      LucideToggleLeft, LucideToggleRight, LucideSave, LucideRefreshCw
+      LucideToggleLeft, LucideToggleRight, LucideSave, LucideRefreshCw,
+      LucideSun, LucideMoon, LucideChevronDown, LucideExternalLink, LucideMap,
+      LucideDoorOpen, LucideCar, LucideUserPlus
     )
   ]
 };

@@ -185,15 +185,15 @@
 
           <div class="space-y-1.5 mb-3 flex-1">
             <div class="flex items-start gap-2">
-              <lucide-angular name="map-pin" [size]="11" class="text-gray-400 mt-0.5 shrink-0"></lucide-angular>
+              <lucide-angular name="map-pin" [size]="11" class="text-gray-500 mt-0.5 shrink-0"></lucide-angular>
               <p class="text-[12px] text-gray-500 leading-snug">{{ loc.address }}</p>
             </div>
             <div class="flex items-center gap-2">
-              <lucide-angular name="phone" [size]="11" class="text-gray-400 shrink-0"></lucide-angular>
+              <lucide-angular name="phone" [size]="11" class="text-gray-500 shrink-0"></lucide-angular>
               <p class="text-[12px] text-gray-500">{{ loc.phone }}</p>
             </div>
             <div class="flex items-center gap-2">
-              <lucide-angular name="clock" [size]="11" class="text-gray-400 shrink-0"></lucide-angular>
+              <lucide-angular name="clock" [size]="11" class="text-gray-500 shrink-0"></lucide-angular>
               <p class="text-[12px] text-gray-500">{{ loc.hours }}</p>
             </div>
           </div>
@@ -237,11 +237,11 @@
       <div class="col-span-full py-20 text-center">
         <div class="flex flex-col items-center gap-3">
           <div class="w-16 h-16 rounded-2xl flex items-center justify-center" style="background: var(--surface-sunken);">
-            <lucide-angular name="map-pin" [size]="30" class="text-gray-300"></lucide-angular>
+            <lucide-angular name="map-pin" [size]="30" class="text-gray-500"></lucide-angular>
           </div>
           <div>
             <p class="text-sm font-semibold text-gray-600">No locations found</p>
-            <p class="text-xs text-gray-400 mt-0.5">Try adjusting your search or filters</p>
+            <p class="text-xs text-gray-500 mt-0.5">Try adjusting your search or filters</p>
           </div>
           <button (click)="search=''; cityFilter=''; statusFilter=''; driveThruFilter=false" class="btn-outline text-xs px-3 py-1.5">
             Clear filters

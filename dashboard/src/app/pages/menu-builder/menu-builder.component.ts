@@ -58,7 +58,7 @@ import { MenuBuilderService, MenuItem, MenuCategory } from '../../services/menu-
                 (click)="editItem(item)">
                 <div class="flex justify-between items-start mb-2">
                   <h3 class="font-bold text-gray-900">{{ item.name.en }}</h3>
-                  <span [class]="item.available ? 'text-green-600 text-xs' : 'text-gray-400 text-xs'">
+                  <span [class]="item.available ? 'text-green-600 text-xs' : 'text-gray-500 text-xs'">
                     {{ item.available ? '✓ Available' : '○ Unavailable' }}
                   </span>
                 </div>
@@ -69,7 +69,7 @@ import { MenuBuilderService, MenuItem, MenuCategory } from '../../services/menu-
                     (click)="deleteItem($event, item.id)"
                     class="p-1 text-red-600 hover:bg-red-50 rounded transition"
                   >
-                    <i-lucide name="trash2" size="18"></i-lucide>
+                    <i-lucide name="trash-2" size="18"></i-lucide>
                   </button>
                 </div>
               </div>
