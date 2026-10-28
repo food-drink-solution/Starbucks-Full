@@ -3,22 +3,34 @@
   "services": {
     "frontend": {
       "root": "Frontend",
-      "framework": "vite"
+      "framework": "vite",
+      "rewrites": [
+        {
+          "source": "/(.*)",
+          "destination": "/index.html"
+        }
+      ]
     },
     "dashboard": {
       "root": "dashboard",
       "framework": "angular",
-      "buildCommand": "npm run build:vercel"
+      "buildCommand": "npm run build:vercel",
+      "rewrites": [
+        {
+          "source": "/(.*)",
+          "destination": "/index.html"
+        }
+      ]
     }
   },
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://starbucks.runasp.net/api/$1"
+      "destination": "http://starbucks.runasp.net/api/$1"
     },
     {
-      "source": "/dashboard/(.*)",
-      "destination": { "service": "dashboard" }
+      "source": "/dashboard/:path*",
+      "destination": { "service": "dashboard", "path": "/:path*" }
     },
     {
       "source": "/(.*)",
