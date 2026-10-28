@@ -5,8 +5,8 @@ import { provideClientHydration, withEventReplay } from '@angular/platform-brows
 import { provideHttpClient, withInterceptors, withFetch, HttpClient } from '@angular/common/http';
 import { authInterceptor } from './interceptors/auth.interceptor';
 import { provideLucideIcons } from '@lucide/angular';
-import { provideTranslateService, TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { provideTranslateService, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader, TRANSLATE_HTTP_LOADER_CONFIG } from '@ngx-translate/http-loader';
 import {
   LucideLayoutDashboard, LucideShoppingBag, LucidePackage, LucideChartBarBig,
   LucideBell, LucideSearch, LucideSettings, LucideLogOut, LucideMenu, LucideX,
@@ -19,29 +19,25 @@ import {
   LucideToggleLeft, LucideToggleRight, LucideSave, LucideRefreshCw
 } from '@lucide/angular';
 
-// Translation loader factory for @ngx-translate
-export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(
-    http,
-    './assets/i18n/',
-    '.json'
-  );
-}
-
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideClientHydration(withEventReplay()),
     provideHttpClient(withInterceptors([authInterceptor]), withFetch()),
-    
-    // Translation Service Setup
+
+    // Translation Service Setup (ngx-translate v18 API)
+    // The loader config is provided via its DI token; TranslateHttpLoader
+    // self-injects HttpClient and takes no constructor arguments.
+    {
+      provide: TRANSLATE_HTTP_LOADER_CONFIG,
+      useValue: { prefix: './assets/i18n/', suffix: '.json' }
+    },
     provideTranslateService({
-      defaultLanguage: 'en',
+      lang: 'en',
       loader: {
         provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient]
+        useFactory: () => new TranslateHttpLoader()
       }
     }),
     
